@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.mclegoman.mclm_save.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "client.GameGuiMixin",
+    "client.InventoryMenuScreenMixin",
+    "client.LoadScreenMixin",
+    "client.SaveScreenMixin",
+    "client.MinecraftClientMixin",
+    "client.OptionsScreenMixin",
+    "client.ResourcesMixin",
+    "client.accessors.EntityAccessor",
+    "client.WorldMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
