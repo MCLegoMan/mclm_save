@@ -2,7 +2,6 @@ plugins {
 	id 'org.quiltmc.loom' version '1.6.5'
 	id 'ploceus' version '1.6-SNAPSHOT'
 	id 'java'
-	id "com.github.breadmoirai.github-release" version "2.4.1"
 	id 'maven-publish'
 }
 
@@ -90,28 +89,4 @@ publishing {
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
 	}
-}
-githubRelease {
-	token rootProject.file(".env").text.readLines().get(1).replace("GITHUB=", "").replace("\"", "")
-	owner "MCLegoMan"
-	repo "mclm_save"
-	tagName "[${project.minecraft_version}] ${project.mod_version}"
-	targetCommitish "${project.minecraft_version}+${project.minecraft_version}"
-	releaseName "${project.mod_version}"
-	generateReleaseNotes false
-	body rootProject.file("CHANGELOG.md").text
-	draft false
-	if (project.mod_version.contains("release")) prerelease false
-	else prerelease true
-	releaseAssets tasks.remapJar
-	allowUploadToExisting.set false
-	overwrite false
-	dryRun false
-	apiEndpoint "https://api.github.com"
-	client
-}
-tasks.register("uploadVersion") {
-	group = 'mclm_save'
-	description = 'Upload project to GitHub.'
-	dependsOn(tasks.githubRelease)
 }
