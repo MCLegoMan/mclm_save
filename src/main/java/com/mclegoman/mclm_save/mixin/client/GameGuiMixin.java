@@ -10,7 +10,6 @@ package com.mclegoman.mclm_save.mixin.client;
 import com.mclegoman.mclm_save.client.april_fools.AprilFoolsHelper;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.util.Debug;
-import com.mclegoman.mclm_save.common.Data;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import net.minecraft.client.gui.GameGui;
 import net.minecraft.client.render.TextRenderer;

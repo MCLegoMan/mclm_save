@@ -1,3 +1,10 @@
+/*
+    Release Type Utils (RTU)
+    Contributor(s): MCLegoMan
+    Github: https://github.com/MCLegoMan/releasetypeutils
+    Licence: CC0-1.0
+*/
+
 package com.mclegoman.releasetypeutils.common.util;
 
 import com.mclegoman.releasetypeutils.common.version.Helper;
