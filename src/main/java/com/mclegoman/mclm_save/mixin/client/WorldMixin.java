@@ -17,8 +17,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(World.class)
 public abstract class WorldMixin {
-	@Shadow public byte[] f_4249554;
-	@Shadow public byte[] f_3132715;
+	@Shadow
+	private byte[] f_4249554;
+	@Shadow
+	private byte[] f_3132715;
 	@Inject(method = "m_6536802", at = @At("TAIL"))
 	private void save$tick(CallbackInfo ci) {
 		Accessors.World.f_4249554 = this.f_4249554;

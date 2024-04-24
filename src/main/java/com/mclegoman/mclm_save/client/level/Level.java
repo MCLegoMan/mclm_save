@@ -73,7 +73,6 @@ public abstract class Level {
 			Entity var19;
 			if ((var19 = this.getEntity(var9, var16)) != null) {
 				this.loadEntityData(var3, var19);
-				var9.m_4490365(var19);
 			}
 		}
 
