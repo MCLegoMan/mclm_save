@@ -7,12 +7,13 @@
     "client.GameGuiMixin",
     "client.InventoryMenuScreenMixin",
     "client.LoadScreenMixin",
-    "client.SaveScreenMixin",
     "client.MinecraftClientMixin",
     "client.OptionsScreenMixin",
     "client.ResourcesMixin",
+    "client.SaveScreenMixin",
+    "client.WorldMixin",
     "client.accessors.EntityAccessor",
-    "client.WorldMixin"
+    "client.accessors.PlayerEntityAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
