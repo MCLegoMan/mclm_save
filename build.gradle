@@ -9,7 +9,7 @@ plugins {
 base {
 	archivesName = project.archives_base_name
 }
-version = project.mod_version
+version = project.mod_version + "+" + project.minecraft_version
 group = project.maven_group
 
 loom {
@@ -96,7 +96,7 @@ githubRelease {
 	owner "MCLegoMan"
 	repo "mclm_save"
 	tagName "[${project.minecraft_version}] ${project.mod_version}"
-	targetCommitish "${project.minecraft_version}-${project.minecraft_version}"
+	targetCommitish "${project.minecraft_version}+${project.minecraft_version}"
 	releaseName "${project.mod_version}"
 	generateReleaseNotes false
 	body rootProject.file("CHANGELOG.md").text
