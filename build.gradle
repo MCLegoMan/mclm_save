@@ -95,9 +95,9 @@ githubRelease {
 	token rootProject.file(".env").text.readLines().get(1).replace("GITHUB=", "").replace("\"", "")
 	owner "MCLegoMan"
 	repo "mclm_save"
-	tagName "${project.mod_version}"
-	targetCommitish "${project.minecraft_version}"
-	releaseName "[${project.minecraft_version}] ${project.mod_version}"
+	tagName "[${project.minecraft_version}] ${project.mod_version}"
+	targetCommitish "${project.minecraft_version}-${project.minecraft_version}"
+	releaseName "${project.mod_version}"
 	generateReleaseNotes false
 	body rootProject.file("CHANGELOG.md").text
 	draft false
@@ -109,4 +109,9 @@ githubRelease {
 	dryRun false
 	apiEndpoint "https://api.github.com"
 	client
+}
+tasks.register("uploadVersion") {
+	group = 'mclm_save'
+	description = 'Upload project to GitHub.'
+	dependsOn(tasks.githubRelease)
 }
