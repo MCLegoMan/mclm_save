@@ -8,6 +8,7 @@
 package com.mclegoman.mclm_save.client.gui;
 
 import com.mclegoman.mclm_save.client.data.ClientData;
+import com.mclegoman.mclm_save.common.Data;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.opengl.GL11;
@@ -44,6 +45,10 @@ public final class InfoScreen extends Screen {
 		drawCenteredString(this.textRenderer, title, this.width / 2, 90, 16777215);
 		drawCenteredString(this.textRenderer, status, this.width / 2, 110, 16777215);
 		if (this.canBeClosed) drawCenteredString(this.textRenderer, "Press ESC to close this screen", this.width / 2, this.height - 20, 16777215);
+		if (Data.version.isDevelopmentBuild()) {
+			textRenderer.drawWithShadow(Data.version.getName() + " " + Data.version.getFriendlyString(), 2, this.height - 23, 16777215);
+			textRenderer.drawWithShadow("Development Build", 2, this.height - 12, 0xFFAA00);
+		}
 		super.render(i, j);
 	}
 	public void keyPressed(char chr, int key) {
