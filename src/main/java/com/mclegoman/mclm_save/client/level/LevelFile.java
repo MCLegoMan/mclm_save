@@ -17,7 +17,6 @@ import com.mclegoman.releasetypeutils.common.version.Helper;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 
 public final class LevelFile {
 	public static File file;
@@ -40,7 +39,7 @@ public final class LevelFile {
 			ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 		}
 	}
-	public static void processWorld(File file) throws IOException {
+	public static void processWorld(File file) {
 		ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Processing File", InfoScreen.Type.DIRT, false));
 		if (file != null) {
 			if (isLoad) {
@@ -64,14 +63,15 @@ public final class LevelFile {
 					ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 				}
 			} else {
+				if (!file.getPath().toLowerCase().endsWith(".mclevel")) file = new File(file.getPath() + ".mclevel");
+				Data.version.sendToLog(Helper.LogType.INFO, "Saving World...");
 				try {
-					if (!file.getPath().toLowerCase().endsWith(".mclevel")) file = new File(file.getPath() + ".mclevel");
-					Data.version.sendToLog(Helper.LogType.INFO, "Saving World...");
 					(new World()).save(ClientData.minecraft.f_5854988, file);
-					ClientData.minecraft.m_6408915(null);
 				} catch (Exception error) {
 					Data.version.sendToLog(Helper.LogType.INFO, "Failed to save world!");
 					ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to save world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
+				} finally {
+					ClientData.minecraft.m_6408915(null);
 				}
 			}
 		}
@@ -96,7 +96,7 @@ public final class LevelFile {
 		// This is where the converter would go, after saving the saved file would be returned for loading.
 		return null;
 	}
-	private static TagCompound createLevel(int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, byte skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks, byte[] data) {
+	public static TagCompound createLevel(int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, int skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks, byte[] data) {
 		TagCompound Level = new TagCompound();
 		TagCompound Environment = new TagCompound();
 		Environment.addNbt("CloudColor", new IntTag(cloudColor));

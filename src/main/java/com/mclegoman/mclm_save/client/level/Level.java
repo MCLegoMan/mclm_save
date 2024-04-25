@@ -85,63 +85,18 @@ public abstract class Level {
 
 	public final void save(World world, File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);
-		if (this.f_1154694 != null) {
-			this.f_1154694.m_0983733("Saving level");
-		}
-
-		if (this.f_1154694 != null) {
-			this.f_1154694.m_1154571("Preparing level..");
-		}
-
-		TagCompound environment = new TagCompound();
-		environment.m_2604386("CloudColor", world.f_1709243);
-		environment.m_2604386("SkyColor", world.f_3766825);
-		environment.m_2604386("FogColor", world.f_2946178);
-		environment.m_9599287("SkyBrightness", (byte)((int)(world.f_6732352 * 100.0F)));
-		environment.m_4087969("CloudHeight", (short)world.f_4971921);
-		environment.m_4087969("SurroundingGroundHeight", (short)world.f_0183464);
-		environment.m_4087969("SurroundingWaterHeight", (short)world.f_8873427);
-		environment.m_9599287("SurroundingGroundType", (byte) Block.GRASS.id);
-		environment.m_9599287("SurroundingWaterType", (byte)world.f_3241378);
-		TagCompound map = new TagCompound();
-		map.m_4087969("Width", (short)world.f_3061106);
-		map.m_4087969("Length", (short)world.f_8212213);
-		map.m_4087969("Height", (short)world.f_4184003);
-		map.m_2915076("Blocks", Accessors.World.f_4249554);
-		map.m_2915076("Data", Accessors.World.f_3132715);
-		TagList var5;
-		(var5 = new TagList()).addNbt(new ShortTag((short)world.f_3926541));
-		var5.addNbt(new ShortTag((short)world.f_2923303));
-		var5.addNbt(new ShortTag((short)world.f_8500813));
-		map.addNbt("Spawn", var5);
-		if (this.f_1154694 != null) {
-			this.f_1154694.m_1154571("Preparing entities..");
-		}
-
+		TagCompound level = LevelFile.createLevel(world.f_1709243, (short) world.f_4971921, world.f_2946178, (byte) (world.f_6732352 * 100.0F), (int) world.f_3766825, (short) world.f_0183464, (byte) Block.GRASS.id, (short) world.f_8873427, (byte) world.f_3241378, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554, Accessors.World.f_3132715);
 		TagList entities = new TagList();
-
 		for (Object entity : world.f_7148360.f_6899876) {
 			Entity currentEntity = (Entity)entity;
 			currentEntity.m_2914294(currentEntity);
 			TagCompound entityData = saveEntityData(currentEntity);
 			if (!entityData.isEmpty()) entities.addNbt(entityData);
 		}
-
-		TagList var16 = new TagList();
-
-		TagCompound var18;
-		(var18 = new TagCompound()).m_3520709("MinecraftLevel");
-		var18.m_0738578("Map", map);
-		var18.m_0738578("Environment", environment);
-		var18.addNbt("Entities", entities);
-		var18.addNbt("TileEntities", var16);
-		if (this.f_1154694 != null) {
-			this.f_1154694.m_1154571("Writing..");
-		}
-
+		level.addNbt("Entities", entities);
 		try {
 			GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream);
-			Tag.output(var18, new DataOutputStream(gzipOutputStream));
+			Tag.output(level, new DataOutputStream(gzipOutputStream));
 			gzipOutputStream.close();
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, error.getLocalizedMessage());

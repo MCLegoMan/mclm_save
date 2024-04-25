@@ -14,9 +14,9 @@ import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.opengl.GL11;
 
 public final class InfoScreen extends Screen {
-	public String title;
-	public String status;
-	public Type type;
+	private String title;
+	private String status;
+	private Type type;
 	public boolean canBeClosed;
 	public InfoScreen(String title, String status, Type type, boolean canBeClosed) {
 		this.title = title;
