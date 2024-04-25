@@ -2,7 +2,7 @@
 
 ## Save 1.0.0-beta.3 for in-20100110  
 
-### Chan  
+### Changes  
 - Debug screen has been moved to it's own mod. ([mclm_debug](https://github.com/MCLegoMan/mclm_debug/))  
 
 #
