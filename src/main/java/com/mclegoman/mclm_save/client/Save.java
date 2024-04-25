@@ -7,9 +7,7 @@
 
 package com.mclegoman.mclm_save.client;
 
-import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.level.LevelFile;
-import com.mclegoman.mclm_save.client.util.Debug;
 import org.quiltmc.loader.api.ModContainer;
 
 public class Save {
@@ -20,7 +18,5 @@ public class Save {
 			LevelFile.shouldLoad = false;
 			LevelFile.loadWorld();
 		}
-		Debug.currentScreen = ClientData.minecraft.f_0723335;
-		Debug.setDebug();
 	}
 }

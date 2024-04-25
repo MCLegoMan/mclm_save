@@ -19,37 +19,32 @@ public class ConfigScreen extends Screen {
 		this.parent = screen;
 	}
 	public final void init() {
-		this.buttons.add(new ButtonWidget(0, this.width / 2 - 100, this.height / 6, "Debug: " + SaveConfig.instance.debug.value()));
-		this.buttons.add(new ButtonWidget(1, this.width / 2 - 100, this.height / 6 + 24, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
-		ButtonWidget convertClassicInv = new ButtonWidget(2, this.width / 2 - 100, this.height / 6 + 48, "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value());
+		this.buttons.add(new ButtonWidget(0, this.width / 2 - 100, this.height / 6, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
+		ButtonWidget convertClassicInv = new ButtonWidget(1, this.width / 2 - 100, this.height / 6 + 24, "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value());
 		convertClassicInv.active = false;
 		this.buttons.add(convertClassicInv);
-		this.buttons.add(new ButtonWidget(3, this.width / 2 - 100, this.height / 6 + 72, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
-		this.buttons.add(new ButtonWidget(4, this.width / 2 - 100, this.height / 6 + 168, "Done"));
+		this.buttons.add(new ButtonWidget(2, this.width / 2 - 100, this.height / 6 + 48, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
+		this.buttons.add(new ButtonWidget(3, this.width / 2 - 100, this.height / 6 + 168, "Done"));
 	}
 
 	protected void buttonClicked(ButtonWidget button) {
 		if (button.active) {
 			if (button.id == 0) {
-				SaveConfig.instance.debug.setValue(!SaveConfig.instance.debug.value());
-				button.message = "Debug: " + SaveConfig.instance.debug.value();
-			}
-			if (button.id == 1) {
 				SaveConfig.instance.forceAprilFools.setValue(!SaveConfig.instance.forceAprilFools.value());
 				button.message = "Force April Fools: " + SaveConfig.instance.forceAprilFools.value();
 			}
-			if (button.id == 2) {
+			if (button.id == 1) {
 				SaveConfig.instance.convertClassicInv.setValue(!SaveConfig.instance.convertClassicInv.value());
 				button.message = "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value();
 			}
-			if (button.id == 3) {
+			if (button.id == 2) {
 				Themes theme = SaveConfig.instance.dialogTheme.value();
 				if (theme.equals(Themes.system)) SaveConfig.instance.dialogTheme.setValue(Themes.dark);
 				else if (theme.equals(Themes.dark)) SaveConfig.instance.dialogTheme.setValue(Themes.light);
 				else if (theme.equals(Themes.light)) SaveConfig.instance.dialogTheme.setValue(Themes.system);
 				button.message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
-			if (button.id == 4) ClientData.minecraft.m_6408915(this.parent);
+			if (button.id == 3) ClientData.minecraft.m_6408915(this.parent);
 		}
 	}
 

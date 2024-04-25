@@ -16,8 +16,6 @@ import org.quiltmc.loader.api.config.v2.QuiltConfig;
 
 public class SaveConfig extends ReflectiveConfig {
 	public static final SaveConfig instance = QuiltConfig.create(Data.version.getID(), Data.version.getID(), SaveConfig.class);
-	@Comment("When set to true, debug features will be available.")
-	public final TrackedValue<Boolean> debug = this.value(false);
 	@Comment("When set to true, the game will think it's always april fools'.")
 	public final TrackedValue<Boolean> forceAprilFools = this.value(false);
 	@Comment("When set to true, the game will think it's always april fools'.")
