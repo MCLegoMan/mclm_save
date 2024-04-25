@@ -10,6 +10,7 @@ package com.mclegoman.mclm_save.client.level;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.gui.InfoScreen;
 import com.mclegoman.mclm_save.client.gui.OpenLoadScreen;
+import com.mclegoman.mclm_save.client.tag.*;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.Data;
 import com.mclegoman.releasetypeutils.common.version.Helper;
@@ -82,19 +83,44 @@ public final class LevelFile {
 			return file;
 		}
 		else if (filePath.endsWith(".mine")) {
-			return convertWorld(file, "Classic");
+			return convertWorld(file, "Classic", ".mine");
 		}
 		else if (filePath.endsWith(".dat")) {
-			Data.version.sendToLog(Helper.LogType.INFO, "Checking Selected World...");
-			// We need to check if the file is a classic save before sending it to convertWorld(file);!
-			return convertWorld(file, "Classic (.dat)");
+			return convertWorld(file, "Generic Data File", ".dat");
 		}
 		else return null;
 	}
-	public static File convertWorld(File file, String type) {
-		// We need to put our converter code here!
+	public static File convertWorld(File file, String type, String ext) {
 		Data.version.sendToLog(Helper.LogType.INFO, "Converting World...");
-		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " world to Indev format", InfoScreen.Type.DIRT, false));
+		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " (" + ext + ") world to Indev format", InfoScreen.Type.DIRT, false));
+		// This is where the converter would go, after saving the saved file would be returned for loading.
 		return null;
+	}
+	private static TagCompound createLevel(int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, byte skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks, byte[] data) {
+		TagCompound Level = new TagCompound();
+		TagCompound Environment = new TagCompound();
+		Environment.addNbt("CloudColor", new IntTag(cloudColor));
+		Environment.addNbt("CloudHeight", new ShortTag(cloudHeight));
+		Environment.addNbt("FogColor", new IntTag(fogColor));
+		Environment.addNbt("SkyBrightness", new ByteTag(skyBrightness));
+		Environment.addNbt("SkyColor", new IntTag(skyColor));
+		Environment.addNbt("SurroundingGroundHeight", new ShortTag(surroundingGroundHeight));
+		Environment.addNbt("SurroundingGroundType", new ByteTag(surroundingGroundType));
+		Environment.addNbt("SurroundingWaterHeight", new ShortTag(surroundingWaterHeight));
+		Environment.addNbt("SurroundingWaterType", new ByteTag(surroundingWaterType));
+		Level.addNbt("Environment", Environment);
+		TagCompound Map = new TagCompound();
+		TagList Spawn = new TagList();
+		Spawn.addNbt(new ShortTag(spawnX));
+		Spawn.addNbt(new ShortTag(spawnY));
+		Spawn.addNbt(new ShortTag(spawnZ));
+		Map.addNbt("Spawn", Spawn);
+		Map.addNbt("Height", new ShortTag(height));
+		Map.addNbt("Length", new ShortTag(length));
+		Map.addNbt("Width", new ShortTag(width));
+		Map.addNbt("Blocks", new ByteArrayTag(blocks));
+		Map.addNbt("Data", new ByteArrayTag(data));
+		Level.addNbt("Map", Map);
+		return Level;
 	}
 }
