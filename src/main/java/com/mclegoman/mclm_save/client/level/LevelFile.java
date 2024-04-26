@@ -113,7 +113,6 @@ public final class LevelFile {
 			short length = 256;
 			short width = 256;
 			byte[] blocks = null;
-			// Does this differ in versions?
 			if (inputStream.readInt() == 656127880) {
 				Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Checking Version");
 				byte version = inputStream.readByte();
