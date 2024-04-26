@@ -95,7 +95,6 @@ public final class LevelFile {
 	public static File convertWorld(File file, String type, String ext) {
 		Data.version.sendToLog(Helper.LogType.INFO, "Converting World...");
 		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " (" + ext + ") world to Indev format", InfoScreen.Type.DIRT, false));
-		// This is where the converter would go, after saving the saved file would be returned for loading.
 		try (FileInputStream classicLevel = new FileInputStream(file)) {
 			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
 			DataInputStream inputStream = new DataInputStream(new GZIPInputStream(classicLevel));
@@ -111,50 +110,66 @@ public final class LevelFile {
 			short spawnX = (short) 128;
 			short spawnY = (short) 36;
 			short spawnZ = (short) 128;
-			short height = 256;
-			short depth = 64;
+			short height = 64;
+			short length = 256;
 			short width = 256;
 			byte[] blocks = null;
 			if (inputStream.readInt() == 656127880) {
-				Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading File");
+				Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Checking Version");
 				byte version = inputStream.readByte();
+				// TODO: We should probably also convert the classic format that didn't have a version number.
 				if (version == 1) {
-					// Version 1
-					width = inputStream.readShort();
-					depth = inputStream.readShort();
-					height = inputStream.readShort();
-					blocks = new byte[width * depth * height];
-					inputStream.readFully(blocks);
-					inputStream.close();
-				} else if (version == 2) {
-					// Version 2
-					// Serialized Java...
-				}
-				if (blocks != null) {
-					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
-					TagCompound convertedLevel = createLevel(cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, depth, width, blocks);
-					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
-					String outputPathCheck = outputPath;
-					// windows starts with "- Copy", then "- Copy (2)", etc. we just start at "(1)" to make things nicer.
-					int fileAmount = 1;
-					while (new File(outputPathCheck + ".mclevel").exists()) {
-						outputPathCheck = outputPath + "(" + fileAmount + ")";
-						fileAmount++;
-					}
-					outputPath = outputPathCheck + ".mclevel";
-					try (FileOutputStream outputStream = new FileOutputStream(outputPath)) {
-						GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream);
-						Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
-						gzipOutputStream.close();
+					try {
+						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v1 Level");
+						// We read the name, creator, and createTime, but we don't actually use them.
+						String name = inputStream.readUTF();
+						String creator = inputStream.readUTF();
+						long createTime = inputStream.readLong();
+						width = inputStream.readShort();
+						length = inputStream.readShort();
+						height = inputStream.readShort();
+						blocks = new byte[width * length * height];
+						inputStream.readFully(blocks);
+						inputStream.close();
 					} catch (Exception error) {
-						Data.version.sendToLog(Helper.LogType.WARN, error.getLocalizedMessage());
+						Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v1 Level!");
 					}
-					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
-					return new File(file.getPath() + ".mclevel");
+				} else if (version == 2) {
+					try {
+						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v2 Level");
+						// TODO: Version 2 Converter
+					} catch (Exception error) {
+						Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v2 Level!");
+					}
+				}
+				try {
+					if (blocks != null) {
+						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
+						TagCompound convertedLevel = createLevel(cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
+						String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
+						String outputPathCheck = outputPath;
+						int fileAmount = 1;
+						while (new File(outputPathCheck + ".mclevel").exists()) {
+							outputPathCheck = outputPath + "(" + fileAmount + ")";
+							fileAmount++;
+						}
+						outputPath = outputPathCheck + ".mclevel";
+						try (FileOutputStream outputStream = new FileOutputStream(outputPath)) {
+							GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream);
+							Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
+							gzipOutputStream.close();
+						} catch (Exception error) {
+							Data.version.sendToLog(Helper.LogType.WARN, error.getLocalizedMessage());
+						}
+						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
+						return new File(outputPath);
+					}
+				} catch (Exception error) {
+					Data.version.sendToLog(Helper.LogType.WARN, "Failed to write to file!");
 				}
 			}
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.INFO, "Failed to convert world!");
+			Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert world!");
 		}
 		return null;
 	}

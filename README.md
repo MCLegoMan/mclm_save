@@ -1,4 +1,5 @@
 # ![](./assets/logo.png)
+Save allows the player to save, load, and convert worlds in older versions that didn't have saving.
 
 ## Dependencies  
 - [Quilt Loader](https://quiltmc.org/).  
