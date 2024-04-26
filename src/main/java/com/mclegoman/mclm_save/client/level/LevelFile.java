@@ -108,8 +108,8 @@ public final class LevelFile {
 			byte[] blocks = null;
 			if (inputStream.readInt() == 656127880) {
 				Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading File");
-				byte in1 = inputStream.readByte();
-				if (in1 == 1) {
+				byte version = inputStream.readByte();
+				if (version == 1) {
 					// Version 1
 					name = inputStream.readUTF();
 					creator = inputStream.readUTF();
@@ -120,21 +120,30 @@ public final class LevelFile {
 					blocks = new byte[width * depth * height];
 					inputStream.readFully(blocks);
 					inputStream.close();
-				} else if (in1 == 2) {
+				} else if (version == 2) {
 					// Version 2
 					// Serialized Java...
 				}
 				if (blocks != null) {
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
 					TagCompound convertedLevel = createLevel(0xFFFFFF, (short) 66, 0xFFFFFF, (byte) 100, 10079487, (short) 23, (byte) 2, (short) 32, (byte) 8, (short) 128, (short) 36, (short) 128, height, depth, width, blocks);
-					try (FileOutputStream outputStream = new FileOutputStream(file.getPath() + ".mclevel")) {
+					file.getPath().toLowerCase();
+					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
+					String outputPathCheck = outputPath;
+					int fileAmount = 0;
+					while (new File(outputPathCheck + ".mclevel").exists()) {
+						outputPathCheck = outputPath + "(" + fileAmount + ")";
+						fileAmount++;
+					}
+					outputPath = outputPathCheck + ".mclevel";
+					try (FileOutputStream outputStream = new FileOutputStream(outputPath)) {
 						GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream);
 						Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
 						gzipOutputStream.close();
 					} catch (Exception error) {
 						Data.version.sendToLog(Helper.LogType.WARN, error.getLocalizedMessage());
 					}
-					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world!");
+					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
 					return new File(file.getPath() + ".mclevel");
 				}
 			}
