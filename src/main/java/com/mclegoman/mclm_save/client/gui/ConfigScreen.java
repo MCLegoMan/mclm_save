@@ -9,9 +9,8 @@ package com.mclegoman.mclm_save.client.gui;
 
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.config.SaveConfig;
-import com.mclegoman.mclm_save.config.Themes;
+import com.mclegoman.mclm_save.config.Theme;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 
 public class ConfigScreen extends Screen {
 	private final Screen parent;
@@ -19,15 +18,15 @@ public class ConfigScreen extends Screen {
 		this.parent = screen;
 	}
 	public final void init() {
-		this.buttons.add(new ButtonWidget(0, this.width / 2 - 100, this.height / 6, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
-		ButtonWidget convertClassicInv = new ButtonWidget(1, this.width / 2 - 100, this.height / 6 + 24, "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value());
+		this.buttons.add(new ButtonWidget(0, this.width / 2 - 150, this.height / 6, 300, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
+		ButtonWidget convertClassicInv = new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 24, 300, 20, "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value());
 		convertClassicInv.active = false;
 		this.buttons.add(convertClassicInv);
-		this.buttons.add(new ButtonWidget(2, this.width / 2 - 100, this.height / 6 + 48, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
-		this.buttons.add(new ButtonWidget(3, this.width / 2 - 100, this.height / 6 + 168, "Done"));
+		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
+		this.buttons.add(new ButtonWidget(3, this.width / 2 - 100, this.height / 6 + 168, 200, 20, "Done"));
 	}
 
-	protected void buttonClicked(ButtonWidget button) {
+	protected void buttonClicked(net.minecraft.client.gui.widget.ButtonWidget button) {
 		if (button.active) {
 			if (button.id == 0) {
 				SaveConfig.instance.forceAprilFools.setValue(!SaveConfig.instance.forceAprilFools.value());
@@ -38,10 +37,11 @@ public class ConfigScreen extends Screen {
 				button.message = "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value();
 			}
 			if (button.id == 2) {
-				Themes theme = SaveConfig.instance.dialogTheme.value();
-				if (theme.equals(Themes.system)) SaveConfig.instance.dialogTheme.setValue(Themes.dark);
-				else if (theme.equals(Themes.dark)) SaveConfig.instance.dialogTheme.setValue(Themes.light);
-				else if (theme.equals(Themes.light)) SaveConfig.instance.dialogTheme.setValue(Themes.system);
+				Theme theme = SaveConfig.instance.dialogTheme.value();
+				if (theme.equals(Theme.system)) SaveConfig.instance.dialogTheme.setValue(Theme.dark);
+				else if (theme.equals(Theme.dark)) SaveConfig.instance.dialogTheme.setValue(Theme.light);
+				else if (theme.equals(Theme.light)) SaveConfig.instance.dialogTheme.setValue(Theme.metal);
+				else if (theme.equals(Theme.metal)) SaveConfig.instance.dialogTheme.setValue(Theme.system);
 				button.message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
 			if (button.id == 3) ClientData.minecraft.m_6408915(this.parent);

@@ -21,6 +21,7 @@ ploceus {
 }
 
 repositories {
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -30,6 +31,8 @@ dependencies {
 		mappings "net.ornithemc:calamus-intermediary:${project.minecraft_version}${project.mappings_type}"
 	}
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
+
+	// Save/Load Dialog Themes
 	include(implementation "com.formdev:flatlaf:3.4.1")
 }
 

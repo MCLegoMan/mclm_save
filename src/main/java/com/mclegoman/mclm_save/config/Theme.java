@@ -7,12 +7,13 @@
 
 package com.mclegoman.mclm_save.config;
 
-public enum Themes {
-	dark("Dark (FlatDarculaLaf)"),
-	light("Light (FlatIntelliJLaf)"),
+public enum Theme {
+	light("IntelliJ (Light)"),
+	dark("Darcula (Dark)"),
+	metal("Metal (Java)"),
 	system("System");
 	final String name;
-	Themes(String name) {
+	Theme(String name) {
 		this.name = name;
 	}
 	public String getName() {

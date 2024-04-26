@@ -21,7 +21,7 @@ public class SaveConfig extends ReflectiveConfig {
 	@Comment("When set to true, the game will think it's always april fools'.")
 	public final TrackedValue<Boolean> convertClassicInv = this.value(false);
 	@Comment("This sets the theme of the save/load dialog")
-	public final TrackedValue<Themes> dialogTheme = this.value(Themes.system);
+	public final TrackedValue<Theme> dialogTheme = this.value(Theme.system);
 	@Comment("This sets where the save/load dialog opens")
 	public final TrackedValue<String> dialogDir = this.value(QuiltLoader.getGameDir().toString());
 }

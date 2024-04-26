@@ -11,6 +11,8 @@
   - This mod uses code from this version of Minecraft, which was obtained using [Feather Mappings](https://github.com/OrnitheMC/feather-mappings).  
 - [Feather Mappings](https://github.com/OrnitheMC/feather-mappings).  
   - These mappings are licensed under [CC0-1.0](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
+- [FlatLaf](https://github.com/JFormDesigner/FlatLaf/).
+  - Licensed under [Apache 2.0](https://github.com/JFormDesigner/FlatLaf/blob/main/LICENSE).
 
 #
 Licensed under LGPL-3.0-or-later.

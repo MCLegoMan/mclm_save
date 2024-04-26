@@ -13,11 +13,12 @@ import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.level.LevelFile;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.config.SaveConfig;
-import com.mclegoman.mclm_save.config.Themes;
+import com.mclegoman.mclm_save.config.Theme;
 import org.quiltmc.loader.api.QuiltLoader;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.io.File;
 
 public class OpenLoadScreen extends Thread {
@@ -28,14 +29,17 @@ public class OpenLoadScreen extends Thread {
 	public void run() {
 		JFileChooser var1 = new JFileChooser();
 		try {
-			Themes theme = SaveConfig.instance.dialogTheme.value();
-			if (theme.equals(Themes.system)) {
+			Theme theme = SaveConfig.instance.dialogTheme.value();
+			if (theme.equals(Theme.system)) {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			}
-			else if (theme.equals(Themes.dark)) {
-				UIManager.setLookAndFeel(new FlatDarculaLaf());
-			} else if (theme.equals(Themes.light)) {
+			} else if (theme.equals(Theme.light)) {
 				UIManager.setLookAndFeel(new FlatIntelliJLaf());
+			}
+			else if (theme.equals(Theme.dark)) {
+				UIManager.setLookAndFeel(new FlatDarculaLaf());
+			}
+			else if (theme.equals(Theme.metal)) {
+				UIManager.setLookAndFeel(new MetalLookAndFeel());
 			}
 		} catch (Exception ignored) {
 		}
