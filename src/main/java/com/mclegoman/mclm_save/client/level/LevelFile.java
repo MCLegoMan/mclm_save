@@ -99,21 +99,27 @@ public final class LevelFile {
 		try (FileInputStream classicLevel = new FileInputStream(file)) {
 			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
 			DataInputStream inputStream = new DataInputStream(new GZIPInputStream(classicLevel));
-			String name;
-			String creator;
-			long createTime;
-			short width = 256;
-			short depth = 64;
+			int cloudColor = 0xFFFFFF;
+			short cloudHeight = (short) 66;
+			int fogColor = 0xFFFFFF;
+			byte skyBrightness = (byte) 100;
+			int skyColor = 10079487;
+			short surroundingGroundHeight = (short) 23;
+			byte surroundingGroundType = (byte) 2;
+			short surroundingWaterHeight = (short) 32;
+			byte surroundingWaterType = (byte) 8;
+			short spawnX = (short) 128;
+			short spawnY = (short) 36;
+			short spawnZ = (short) 128;
 			short height = 256;
+			short depth = 64;
+			short width = 256;
 			byte[] blocks = null;
 			if (inputStream.readInt() == 656127880) {
 				Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading File");
 				byte version = inputStream.readByte();
 				if (version == 1) {
 					// Version 1
-					name = inputStream.readUTF();
-					creator = inputStream.readUTF();
-					createTime = inputStream.readLong();
 					width = inputStream.readShort();
 					depth = inputStream.readShort();
 					height = inputStream.readShort();
@@ -126,11 +132,11 @@ public final class LevelFile {
 				}
 				if (blocks != null) {
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
-					TagCompound convertedLevel = createLevel(0xFFFFFF, (short) 66, 0xFFFFFF, (byte) 100, 10079487, (short) 23, (byte) 2, (short) 32, (byte) 8, (short) 128, (short) 36, (short) 128, height, depth, width, blocks);
-					file.getPath().toLowerCase();
+					TagCompound convertedLevel = createLevel(cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, depth, width, blocks);
 					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
 					String outputPathCheck = outputPath;
-					int fileAmount = 2;
+					// windows starts with "- Copy", then "- Copy (2)", etc. we just start at "(1)" to make things nicer.
+					int fileAmount = 1;
 					while (new File(outputPathCheck + ".mclevel").exists()) {
 						outputPathCheck = outputPath + "(" + fileAmount + ")";
 						fileAmount++;
