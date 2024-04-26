@@ -16,7 +16,6 @@ import com.mclegoman.mclm_save.common.Data;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -114,10 +113,10 @@ public final class LevelFile {
 			short length = 256;
 			short width = 256;
 			byte[] blocks = null;
+			// Does this differ in versions?
 			if (inputStream.readInt() == 656127880) {
 				Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Checking Version");
 				byte version = inputStream.readByte();
-				// TODO: We should probably also convert the classic format that didn't have a version number.
 				if (version == 1) {
 					try {
 						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v1 Level");
@@ -142,31 +141,40 @@ public final class LevelFile {
 						Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v2 Level!");
 					}
 				}
+			} else {
 				try {
-					if (blocks != null) {
-						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
-						TagCompound convertedLevel = createLevel(cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
-						String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
-						String outputPathCheck = outputPath;
-						int fileAmount = 1;
-						while (new File(outputPathCheck + ".mclevel").exists()) {
-							outputPathCheck = outputPath + "(" + fileAmount + ")";
-							fileAmount++;
-						}
-						outputPath = outputPathCheck + ".mclevel";
-						try (FileOutputStream outputStream = new FileOutputStream(outputPath)) {
-							GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream);
-							Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
-							gzipOutputStream.close();
-						} catch (Exception error) {
-							Data.version.sendToLog(Helper.LogType.WARN, error.getLocalizedMessage());
-						}
-						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
-						return new File(outputPath);
-					}
+					// Pre-Classic/Early Classic didn't have a magic number, so we just hope that this is a Pre-Classic or Early Classic file.
+					blocks = new byte[width * length * height];
+					inputStream.readFully(blocks);
+					inputStream.close();
 				} catch (Exception error) {
-					Data.version.sendToLog(Helper.LogType.WARN, "Failed to write to file!");
+					Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v0 Level!");
 				}
+			}
+			try {
+				if (blocks != null) {
+					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
+					TagCompound convertedLevel = createLevel(cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
+					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
+					String outputPathCheck = outputPath;
+					int fileAmount = 1;
+					while (new File(outputPathCheck + ".mclevel").exists()) {
+						outputPathCheck = outputPath + "(" + fileAmount + ")";
+						fileAmount++;
+					}
+					outputPath = outputPathCheck + ".mclevel";
+					try (FileOutputStream outputStream = new FileOutputStream(outputPath)) {
+						GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream);
+						Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
+						gzipOutputStream.close();
+					} catch (Exception error) {
+						Data.version.sendToLog(Helper.LogType.WARN, error.getLocalizedMessage());
+					}
+					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
+					return new File(outputPath);
+				}
+			} catch (Exception error) {
+				Data.version.sendToLog(Helper.LogType.WARN, "Failed to write to file!");
 			}
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert world!");
