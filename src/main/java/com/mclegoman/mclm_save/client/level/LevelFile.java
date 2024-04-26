@@ -111,6 +111,9 @@ public final class LevelFile {
 				byte in1 = inputStream.readByte();
 				if (in1 == 1) {
 					// Version 1
+					name = inputStream.readUTF();
+					creator = inputStream.readUTF();
+					createTime = inputStream.readLong();
 					width = inputStream.readShort();
 					depth = inputStream.readShort();
 					height = inputStream.readShort();
