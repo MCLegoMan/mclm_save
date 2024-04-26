@@ -11,6 +11,7 @@ public enum Theme {
 	light("IntelliJ (Light)"),
 	dark("Darcula (Dark)"),
 	metal("Metal (Java)"),
+	material("Material (Light)"),
 	system("System");
 	final String name;
 	Theme(String name) {

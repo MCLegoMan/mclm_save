@@ -14,6 +14,7 @@ import com.mclegoman.mclm_save.client.level.LevelFile;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.mclm_save.config.Theme;
+import mdlaf.MaterialLookAndFeel;
 import org.quiltmc.loader.api.QuiltLoader;
 
 import javax.swing.*;
@@ -40,6 +41,9 @@ public class OpenLoadScreen extends Thread {
 			}
 			else if (theme.equals(Theme.metal)) {
 				UIManager.setLookAndFeel(new MetalLookAndFeel());
+			}
+			else if (theme.equals(Theme.material)) {
+				UIManager.setLookAndFeel(new MaterialLookAndFeel());
 			}
 		} catch (Exception ignored) {
 		}

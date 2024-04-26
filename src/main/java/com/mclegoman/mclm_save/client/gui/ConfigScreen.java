@@ -41,40 +41,52 @@ public class ConfigScreen extends Screen {
 				Theme theme = SaveConfig.instance.dialogTheme.value();
 				if (theme.equals(Theme.system)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-						SaveConfig.instance.dialogTheme.setValue(Theme.metal);
+						SaveConfig.instance.dialogTheme.setValue(Theme.material);
 					} else {
 						SaveConfig.instance.dialogTheme.setValue(Theme.light);
 					}
-				}
-				else if (theme.equals(Theme.light)) {
+				} else if (theme.equals(Theme.light)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 						SaveConfig.instance.dialogTheme.setValue(Theme.system);
 					} else {
 						SaveConfig.instance.dialogTheme.setValue(Theme.dark);
 					}
-				}
-				else if (theme.equals(Theme.dark)) {
+				} else if (theme.equals(Theme.dark)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 						SaveConfig.instance.dialogTheme.setValue(Theme.light);
 					} else {
 						SaveConfig.instance.dialogTheme.setValue(Theme.metal);
 					}
-				}
-				else if (theme.equals(Theme.metal)) {
+				} else if (theme.equals(Theme.metal)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 						SaveConfig.instance.dialogTheme.setValue(Theme.dark);
+					} else {
+						SaveConfig.instance.dialogTheme.setValue(Theme.material);
+					}
+				} else if (theme.equals(Theme.material)) {
+					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+						SaveConfig.instance.dialogTheme.setValue(Theme.metal);
 					} else {
 						SaveConfig.instance.dialogTheme.setValue(Theme.system);
 					}
 				}
 				button.message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
-			if (button.id == 3) ClientData.minecraft.m_6408915(this.parent);
+			if (button.id == 3) {
+				SaveConfig.instance.save();
+				ClientData.minecraft.m_6408915(this.parent);
+			}
 		}
 	}
 	public final void render(int i, int j) {
 		fillGradient(0, 0, this.width, this.height, 1610941696, -1607454624);
 		drawCenteredString(this.textRenderer, "Save Config", this.width / 2, 20, 16777215);
 		super.render(i, j);
+	}
+	public void keyPressed(char chr, int key) {
+		if (key == 1) {
+			SaveConfig.instance.save();
+			ClientData.minecraft.m_6408915(this.parent);
+		}
 	}
 }

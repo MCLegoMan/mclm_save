@@ -147,6 +147,8 @@ public final class LevelFile {
 			} else {
 				try {
 					// Pre-Classic/Early Classic didn't have a magic number, so we just hope that this is a Pre-Classic or Early Classic file.
+					length = 257;
+					width = 257;
 					blocks = new byte[width * length * height];
 					inputStream.readFully(blocks);
 				} catch (Exception error) {
