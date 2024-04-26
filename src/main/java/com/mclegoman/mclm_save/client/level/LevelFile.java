@@ -16,6 +16,8 @@ import com.mclegoman.mclm_save.common.Data;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 
 import java.io.*;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -97,6 +99,9 @@ public final class LevelFile {
 		try (FileInputStream classicLevel = new FileInputStream(file)) {
 			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
 			DataInputStream inputStream = new DataInputStream(new GZIPInputStream(classicLevel));
+			String name = "A Nice World";
+			String creator = "Player";
+			long createTime = Instant.now().getEpochSecond();
 			int cloudColor = 0xFFFFFF;
 			short cloudHeight = (short) 66;
 			int fogColor = 0xFFFFFF;
@@ -120,9 +125,9 @@ public final class LevelFile {
 					try {
 						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v1 Level");
 						// We read the name, creator, and createTime, but we don't actually use them.
-						String name = inputStream.readUTF();
-						String creator = inputStream.readUTF();
-						long createTime = inputStream.readLong();
+						name = inputStream.readUTF();
+						creator = inputStream.readUTF();
+						createTime = inputStream.readLong();
 						width = inputStream.readShort();
 						length = inputStream.readShort();
 						height = inputStream.readShort();
@@ -153,7 +158,7 @@ public final class LevelFile {
 			try {
 				if (blocks != null) {
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
-					TagCompound convertedLevel = createLevel(cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
+					TagCompound convertedLevel = createLevel(creator, createTime, name, cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
 					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
 					String outputPathCheck = outputPath;
 					int fileAmount = 1;
@@ -180,8 +185,13 @@ public final class LevelFile {
 		}
 		return null;
 	}
-	public static TagCompound createLevel(int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, int skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks) {
+	public static TagCompound createLevel(String creator, long createTime, String name, int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, int skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks) {
 		TagCompound Level = new TagCompound();
+		TagCompound About = new TagCompound();
+		About.addNbt("Author", new StringTag(creator));
+		About.addNbt("CreatedOn", new LongTag(createTime));
+		About.addNbt("Name", new StringTag(name));
+		Level.addNbt("About", About);
 		TagCompound Environment = new TagCompound();
 		Environment.addNbt("CloudColor", new IntTag(cloudColor));
 		Environment.addNbt("CloudHeight", new ShortTag(cloudHeight));
