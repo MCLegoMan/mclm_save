@@ -124,7 +124,6 @@ public final class LevelFile {
 				if (version == 1) {
 					try {
 						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v1 Level");
-						// We read the name, creator, and createTime, but we don't actually use them.
 						name = inputStream.readUTF();
 						creator = inputStream.readUTF();
 						createTime = inputStream.readLong();
@@ -141,6 +140,7 @@ public final class LevelFile {
 					try {
 						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v2 Level");
 						// TODO: Version 2 Converter
+						// We need to somehow de-serialize the data from the serialized class.
 					} catch (Exception error) {
 						Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v2 Level!");
 					}
@@ -150,6 +150,8 @@ public final class LevelFile {
 					// Pre-Classic/Early Classic didn't have a magic number, so we just hope that this is a Pre-Classic or Early Classic file.
 					blocks = new byte[width * length * height];
 					inputStream.readFully(blocks);
+					// If there is any other data left, we fail as it's unlikely to be a (pre/early)classic save file.
+					if (inputStream.read() != -1) return null;
 					inputStream.close();
 				} catch (Exception error) {
 					Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v0 Level!");
