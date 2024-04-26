@@ -17,7 +17,6 @@ import com.mclegoman.releasetypeutils.common.version.Helper;
 
 import java.io.*;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -37,7 +36,7 @@ public final class LevelFile {
 		try {
 			if (file != null) processWorld(file);
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, error.getLocalizedMessage());
+			Data.version.sendToLog(Helper.LogType.WARN, "Loading World: " + error.getLocalizedMessage());
 			// We use InfoScreen instead of FatalErrorScreen so the player can use ESC to go back to the game.
 			ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 		}
@@ -51,27 +50,27 @@ public final class LevelFile {
 					if (worldFile != null) {
 						if (file.isFile() && file.exists()) {
 							FileInputStream file1 = new FileInputStream(worldFile);
-							Data.version.sendToLog(Helper.LogType.INFO, "Loading World...");
+							Data.version.sendToLog(Helper.LogType.INFO, "Process World: Loading World...");
 							net.minecraft.world.World world = (new World()).load(file1);
 							file1.close();
 							Accessors.MinecraftClient.loadWorld(world);
 						}
 						ClientData.minecraft.m_6408915(null);
 					} else {
-						Data.version.sendToLog(Helper.LogType.INFO, "Failed to load world!");
+						Data.version.sendToLog(Helper.LogType.INFO, "Process World: File not found!");
 						ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", "World does not exist.", InfoScreen.Type.ERROR, true));
 					}
 				} catch (Exception error) {
-					Data.version.sendToLog(Helper.LogType.INFO, "Failed to load world!");
+					Data.version.sendToLog(Helper.LogType.INFO, "Process World: Failed to process world!");
 					ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 				}
 			} else {
 				if (!file.getPath().toLowerCase().endsWith(".mclevel")) file = new File(file.getPath() + ".mclevel");
-				Data.version.sendToLog(Helper.LogType.INFO, "Saving World...");
+				Data.version.sendToLog(Helper.LogType.INFO, "Process World: Saving World...");
 				try {
 					(new World()).save(ClientData.minecraft.f_5854988, file);
 				} catch (Exception error) {
-					Data.version.sendToLog(Helper.LogType.INFO, "Failed to save world!");
+					Data.version.sendToLog(Helper.LogType.INFO, "Process World: Failed to save world!");
 					ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to save world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 				} finally {
 					ClientData.minecraft.m_6408915(null);
@@ -80,7 +79,6 @@ public final class LevelFile {
 		}
 	}
 	public static File getWorldFile(File file) {
-		Data.version.sendToLog(Helper.LogType.INFO, "Getting World...");
 		String filePath = file.getPath().toLowerCase();
 		if (filePath.endsWith(".mclevel")) {
 			return file;
@@ -91,10 +89,12 @@ public final class LevelFile {
 		else if (filePath.endsWith(".dat")) {
 			return convertWorld(file, "Generic Data File", ".dat");
 		}
-		else return null;
+		else {
+			Data.version.sendToLog(Helper.LogType.WARN, "Get World: Invalid file format!");
+			return null;
+		}
 	}
 	public static File convertWorld(File file, String type, String ext) {
-		Data.version.sendToLog(Helper.LogType.INFO, "Converting World...");
 		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " (" + ext + ") world to Indev format", InfoScreen.Type.DIRT, false));
 		try (FileInputStream classicLevel = new FileInputStream(file)) {
 			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
@@ -134,7 +134,7 @@ public final class LevelFile {
 						inputStream.readFully(blocks);
 						inputStream.close();
 					} catch (Exception error) {
-						Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v1 Level!");
+						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v1 Level! " + error.getLocalizedMessage());
 					}
 				} else if (version == 2) {
 					try {
@@ -142,7 +142,7 @@ public final class LevelFile {
 						// TODO: Version 2 Converter
 						// We need to somehow de-serialize the data from the serialized class.
 					} catch (Exception error) {
-						Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v2 Level!");
+						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
 					}
 				}
 			} else {
@@ -151,10 +151,13 @@ public final class LevelFile {
 					blocks = new byte[width * length * height];
 					inputStream.readFully(blocks);
 					// If there is any other data left, we fail as it's unlikely to be a (pre/early)classic save file.
-					if (inputStream.read() != -1) return null;
+					if (inputStream.read() != -1) {
+						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v0 Level due to unexpected data being found!");
+						return null;
+					}
 					inputStream.close();
 				} catch (Exception error) {
-					Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v0 Level!");
+					Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v0 Level! " + error.getLocalizedMessage());
 				}
 			}
 			try {
@@ -174,16 +177,16 @@ public final class LevelFile {
 						Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
 						gzipOutputStream.close();
 					} catch (Exception error) {
-						Data.version.sendToLog(Helper.LogType.WARN, error.getLocalizedMessage());
+						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: " + error.getLocalizedMessage());
 					}
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
 					return new File(outputPath);
 				}
 			} catch (Exception error) {
-				Data.version.sendToLog(Helper.LogType.WARN, "Failed to write to file!");
+				Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to write to file! " + error.getLocalizedMessage());
 			}
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert world!");
+			Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert world! " + error.getLocalizedMessage());
 		}
 		return null;
 	}
