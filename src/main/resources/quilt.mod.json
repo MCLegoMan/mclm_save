@@ -22,7 +22,7 @@
     "depends": [
       {
         "id": "quilt_loader",
-        "versions": ">=0.25.0"
+        "versions": "*"
       },
       {
         "id": "minecraft",

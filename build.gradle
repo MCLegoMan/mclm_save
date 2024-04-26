@@ -21,7 +21,17 @@ ploceus {
 }
 
 repositories {
-	maven { url 'https://jitpack.io' }
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 dependencies {
@@ -34,6 +44,9 @@ dependencies {
 
 	// Save/Load Dialog Themes
 	include(implementation "com.formdev:flatlaf:3.4.1")
+
+	// Development Environment Only
+	modImplementation "maven.modrinth:mclm_debug:1.0.0-release.1+in-20100110"
 }
 
 project.sourceSets {

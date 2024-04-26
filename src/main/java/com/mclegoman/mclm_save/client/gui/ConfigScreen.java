@@ -11,6 +11,7 @@ import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.mclm_save.config.Theme;
 import net.minecraft.client.gui.screen.Screen;
+import org.lwjgl.input.Keyboard;
 
 public class ConfigScreen extends Screen {
 	private final Screen parent;
@@ -38,16 +39,39 @@ public class ConfigScreen extends Screen {
 			}
 			if (button.id == 2) {
 				Theme theme = SaveConfig.instance.dialogTheme.value();
-				if (theme.equals(Theme.system)) SaveConfig.instance.dialogTheme.setValue(Theme.dark);
-				else if (theme.equals(Theme.dark)) SaveConfig.instance.dialogTheme.setValue(Theme.light);
-				else if (theme.equals(Theme.light)) SaveConfig.instance.dialogTheme.setValue(Theme.metal);
-				else if (theme.equals(Theme.metal)) SaveConfig.instance.dialogTheme.setValue(Theme.system);
+				if (theme.equals(Theme.system)) {
+					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+						SaveConfig.instance.dialogTheme.setValue(Theme.metal);
+					} else {
+						SaveConfig.instance.dialogTheme.setValue(Theme.light);
+					}
+				}
+				else if (theme.equals(Theme.light)) {
+					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+						SaveConfig.instance.dialogTheme.setValue(Theme.system);
+					} else {
+						SaveConfig.instance.dialogTheme.setValue(Theme.dark);
+					}
+				}
+				else if (theme.equals(Theme.dark)) {
+					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+						SaveConfig.instance.dialogTheme.setValue(Theme.light);
+					} else {
+						SaveConfig.instance.dialogTheme.setValue(Theme.metal);
+					}
+				}
+				else if (theme.equals(Theme.metal)) {
+					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+						SaveConfig.instance.dialogTheme.setValue(Theme.dark);
+					} else {
+						SaveConfig.instance.dialogTheme.setValue(Theme.system);
+					}
+				}
 				button.message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
 			if (button.id == 3) ClientData.minecraft.m_6408915(this.parent);
 		}
 	}
-
 	public final void render(int i, int j) {
 		fillGradient(0, 0, this.width, this.height, 1610941696, -1607454624);
 		drawCenteredString(this.textRenderer, "Save Config", this.width / 2, 20, 16777215);

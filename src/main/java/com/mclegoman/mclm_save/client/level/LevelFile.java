@@ -15,8 +15,10 @@ import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.Data;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
+import java.util.Arrays;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public final class LevelFile {
 	public static File file;
@@ -94,9 +96,51 @@ public final class LevelFile {
 		Data.version.sendToLog(Helper.LogType.INFO, "Converting World...");
 		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " (" + ext + ") world to Indev format", InfoScreen.Type.DIRT, false));
 		// This is where the converter would go, after saving the saved file would be returned for loading.
+		try (FileInputStream classicLevel = new FileInputStream(file)) {
+			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
+			DataInputStream inputStream = new DataInputStream(new GZIPInputStream(classicLevel));
+			String name;
+			String creator;
+			long createTime;
+			short width = 256;
+			short depth = 64;
+			short height = 256;
+			byte[] blocks = null;
+			if (inputStream.readInt() == 656127880) {
+				Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading File");
+				byte in1 = inputStream.readByte();
+				if (in1 == 1) {
+					// Version 1
+					width = inputStream.readShort();
+					depth = inputStream.readShort();
+					height = inputStream.readShort();
+					blocks = new byte[width * depth * height];
+					inputStream.readFully(blocks);
+					inputStream.close();
+				} else if (in1 == 2) {
+					// Version 2
+					// Serialized Java...
+				}
+				if (blocks != null) {
+					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
+					TagCompound convertedLevel = createLevel(0xFFFFFF, (short) 66, 0xFFFFFF, (byte) 100, 10079487, (short) 23, (byte) 2, (short) 32, (byte) 8, (short) 128, (short) 36, (short) 128, height, depth, width, blocks);
+					try (FileOutputStream outputStream = new FileOutputStream(file.getPath() + ".mclevel")) {
+						GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream);
+						Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
+						gzipOutputStream.close();
+					} catch (Exception error) {
+						Data.version.sendToLog(Helper.LogType.WARN, error.getLocalizedMessage());
+					}
+					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world!");
+					return new File(file.getPath() + ".mclevel");
+				}
+			}
+		} catch (Exception error) {
+			Data.version.sendToLog(Helper.LogType.INFO, "Failed to convert world!");
+		}
 		return null;
 	}
-	public static TagCompound createLevel(int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, int skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks, byte[] data) {
+	public static TagCompound createLevel(int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, int skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks) {
 		TagCompound Level = new TagCompound();
 		TagCompound Environment = new TagCompound();
 		Environment.addNbt("CloudColor", new IntTag(cloudColor));
@@ -118,8 +162,7 @@ public final class LevelFile {
 		Map.addNbt("Height", new ShortTag(height));
 		Map.addNbt("Length", new ShortTag(length));
 		Map.addNbt("Width", new ShortTag(width));
-		Map.addNbt("Blocks", new ByteArrayTag(blocks));
-		Map.addNbt("Data", new ByteArrayTag(data));
+		if (blocks != null) Map.addNbt("Blocks", new ByteArrayTag(blocks));
 		Level.addNbt("Map", Map);
 		return Level;
 	}

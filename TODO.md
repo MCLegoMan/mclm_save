@@ -1,8 +1,10 @@
 - Work out why the game freezes when closing.
   - Attempt to fix this.
-- Work out why the player is speedy when loading a world.
-  - This seems to be something specific to loading the player, as new players don't have this issue.
 - Check for bugs and fix.
-  - Occasional game crash when loading
-  - Sanic
-  - Can't close game normally. (Not our issue but will try to fix)
+  - Test on different operating systems.
+    - Currently, we've only tested Windows.
+    - Testing all the dialog themes would also be desired as we should disable any that don't work with the os (shouldn't be any issues, but you never know.)
+  - Occasional game crash when loading?
+    - Is this with the saved file, or just random?
+    - Can't close game normally. (Not our issue but will try to fix)
+      - Is this an LWJGL issue?

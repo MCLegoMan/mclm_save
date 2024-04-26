@@ -85,7 +85,7 @@ public abstract class Level {
 
 	public final void save(World world, File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);
-		TagCompound level = LevelFile.createLevel(world.f_1709243, (short) world.f_4971921, world.f_2946178, (byte) (world.f_6732352 * 100.0F), (int) world.f_3766825, (short) world.f_0183464, (byte) Block.GRASS.id, (short) world.f_8873427, (byte) world.f_3241378, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554, Accessors.World.f_3132715);
+		TagCompound level = LevelFile.createLevel(world.f_1709243, (short) world.f_4971921, world.f_2946178, (byte) (world.f_6732352 * 100.0F), (int) world.f_3766825, (short) world.f_0183464, (byte) Block.GRASS.id, (short) world.f_8873427, (byte) world.f_3241378, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554);
 		TagList entities = new TagList();
 		for (Object entity : world.f_7148360.f_6899876) {
 			Entity currentEntity = (Entity)entity;
