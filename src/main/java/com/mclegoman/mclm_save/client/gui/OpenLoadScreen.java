@@ -47,8 +47,7 @@ public class OpenLoadScreen extends Thread {
 		File openInPath = new File(SaveConfig.instance.dialogDir.value());
 		if (!openInPath.exists()) openInPath = QuiltLoader.getGameDir().toFile();
 		var1.setCurrentDirectory(openInPath);
-		FileNameExtensionFilter var2 = isLoad ? new FileNameExtensionFilter("Minecraft levels (.mclevel, .mine)", "mclevel", "mine") : new FileNameExtensionFilter("Minecraft level (.mclevel)", "mclevel");
-		if (isLoad) var1.addChoosableFileFilter(new FileNameExtensionFilter("Generic data files (.dat)", "dat"));
+		FileNameExtensionFilter var2 = isLoad ? new FileNameExtensionFilter("Minecraft levels (.mclevel, .mine, .dat)", "mclevel", "mine", "dat") : new FileNameExtensionFilter("Minecraft level (.mclevel)", "mclevel");
 		var1.setFileFilter(var2);
 		var1.setLocation(var1.getLocation().x, var1.getLocation().y);
 		ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", isLoad ? "Select a world": "Select directory", InfoScreen.Type.DIRT, false));
