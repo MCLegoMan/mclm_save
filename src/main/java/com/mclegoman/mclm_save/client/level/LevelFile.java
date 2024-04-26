@@ -132,7 +132,6 @@ public final class LevelFile {
 						height = inputStream.readShort();
 						blocks = new byte[width * length * height];
 						inputStream.readFully(blocks);
-						inputStream.close();
 					} catch (Exception error) {
 						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v1 Level! " + error.getLocalizedMessage());
 					}
@@ -150,15 +149,14 @@ public final class LevelFile {
 					// Pre-Classic/Early Classic didn't have a magic number, so we just hope that this is a Pre-Classic or Early Classic file.
 					blocks = new byte[width * length * height];
 					inputStream.readFully(blocks);
-					// If there is any other data left, we fail as it's unlikely to be a (pre/early)classic save file.
-					if (inputStream.read() != -1) {
-						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v0 Level due to unexpected data being found!");
-						return null;
-					}
-					inputStream.close();
 				} catch (Exception error) {
 					Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v0 Level! " + error.getLocalizedMessage());
 				}
+			}
+			// If there is any other data left, we fail the conversion.
+			if (inputStream.read() != -1) {
+				Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic Level due to unexpected data being found!");
+				return null;
 			}
 			try {
 				if (blocks != null) {
