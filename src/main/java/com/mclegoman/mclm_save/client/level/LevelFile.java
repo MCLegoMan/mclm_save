@@ -130,7 +130,7 @@ public final class LevelFile {
 					file.getPath().toLowerCase();
 					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
 					String outputPathCheck = outputPath;
-					int fileAmount = 0;
+					int fileAmount = 2;
 					while (new File(outputPathCheck + ".mclevel").exists()) {
 						outputPathCheck = outputPath + "(" + fileAmount + ")";
 						fileAmount++;
