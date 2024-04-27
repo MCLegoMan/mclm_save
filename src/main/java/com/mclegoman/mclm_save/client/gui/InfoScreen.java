@@ -14,7 +14,6 @@ import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public final class InfoScreen extends Screen {
@@ -22,13 +21,18 @@ public final class InfoScreen extends Screen {
 	private List<String> status;
 	private Type type;
 	public boolean canBeClosed;
-	public InfoScreen(String title, List<String> status, Type type, boolean canBeClosed) {
+	public String canBeClosedMessage;
+	public InfoScreen(String title, List<String> status, Type type, boolean canBeClosed, String canBeClosedMessage) {
 		this.title = title;
 		this.status = status;
 		this.type = type;
 		this.canBeClosed = canBeClosed;
+		this.canBeClosedMessage = canBeClosedMessage;
 	}
-	public InfoScreen(String title, String status, Type type, boolean canBeClosed) {
+	public InfoScreen(String title, List<String> status, Type type, boolean canBeClosed) {
+		this(title, status, type, canBeClosed, "Press ESC to return to the game");
+	}
+	public InfoScreen(String title, String status, Type type, boolean canBeClosed, String canBeClosedMessage) {
 		this.title = title;
 		List<String> messages = new ArrayList<>();
 		int statusWidth = textRenderer.getWidth(status);
@@ -43,6 +47,10 @@ public final class InfoScreen extends Screen {
 		this.status = messages;
 		this.type = type;
 		this.canBeClosed = canBeClosed;
+		this.canBeClosedMessage = canBeClosedMessage;
+	}
+	public InfoScreen(String title, String status, Type type, boolean canBeClosed) {
+		this(title, status, type, canBeClosed, "Press ESC to return to the game");
 	}
 	public void render(int i, int j) {
 		if (this.type == Type.DIRT) {
@@ -68,7 +76,7 @@ public final class InfoScreen extends Screen {
 			drawCenteredString(this.textRenderer, string, this.width / 2, y, 16777215);
 			y += 11;
 		}
-		if (this.canBeClosed) drawCenteredString(this.textRenderer, "Press ESC to return to the game", this.width / 2, this.height - 20, 16777215);
+		if (this.canBeClosed) drawCenteredString(this.textRenderer, this.canBeClosedMessage, this.width / 2, this.height - 20, 16777215);
 		if (Data.version.isDevelopmentBuild()) {
 			textRenderer.drawWithShadow(Data.version.getName() + " " + Data.version.getFriendlyString(), 2, this.height - 23, 16777215);
 			textRenderer.drawWithShadow("Development Build", 2, this.height - 12, 0xFFAA00);
