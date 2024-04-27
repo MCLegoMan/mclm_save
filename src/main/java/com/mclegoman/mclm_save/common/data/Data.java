@@ -11,5 +11,5 @@ import com.mclegoman.releasetypeutils.common.version.Helper;
 import com.mclegoman.releasetypeutils.common.version.Version;
 
 public class Data {
-	public static Version version = new Version("Save", "mclm_save", 1, 0, 0, Helper.ReleaseType.BETA, 4);
+	public static Version version = new Version("Save", "mclm_save", 1, 0, 0, Helper.ReleaseType.BETA, 5);
 }
