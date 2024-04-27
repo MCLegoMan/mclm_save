@@ -47,7 +47,6 @@ public final class InfoScreen extends Screen {
 			}
 		}
 		this.status = messages;
-		Data.version.sendToLog(Helper.LogType.INFO, String.valueOf(this.status));
 		this.type = type;
 		this.canBeClosed = canBeClosed;
 		this.canBeClosedMessage = canBeClosedMessage;
