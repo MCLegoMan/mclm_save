@@ -72,7 +72,7 @@ public final class InfoScreen extends Screen {
 		if (this.type == Type.ERROR) {
 			fillGradient(0, 0, this.width, this.height, -12574688, -11530224);
 		}
-		int y = (this.height / 2) - ((this.status.size() * 11) / 2);
+		int y = Math.max((this.height / 2) - ((this.status.size() * 11) / 2), 22);
 		drawCenteredString(this.textRenderer, title, this.width / 2, y - 20, 16777215);
 		for (String string : this.status) {
 			drawCenteredString(this.textRenderer, string, this.width / 2, y, 16777215);
