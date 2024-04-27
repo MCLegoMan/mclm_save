@@ -9,6 +9,7 @@ package com.mclegoman.mclm_save.client.gui;
 
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.common.data.Data;
+import com.mclegoman.releasetypeutils.common.version.Helper;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.opengl.GL11;
@@ -35,16 +36,18 @@ public final class InfoScreen extends Screen {
 	public InfoScreen(String title, String status, Type type, boolean canBeClosed, String canBeClosedMessage) {
 		this.title = title;
 		List<String> messages = new ArrayList<>();
-		int statusWidth = textRenderer.getWidth(status);
-		int maxTextWidth = (int) (this.width * 0.75F);
-		if (statusWidth > maxTextWidth) {
+		if (status.length() <= 64) {
+			messages.add(status);
+		} else {
 			int index = 0;
-			while (index < statusWidth) {
-				messages.add(status.substring(index, index + this.width));
-				index += (maxTextWidth + 1);
+			while (index < status.length()) {
+				int newIndex = Math.min(index + 64, status.length());
+				messages.add(status.substring(index, newIndex));
+				index = newIndex;
 			}
-		} else messages.add(status);
+		}
 		this.status = messages;
+		Data.version.sendToLog(Helper.LogType.INFO, String.valueOf(this.status));
 		this.type = type;
 		this.canBeClosed = canBeClosed;
 		this.canBeClosedMessage = canBeClosedMessage;
