@@ -107,6 +107,8 @@ public final class LevelFile {
 		}
 	}
 	public static LoadOutput convertWorld(File file, String type, String ext) {
+		// TODO: Fix converter messing up corners of the world.
+		// From my limited knowledge, this is probably due to a difference in how indev and classic stored items in the byte array.
 		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " (" + ext + ") world to Indev format", InfoScreen.Type.DIRT, false));
 		try (FileInputStream classicLevel = new FileInputStream(file)) {
 			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
