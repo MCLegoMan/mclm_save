@@ -19,25 +19,30 @@ public class ConfigScreen extends Screen {
 		this.parent = screen;
 	}
 	public final void init() {
-		this.buttons.add(new ButtonWidget(0, this.width / 2 - 150, this.height / 6, 300, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
-		ButtonWidget convertClassicInv = new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 24, 300, 20, "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value());
+		this.buttons.add(new ButtonWidget(0, this.width / 2 - 150, this.height / 6, 300, 20, "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value()));
+		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 24, 300, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
+		ButtonWidget convertClassicInv = new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value());
 		convertClassicInv.active = false;
 		this.buttons.add(convertClassicInv);
-		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
-		this.buttons.add(new ButtonWidget(3, this.width / 2 - 100, this.height / 6 + 168, 200, 20, "Done"));
+		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 72, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
+		this.buttons.add(new ButtonWidget(4, this.width / 2 - 100, this.height / 6 + 168, 200, 20, "Done"));
 	}
 
 	protected void buttonClicked(net.minecraft.client.gui.widget.ButtonWidget button) {
 		if (button.active) {
 			if (button.id == 0) {
+				SaveConfig.instance.skipSaveLoadScreen.setValue(!SaveConfig.instance.skipSaveLoadScreen.value());
+				button.message = "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value();
+			}
+			if (button.id == 1) {
 				SaveConfig.instance.forceAprilFools.setValue(!SaveConfig.instance.forceAprilFools.value());
 				button.message = "Force April Fools: " + SaveConfig.instance.forceAprilFools.value();
 			}
-			if (button.id == 1) {
+			if (button.id == 2) {
 				SaveConfig.instance.convertClassicInv.setValue(!SaveConfig.instance.convertClassicInv.value());
 				button.message = "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value();
 			}
-			if (button.id == 2) {
+			if (button.id == 3) {
 				Theme theme = SaveConfig.instance.dialogTheme.value();
 				if (theme.equals(Theme.system)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
@@ -72,7 +77,7 @@ public class ConfigScreen extends Screen {
 				}
 				button.message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
-			if (button.id == 3) {
+			if (button.id == 4) {
 				SaveConfig.instance.save();
 				ClientData.minecraft.m_6408915(this.parent);
 			}
