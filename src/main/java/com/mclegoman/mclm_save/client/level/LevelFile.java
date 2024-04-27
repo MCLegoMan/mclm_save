@@ -9,7 +9,7 @@ package com.mclegoman.mclm_save.client.level;
 
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.gui.InfoScreen;
-import com.mclegoman.mclm_save.client.gui.OpenLoadScreen;
+import com.mclegoman.mclm_save.client.gui.SaveLoadScreen;
 import com.mclegoman.mclm_save.client.tag.*;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.Data;
@@ -26,7 +26,7 @@ public final class LevelFile {
 	public static boolean shouldLoad;
 	public static void load(boolean isLoad) {
 		try {
-			OpenLoadScreen screen = new OpenLoadScreen(isLoad);
+			SaveLoadScreen screen = new SaveLoadScreen(isLoad);
 			screen.start();
 		} finally {
 			ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Please Wait", InfoScreen.Type.DIRT, false));
