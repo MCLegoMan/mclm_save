@@ -54,7 +54,6 @@ public class SaveLoadScreen extends Thread {
 		}
 		FileNameExtensionFilter var2 = isLoad ? new FileNameExtensionFilter("Minecraft levels (.mclevel, .mine, .dat)", "mclevel", "mine", "dat") : new FileNameExtensionFilter("Minecraft level (.mclevel)", "mclevel");
 		fileChooser.setFileFilter(var2);
-		fileChooser.setLocation(fileChooser.getLocation().x, fileChooser.getLocation().y);
 		ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", isLoad ? "Select a world": "Select directory", InfoScreen.Type.DIRT, false));
 		if ((isLoad ? fileChooser.showOpenDialog(Accessors.MinecraftClient.canvas) : fileChooser.showSaveDialog(Accessors.MinecraftClient.canvas)) == 0) {
 			LevelFile.file = fileChooser.getSelectedFile();
