@@ -14,9 +14,13 @@ public class Save {
 	public static void onInitialize(ModContainer mod) {
 	}
 	public static void onTick(ModContainer mod) {
+		if (LevelFile.shouldProcess) {
+			LevelFile.shouldProcess = false;
+			LevelFile.processWorld();
+		}
 		if (LevelFile.shouldLoad) {
 			LevelFile.shouldLoad = false;
-			LevelFile.processWorld();
+			LevelFile.loadWorld();
 		}
 	}
 }

@@ -23,6 +23,7 @@ import java.util.zip.GZIPOutputStream;
 public final class LevelFile {
 	public static File file;
 	public static boolean isLoad;
+	public static boolean shouldProcess;
 	public static boolean shouldLoad;
 	public static void load(boolean isLoad) {
 		try {
@@ -41,7 +42,7 @@ public final class LevelFile {
 						try {
 							LoadOutput worldStatus = setWorldFile(file);
 							if (worldStatus.getOutput().equals(LoadOutputType.SUCCESSFUL) || worldStatus.getOutput().equals(LoadOutputType.SUCCESSFUL_CONVERT)) {
-								loadWorld(file);
+								shouldLoad = true;
 							} else {
 								ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", worldStatus.getReason(), InfoScreen.Type.ERROR, true));
 							}
@@ -69,11 +70,11 @@ public final class LevelFile {
 			ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 		}
 	}
-	public static void loadWorld(File worldFile) {
+	public static void loadWorld() {
 		try {
-			if (worldFile != null) {
-				if (worldFile.isFile() && worldFile.exists()) {
-					FileInputStream file1 = new FileInputStream(worldFile);
+			if (file != null) {
+				if (file.isFile() && file.exists()) {
+					FileInputStream file1 = new FileInputStream(file);
 					Data.version.sendToLog(Helper.LogType.INFO, "Process World: Loading World...");
 					net.minecraft.world.World world = (new World()).load(file1);
 					file1.close();

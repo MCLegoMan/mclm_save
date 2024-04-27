@@ -58,7 +58,7 @@ public class SaveLoadScreen extends Thread {
 		if ((isLoad ? fileChooser.showOpenDialog(Accessors.MinecraftClient.canvas) : fileChooser.showSaveDialog(Accessors.MinecraftClient.canvas)) == 0) {
 			LevelFile.file = fileChooser.getSelectedFile();
 			LevelFile.isLoad = isLoad;
-			LevelFile.shouldLoad = true;
+			LevelFile.shouldProcess = true;
 		} else {
 			ClientData.minecraft.m_6408915(null);
 		}
