@@ -18,9 +18,12 @@ public class Save {
 			LevelFile.shouldProcess = false;
 			LevelFile.processWorld();
 		}
-		if (LevelFile.shouldLoad) {
-			LevelFile.shouldLoad = false;
-			LevelFile.loadWorld();
+		if (LevelFile.shouldLoad != null) {
+			LevelFile.Couple loadData = LevelFile.shouldLoad;
+			if ((boolean) loadData.getFirst()) {
+				LevelFile.shouldLoad = new LevelFile.Couple(false, true);
+				LevelFile.loadWorld((boolean)loadData.getSecond());
+			}
 		}
 	}
 }

@@ -42,42 +42,43 @@ public abstract class Level {
 		}
 
 		TagCompound inputStream1 = TagCompoundStream.toTagCompound(inputStream);
-		TagCompound var3 = inputStream1.getNbt("Map");
-		TagCompound var4 = inputStream1.getNbt("Environment");
-		TagList var5 = inputStream1.getList("Entities");
-		int var6 = var3.getShort("Width");
-		short var7 = var3.getShort("Length");
-		short var8 = var3.getShort("Height");
-		World var9 = new World();
+		TagCompound map = inputStream1.getNbt("Map");
+		TagCompound environment = inputStream1.getNbt("Environment");
+		TagList entities = inputStream1.getList("Entities");
+		int width = map.getShort("Width");
+		short length = map.getShort("Length");
+		short height = map.getShort("Height");
+		World world = new World();
 		if (this.f_1154694 != null) {
 			this.f_1154694.m_1154571("Preparing level..");
 		}
 
-		TagList var10 = var3.getList("Spawn");
-		var9.f_3926541 = ((ShortTag)var10.getNbt(0)).tag;
-		var9.f_2923303 = ((ShortTag)var10.getNbt(1)).tag;
-		var9.f_8500813 = ((ShortTag)var10.getNbt(2)).tag;
-		var9.f_1709243 = var4.getInt("CloudColor");
-		var9.f_3766825 = var4.getInt("SkyColor");
-		var9.f_2946178 = var4.getInt("FogColor");
-		var9.f_6732352 = (float)var4.getByte("SkyBrightness") / 100.0F;
-		var9.f_4971921 = var4.getShort("CloudHeight");
-		var9.f_0183464 = var4.getShort("SurroundingGroundHeight");
-		var9.f_8873427 = var4.getShort("SurroundingWaterHeight");
-		var9.f_3241378 = var4.getByte("SurroundingWaterType");
-		var9.m_2817546(var6, var8, var7, var3.m_5601145("Blocks"));
+		TagList var10 = map.getList("Spawn");
+		world.f_3926541 = ((ShortTag)var10.getNbt(0)).tag;
+		world.f_2923303 = ((ShortTag)var10.getNbt(1)).tag;
+		world.f_8500813 = ((ShortTag)var10.getNbt(2)).tag;
+		world.f_1709243 = environment.getInt("CloudColor");
+		world.f_3766825 = environment.getInt("SkyColor");
+		world.f_2946178 = environment.getInt("FogColor");
+		world.f_6732352 = (float)environment.getByte("SkyBrightness") / 100.0F;
+		world.f_4971921 = environment.getShort("CloudHeight");
+		world.f_0183464 = environment.getShort("SurroundingGroundHeight");
+		world.f_8873427 = environment.getShort("SurroundingWaterHeight");
+		world.f_3241378 = environment.getByte("SurroundingWaterType");
+		byte[] blocks = map.m_5601145("Blocks");
+		world.m_2817546(width, height, length, blocks);
 		if (this.f_1154694 != null) {
 			this.f_1154694.m_1154571("Preparing entities..");
 		}
-		for(int var13 = 0; var13 < var5.index(); ++var13) {
-			String var16 = (var3 = (TagCompound)var5.getNbt(var13)).getString("id");
+		for(int var13 = 0; var13 < entities.index(); ++var13) {
+			String var16 = (map = (TagCompound)entities.getNbt(var13)).getString("id");
 			Entity var19;
-			if ((var19 = this.getEntity(var9, var16)) != null) {
-				this.loadEntityData(var3, var19);
+			if ((var19 = this.getEntity(world, var16)) != null) {
+				this.loadEntityData(map, var19);
 			}
 		}
 
-		return var9;
+		return world;
 	}
 
 	protected Entity getEntity(World world, String string) {

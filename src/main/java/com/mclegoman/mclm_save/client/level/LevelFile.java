@@ -17,6 +17,8 @@ import com.mclegoman.releasetypeutils.common.version.Helper;
 
 import java.io.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -24,7 +26,7 @@ public final class LevelFile {
 	public static File file;
 	public static boolean isLoad;
 	public static boolean shouldProcess;
-	public static boolean shouldLoad;
+	public static Couple shouldLoad;
 	public static void load(boolean isLoad) {
 		try {
 			SaveLoadScreen screen = new SaveLoadScreen(isLoad);
@@ -40,11 +42,16 @@ public final class LevelFile {
 				if (file != null) {
 					if (isLoad) {
 						try {
-							LoadOutput worldStatus = setWorldFile(file);
-							if (worldStatus.getOutput().equals(LoadOutputType.SUCCESSFUL) || worldStatus.getOutput().equals(LoadOutputType.SUCCESSFUL_CONVERT)) {
-								shouldLoad = true;
+							Couple worldStatus = setWorldFile(file);
+							if (!(worldStatus.getFirst().equals(LoadOutputType.SUCCESSFUL) || worldStatus.getFirst().equals(LoadOutputType.SUCCESSFUL_CONVERT))) {
+								ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", (String) worldStatus.getSecond(), InfoScreen.Type.ERROR, true));
 							} else {
-								ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", worldStatus.getReason(), InfoScreen.Type.ERROR, true));
+								if (worldStatus.getFirst().equals(LoadOutputType.SUCCESSFUL_CONVERT)) {
+									List<String> status = new ArrayList<>();
+									status.add("You may notice some issues relating to block positions.");
+									status.add("Keep your classic save backed up!");
+									ClientData.minecraft.m_6408915(new InfoScreen("Classic Conversion Successful!", status, InfoScreen.Type.DIRT, true));
+								}
 							}
 						} catch (Exception error) {
 							Data.version.sendToLog(Helper.LogType.INFO, "Process World: Failed to process world!");
@@ -70,7 +77,7 @@ public final class LevelFile {
 			ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 		}
 	}
-	public static void loadWorld() {
+	public static void loadWorld(boolean clearScreen) {
 		try {
 			if (file != null) {
 				if (file.isFile() && file.exists()) {
@@ -80,7 +87,7 @@ public final class LevelFile {
 					file1.close();
 					Accessors.MinecraftClient.loadWorld(world);
 				}
-				ClientData.minecraft.m_6408915(null);
+				if (clearScreen) ClientData.minecraft.m_6408915(null);
 			} else {
 				Data.version.sendToLog(Helper.LogType.INFO, "Process World: File not found!");
 				ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", "World does not exist.", InfoScreen.Type.ERROR, true));
@@ -90,10 +97,11 @@ public final class LevelFile {
 			ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 		}
 	}
-	public static LoadOutput setWorldFile(File file) {
+	public static Couple setWorldFile(File file) {
 		String filePath = file.getPath().toLowerCase();
 		if (filePath.endsWith(".mclevel")) {
-			return new LoadOutput(LoadOutputType.SUCCESSFUL, "Successfully loaded world!");
+			shouldLoad = new Couple(true, true);
+			return new Couple(LoadOutputType.SUCCESSFUL, "Successfully loaded world!");
 		}
 		else if (filePath.endsWith(".mine")) {
 			return convertWorld(file, "Classic", ".mine");
@@ -103,12 +111,10 @@ public final class LevelFile {
 		}
 		else {
 			Data.version.sendToLog(Helper.LogType.WARN, "Get World: Invalid file format!");
-			return new LoadOutput(LoadOutputType.FAIL_INVALID_FORMAT, "Invalid file format!");
+			return new Couple(LoadOutputType.FAIL_INVALID_FORMAT, "Invalid file format!");
 		}
 	}
-	public static LoadOutput convertWorld(File file, String type, String ext) {
-		// TODO: Fix converter messing up corners of the world.
-		// From my limited knowledge, this is probably due to a difference in how indev and classic stored items in the byte array.
+	public static Couple convertWorld(File file, String type, String ext) {
 		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " (" + ext + ") world to Indev format", InfoScreen.Type.DIRT, false));
 		try (FileInputStream classicLevel = new FileInputStream(file)) {
 			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
@@ -148,16 +154,17 @@ public final class LevelFile {
 						inputStream.readFully(blocks);
 					} catch (Exception error) {
 						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v1 Level! " + error.getLocalizedMessage());
-						return new LoadOutput(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v1 Level! " + error.getLocalizedMessage());
+						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v1 Level! " + error.getLocalizedMessage());
 					}
 				} else if (version == 2) {
 					try {
 						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v2 Level");
 						// TODO: Version 2 Converter
 						// We need to somehow de-serialize the data from the serialized class.
+						return new Couple(LoadOutputType.FAIL_CONVERT, "Classic:v2 worlds are not compatible with our converter yet!");
 					} catch (Exception error) {
 						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
-						return new LoadOutput(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
+						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
 					}
 				}
 			} else {
@@ -169,13 +176,13 @@ public final class LevelFile {
 					inputStream.readFully(blocks);
 				} catch (Exception error) {
 					Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v0 Level! " + error.getLocalizedMessage());
-					return new LoadOutput(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v0 Level! " + error.getLocalizedMessage());
+					return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v0 Level! " + error.getLocalizedMessage());
 				}
 			}
 			// If there is any other data left, we fail the conversion.
 			if (inputStream.read() != -1) {
 				Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic Level due to unexpected data being found!");
-				return new LoadOutput(LoadOutputType.FAIL_CONVERT_UNEXPECTED_DATA, "World conversion failed due to unexpected data!");
+				return new Couple(LoadOutputType.FAIL_CONVERT_UNEXPECTED_DATA, "World conversion failed due to unexpected data!");
 			}
 			try {
 				if (blocks != null) {
@@ -195,21 +202,22 @@ public final class LevelFile {
 						gzipOutputStream.close();
 					} catch (Exception error) {
 						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: " + error.getLocalizedMessage());
-						return new LoadOutput(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
+						return new Couple(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
 					}
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
 					LevelFile.file = new File(outputPath);
-					return new LoadOutput(LoadOutputType.SUCCESSFUL_CONVERT, "Successfully converted world!");
+					shouldLoad = new Couple(true, false);
+					return new Couple(LoadOutputType.SUCCESSFUL_CONVERT, "Successfully converted world!");
 				}
 			} catch (Exception error) {
 				Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to write to file! " + error.getLocalizedMessage());
-				return new LoadOutput(LoadOutputType.FAIL_CONVERT, "Failed to write to file! " + error.getLocalizedMessage());
+				return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to write to file! " + error.getLocalizedMessage());
 			}
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert world! " + error.getLocalizedMessage());
-			return new LoadOutput(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
+			return new Couple(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
 		}
-		return new LoadOutput(LoadOutputType.FAIL_CONVERT_UNKNOWN, "World conversion failed due to unknown causes!");
+		return new Couple(LoadOutputType.FAIL_CONVERT_UNKNOWN, "World conversion failed due to unknown causes!");
 	}
 	public static TagCompound createLevel(String creator, long createTime, String name, int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, int skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks) {
 		TagCompound Level = new TagCompound();
@@ -242,18 +250,18 @@ public final class LevelFile {
 		Level.addNbt("Map", Map);
 		return Level;
 	}
-	public static class LoadOutput {
-		private final LoadOutputType loadOutputType;
-		private final String reason;
-		public LoadOutput(LoadOutputType loadOutputType, String reason) {
-			this.loadOutputType = loadOutputType;
-			this.reason = reason;
+	public static class Couple {
+		private final Object first;
+		private final Object second;
+		public Couple(Object first, Object second) {
+			this.first = first;
+			this.second = second;
 		}
-		public LoadOutputType getOutput() {
-			return loadOutputType;
+		public Object getFirst() {
+			return first;
 		}
-		public String getReason() {
-			return reason;
+		public Object getSecond() {
+			return second;
 		}
 	}
 	public enum LoadOutputType {
