@@ -16,7 +16,7 @@ public class Save {
 	public static void onTick(ModContainer mod) {
 		if (LevelFile.shouldLoad) {
 			LevelFile.shouldLoad = false;
-			LevelFile.loadWorld();
+			LevelFile.processWorld();
 		}
 	}
 }

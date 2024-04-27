@@ -9,7 +9,7 @@ package com.mclegoman.mclm_save.mixin.client;
 
 import com.mclegoman.mclm_save.client.Save;
 import com.mclegoman.mclm_save.client.util.Accessors;
-import com.mclegoman.mclm_save.common.Data;
+import com.mclegoman.mclm_save.common.data.Data;
 import net.minecraft.client.C_5664496;
 import net.minecraft.world.World;
 import org.quiltmc.loader.api.ModContainer;

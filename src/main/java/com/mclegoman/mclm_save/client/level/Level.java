@@ -9,7 +9,7 @@ package com.mclegoman.mclm_save.client.level;
 
 import com.mclegoman.mclm_save.client.tag.*;
 import com.mclegoman.mclm_save.client.util.Accessors;
-import com.mclegoman.mclm_save.common.Data;
+import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

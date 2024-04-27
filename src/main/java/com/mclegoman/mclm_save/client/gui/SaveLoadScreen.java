@@ -12,7 +12,7 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.level.LevelFile;
 import com.mclegoman.mclm_save.client.util.Accessors;
-import com.mclegoman.mclm_save.common.Data;
+import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.mclm_save.config.Theme;
 import com.mclegoman.releasetypeutils.common.version.Helper;

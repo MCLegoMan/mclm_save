@@ -5,7 +5,7 @@
     Licence: GNU LGPLv3
 */
 
-package com.mclegoman.mclm_save.common;
+package com.mclegoman.mclm_save.common.data;
 
 import com.mclegoman.releasetypeutils.common.version.Helper;
 import com.mclegoman.releasetypeutils.common.version.Version;

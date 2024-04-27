@@ -8,7 +8,7 @@
 package com.mclegoman.mclm_save.client.gui;
 
 import com.mclegoman.mclm_save.client.data.ClientData;
-import com.mclegoman.mclm_save.common.Data;
+import com.mclegoman.mclm_save.common.data.Data;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.opengl.GL11;

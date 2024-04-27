@@ -12,7 +12,7 @@ import com.mclegoman.mclm_save.client.gui.InfoScreen;
 import com.mclegoman.mclm_save.client.gui.SaveLoadScreen;
 import com.mclegoman.mclm_save.client.tag.*;
 import com.mclegoman.mclm_save.client.util.Accessors;
-import com.mclegoman.mclm_save.common.Data;
+import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 
 import java.io.*;
@@ -32,56 +32,67 @@ public final class LevelFile {
 			ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Please Wait", InfoScreen.Type.DIRT, false));
 		}
 	}
-	public static void loadWorld() {
+	public static void processWorld() {
 		try {
-			if (file != null) processWorld(file);
+			if (file != null) {
+				ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Processing File", InfoScreen.Type.DIRT, false));
+				if (file != null) {
+					if (isLoad) {
+						try {
+							LoadOutput worldStatus = setWorldFile(file);
+							if (worldStatus.getOutput().equals(LoadOutputType.SUCCESSFUL) || worldStatus.getOutput().equals(LoadOutputType.SUCCESSFUL_CONVERT)) {
+								loadWorld(file);
+							} else {
+								ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", worldStatus.getReason(), InfoScreen.Type.ERROR, true));
+							}
+						} catch (Exception error) {
+							Data.version.sendToLog(Helper.LogType.INFO, "Process World: Failed to process world!");
+							ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
+						}
+					} else {
+						if (!file.getPath().toLowerCase().endsWith(".mclevel")) file = new File(file.getPath() + ".mclevel");
+						Data.version.sendToLog(Helper.LogType.INFO, "Process World: Saving World...");
+						try {
+							(new World()).save(ClientData.minecraft.f_5854988, file);
+						} catch (Exception error) {
+							Data.version.sendToLog(Helper.LogType.INFO, "Process World: Failed to save world!");
+							ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to save world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
+						} finally {
+							ClientData.minecraft.m_6408915(null);
+						}
+					}
+				}
+			}
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, "Loading World: " + error.getLocalizedMessage());
 			// We use InfoScreen instead of FatalErrorScreen so the player can use ESC to go back to the game.
 			ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 		}
 	}
-	public static void processWorld(File file) {
-		ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Processing File", InfoScreen.Type.DIRT, false));
-		if (file != null) {
-			if (isLoad) {
-				try {
-					File worldFile = getWorldFile(file);
-					if (worldFile != null) {
-						if (file.isFile() && file.exists()) {
-							FileInputStream file1 = new FileInputStream(worldFile);
-							Data.version.sendToLog(Helper.LogType.INFO, "Process World: Loading World...");
-							net.minecraft.world.World world = (new World()).load(file1);
-							file1.close();
-							Accessors.MinecraftClient.loadWorld(world);
-						}
-						ClientData.minecraft.m_6408915(null);
-					} else {
-						Data.version.sendToLog(Helper.LogType.INFO, "Process World: File not found!");
-						ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", "World does not exist.", InfoScreen.Type.ERROR, true));
-					}
-				} catch (Exception error) {
-					Data.version.sendToLog(Helper.LogType.INFO, "Process World: Failed to process world!");
-					ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
+	public static void loadWorld(File worldFile) {
+		try {
+			if (worldFile != null) {
+				if (worldFile.isFile() && worldFile.exists()) {
+					FileInputStream file1 = new FileInputStream(worldFile);
+					Data.version.sendToLog(Helper.LogType.INFO, "Process World: Loading World...");
+					net.minecraft.world.World world = (new World()).load(file1);
+					file1.close();
+					Accessors.MinecraftClient.loadWorld(world);
 				}
+				ClientData.minecraft.m_6408915(null);
 			} else {
-				if (!file.getPath().toLowerCase().endsWith(".mclevel")) file = new File(file.getPath() + ".mclevel");
-				Data.version.sendToLog(Helper.LogType.INFO, "Process World: Saving World...");
-				try {
-					(new World()).save(ClientData.minecraft.f_5854988, file);
-				} catch (Exception error) {
-					Data.version.sendToLog(Helper.LogType.INFO, "Process World: Failed to save world!");
-					ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to save world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
-				} finally {
-					ClientData.minecraft.m_6408915(null);
-				}
+				Data.version.sendToLog(Helper.LogType.INFO, "Process World: File not found!");
+				ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", "World does not exist.", InfoScreen.Type.ERROR, true));
 			}
+		} catch (Exception error) {
+			Data.version.sendToLog(Helper.LogType.WARN, "Loading World: " + error.getLocalizedMessage());
+			ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 		}
 	}
-	public static File getWorldFile(File file) {
+	public static LoadOutput setWorldFile(File file) {
 		String filePath = file.getPath().toLowerCase();
 		if (filePath.endsWith(".mclevel")) {
-			return file;
+			return new LoadOutput(LoadOutputType.SUCCESSFUL, "Successfully loaded world!");
 		}
 		else if (filePath.endsWith(".mine")) {
 			return convertWorld(file, "Classic", ".mine");
@@ -91,10 +102,10 @@ public final class LevelFile {
 		}
 		else {
 			Data.version.sendToLog(Helper.LogType.WARN, "Get World: Invalid file format!");
-			return null;
+			return new LoadOutput(LoadOutputType.FAIL_INVALID_FORMAT, "Invalid file format!");
 		}
 	}
-	public static File convertWorld(File file, String type, String ext) {
+	public static LoadOutput convertWorld(File file, String type, String ext) {
 		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " (" + ext + ") world to Indev format", InfoScreen.Type.DIRT, false));
 		try (FileInputStream classicLevel = new FileInputStream(file)) {
 			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
@@ -158,7 +169,7 @@ public final class LevelFile {
 			// If there is any other data left, we fail the conversion.
 			if (inputStream.read() != -1) {
 				Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic Level due to unexpected data being found!");
-				return null;
+				return new LoadOutput(LoadOutputType.FAIL_CONVERT_UNEXPECTED_DATA, "World conversion failed due to unexpected data!");
 			}
 			try {
 				if (blocks != null) {
@@ -180,7 +191,8 @@ public final class LevelFile {
 						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: " + error.getLocalizedMessage());
 					}
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
-					return new File(outputPath);
+					LevelFile.file = new File(outputPath);
+					return new LoadOutput(LoadOutputType.SUCCESSFUL_CONVERT, "Successfully converted world!");
 				}
 			} catch (Exception error) {
 				Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to write to file! " + error.getLocalizedMessage());
@@ -188,7 +200,7 @@ public final class LevelFile {
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert world! " + error.getLocalizedMessage());
 		}
-		return null;
+		return new LoadOutput(LoadOutputType.FAIL_CONVERT_UNKNOWN, "World conversion failed due to unknown causes!");
 	}
 	public static TagCompound createLevel(String creator, long createTime, String name, int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, int skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks) {
 		TagCompound Level = new TagCompound();
@@ -220,5 +232,26 @@ public final class LevelFile {
 		if (blocks != null) Map.addNbt("Blocks", new ByteArrayTag(blocks));
 		Level.addNbt("Map", Map);
 		return Level;
+	}
+	public static class LoadOutput {
+		private final LoadOutputType loadOutputType;
+		private final String reason;
+		public LoadOutput(LoadOutputType loadOutputType, String reason) {
+			this.loadOutputType = loadOutputType;
+			this.reason = reason;
+		}
+		public LoadOutputType getOutput() {
+			return loadOutputType;
+		}
+		public String getReason() {
+			return reason;
+		}
+	}
+	public enum LoadOutputType {
+		SUCCESSFUL,
+		SUCCESSFUL_CONVERT,
+		FAIL_INVALID_FORMAT,
+		FAIL_CONVERT_UNEXPECTED_DATA,
+		FAIL_CONVERT_UNKNOWN
 	}
 }
