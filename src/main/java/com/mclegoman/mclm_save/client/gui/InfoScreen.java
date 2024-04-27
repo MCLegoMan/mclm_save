@@ -29,7 +29,20 @@ public final class InfoScreen extends Screen {
 		this.canBeClosed = canBeClosed;
 	}
 	public InfoScreen(String title, String status, Type type, boolean canBeClosed) {
-		this(title, new ArrayList<>(Collections.singleton(status)), type, canBeClosed);
+		this.title = title;
+		List<String> messages = new ArrayList<>();
+		int statusWidth = textRenderer.getWidth(status);
+		int maxTextWidth = (int) (this.width * 0.75F);
+		if (statusWidth > maxTextWidth) {
+			int index = 0;
+			while (index < statusWidth) {
+				messages.add(status.substring(index, index + this.width));
+				index += (maxTextWidth + 1);
+			}
+		} else messages.add(status);
+		this.status = messages;
+		this.type = type;
+		this.canBeClosed = canBeClosed;
 	}
 	public void render(int i, int j) {
 		if (this.type == Type.DIRT) {
