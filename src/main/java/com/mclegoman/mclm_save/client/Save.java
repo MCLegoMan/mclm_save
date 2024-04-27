@@ -8,6 +8,7 @@
 package com.mclegoman.mclm_save.client;
 
 import com.mclegoman.mclm_save.client.level.LevelFile;
+import com.mclegoman.mclm_save.common.util.Couple;
 import org.quiltmc.loader.api.ModContainer;
 
 public class Save {
@@ -19,9 +20,9 @@ public class Save {
 			LevelFile.processWorld();
 		}
 		if (LevelFile.shouldLoad != null) {
-			LevelFile.Couple loadData = LevelFile.shouldLoad;
+			Couple loadData = LevelFile.shouldLoad;
 			if ((boolean) loadData.getFirst()) {
-				LevelFile.shouldLoad = new LevelFile.Couple(false, true);
+				LevelFile.shouldLoad = new Couple(false, true);
 				LevelFile.loadWorld((boolean)loadData.getSecond());
 			}
 		}

@@ -13,6 +13,7 @@ import com.mclegoman.mclm_save.client.gui.SaveLoadScreen;
 import com.mclegoman.mclm_save.client.tag.*;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.data.Data;
+import com.mclegoman.mclm_save.common.util.Couple;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 
 import java.io.*;
@@ -251,20 +252,6 @@ public final class LevelFile {
 		if (blocks != null) Map.addNbt("Blocks", new ByteArrayTag(blocks));
 		Level.addNbt("Map", Map);
 		return Level;
-	}
-	public static class Couple {
-		private final Object first;
-		private final Object second;
-		public Couple(Object first, Object second) {
-			this.first = first;
-			this.second = second;
-		}
-		public Object getFirst() {
-			return first;
-		}
-		public Object getSecond() {
-			return second;
-		}
 	}
 	public enum LoadOutputType {
 		SUCCESSFUL,
