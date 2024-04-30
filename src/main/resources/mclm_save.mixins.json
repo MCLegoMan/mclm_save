@@ -5,6 +5,7 @@
 	"compatibilityLevel": "JAVA_8",
 	"client": [
 		"client.GameGuiMixin",
+		"client.GameMenuScreenMixin",
 		"client.InventoryMenuScreenMixin",
 		"client.LoadScreenMixin",
 		"client.MinecraftClientMixin",
@@ -13,8 +14,7 @@
 		"client.SaveScreenMixin",
 		"client.WorldMixin",
 		"client.accessors.EntityAccessor",
-		"client.accessors.PlayerEntityAccessor",
-		"client.GameMenuScreenMixin"
+		"client.accessors.PlayerEntityAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

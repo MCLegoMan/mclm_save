@@ -16,6 +16,10 @@ Save allows the player to save, load, and convert worlds in older versions that 
   - Licensed under [Apache 2.0](https://github.com/JFormDesigner/FlatLaf/blob/main/LICENSE).
 - [Material UI Swing](https://github.com/vincenzopalazzo/material-ui-swing).
   - Licensed under [MIT](https://github.com/vincenzopalazzo/material-ui-swing/blob/master/LICENSE).
+- [ClassicExplorer](https://github.com/bluecrab2/ClassicExplorer).  
+  - This program was really useful whilst developing the classic converter.  
+- [NBTExplorer](https://github.com/jaquadro/NBTExplorer).  
+  - This program was really useful whilst developing the save/load function.  
 
 #
 Licensed under LGPL-3.0-or-later.

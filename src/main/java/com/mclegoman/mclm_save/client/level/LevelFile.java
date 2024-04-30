@@ -163,6 +163,32 @@ public final class LevelFile {
 					try {
 						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v2 Level");
 						// TODO: Version 2 Converter
+						// If we get permission from bluecrab2 to use Classic Explorer code, we can use this to convert the world.
+						//Settings.skipBlocks = false;
+						//Class classicSave =  Reader.read(file);
+						//ArrayList<Field> fields = classicSave.getFields();
+						//for (int a = 0; a < fields.size(); a++) {
+						//	if (fields.get(a).getFieldName().equals("width")) {
+						//		width = (short) (int) fields.get(a).getField();
+						//	}
+						//	if (fields.get(a).getFieldName().equals("depth")) {
+						//		height = (short) (int) fields.get(a).getField();
+						//	}
+						//	if (fields.get(a).getFieldName().equals("height")) {
+						//		length = (short) (int) fields.get(a).getField();
+						//	}
+						//	if (fields.get(a).getFieldName().equals("blocks")) {
+						//		ArrayList<Field> blockArray = ((ArrayField) fields.get(a)).getArray();
+						//		byte[] blockArray2 = new byte[width * height * length];
+						//		for (int b = 0; b < blockArray.size(); b++) {
+						//			blockArray2[b] = (byte) blockArray.get(b).getField();
+						//		}
+						//		blocks = blockArray2;
+						//	}
+						//	Data.version.sendToLog(Helper.LogType.INFO, fields.get(a).getFieldName() + ":" + fields.get(a).getField());
+						//}
+						//int i;
+						//while ((i = inputStream.read()) != -1) {}
 						if (inputStream.readUnsignedShort() == 44269) {
 							if (inputStream.readUnsignedShort() == 5) {
 								int obj1 = inputStream.readUnsignedByte();
@@ -188,7 +214,7 @@ public final class LevelFile {
 												}
 												// Outputs data to logs.
 												for (List<Object> value : data) {
-													Data.version.sendToLog(Helper.LogType.INFO, value.get(0) + ":" + value.get(1));
+													Data.version.sendToLog(Helper.LogType.INFO, "Name: " + value.get(0) + " Type: " + value.get(1));
 												}
 											}
 										}
@@ -196,6 +222,7 @@ public final class LevelFile {
 								}
 							}
 						}
+						return new Couple(LoadOutputType.FAIL_CONVERT, "Converting Classic:v2 worlds is not yet supported!");
 					} catch (Exception error) {
 						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
 						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
