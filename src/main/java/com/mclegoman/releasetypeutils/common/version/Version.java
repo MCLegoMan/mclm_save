@@ -9,8 +9,6 @@ package com.mclegoman.releasetypeutils.common.version;
 
 import com.mclegoman.releasetypeutils.common.util.Translation;
 
-import java.util.logging.Logger;
-
 public class Version implements Comparable<Version> {
 	private final String name;
 	private final String id;
@@ -55,9 +53,6 @@ public class Version implements Comparable<Version> {
 	public boolean isDevelopmentBuild() {
 		return !type.equals(Helper.ReleaseType.RELEASE);
 	}
-	private Logger getLogger() {
-		return Logger.getLogger(getName());
-	}
 	public String getLoggerPrefix() {
 		return String.format("[%s %s] ", getName(), getFriendlyString());
 	}
@@ -76,7 +71,7 @@ public class Version implements Comparable<Version> {
 		}
 	}
 	public void sendToLog(Helper.LogType logType, String logMessage) {
-		if (logType.equals(Helper.LogType.INFO)) getLogger().info(getLoggerPrefix() + logMessage);
-		if (logType.equals(Helper.LogType.WARN)) getLogger().warning(getLoggerPrefix() + logMessage);
+		if (logType.equals(Helper.LogType.INFO)) System.out.println("[INFO] " + getLoggerPrefix() + logMessage);
+		if (logType.equals(Helper.LogType.WARN)) System.out.println("[WARN] " + getLoggerPrefix() + logMessage);
 	}
 }

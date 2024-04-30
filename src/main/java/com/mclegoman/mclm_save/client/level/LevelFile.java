@@ -163,8 +163,39 @@ public final class LevelFile {
 					try {
 						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v2 Level");
 						// TODO: Version 2 Converter
-						// We need to somehow de-serialize the data from the serialized class.
-						return new Couple(LoadOutputType.FAIL_CONVERT, "Classic:v2 worlds are not compatible with our converter yet!");
+						if (inputStream.readUnsignedShort() == 44269) {
+							if (inputStream.readUnsignedShort() == 5) {
+								int obj1 = inputStream.readUnsignedByte();
+								if (obj1 == 115) {
+									int obj2 = inputStream.readUnsignedByte();
+									if (obj2 == 114) {
+										if (inputStream.readUTF().equals("com.mojang.minecraft.level.Level")) {
+											long serialVersionUID = inputStream.readLong();
+											List<List<Object>> data = new ArrayList<>();
+											int obj3 = inputStream.readUnsignedByte();
+											if (obj3 == 2) {
+												short varAmount = inputStream.readShort();
+												for (int var = 0; var < varAmount - 1;) {
+													char dataType = (char)inputStream.readByte();
+													String dataName = inputStream.readUTF();
+													if (dataType != 't') {
+														List<Object> registry = new ArrayList<>();
+														registry.add(dataName);
+														registry.add(dataType);
+														data.add(registry);
+														var++;
+													}
+												}
+												// Outputs data to logs.
+												for (List<Object> value : data) {
+													Data.version.sendToLog(Helper.LogType.INFO, value.get(0) + ":" + value.get(1));
+												}
+											}
+										}
+									}
+								}
+							}
+						}
 					} catch (Exception error) {
 						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
 						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
