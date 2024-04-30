@@ -163,7 +163,7 @@ public final class LevelFile {
 					try {
 						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v2 Level");
 						// TODO: Version 2 Converter
-						// If we get permission from bluecrab2 to use Classic Explorer code, we can use this to convert the world.
+						// If we get permission from bluecrab2 to include Classic Explorer code, we can use this to convert the world.
 						//Settings.skipBlocks = false;
 						//Class classicSave =  Reader.read(file);
 						//ArrayList<Field> fields = classicSave.getFields();
