@@ -204,17 +204,70 @@ public final class LevelFile {
 												for (int var = 0; var < varAmount - 1;) {
 													char dataType = (char)inputStream.readByte();
 													String dataName = inputStream.readUTF();
-													if (dataType != 't') {
+													if (dataType == 'B' || dataType == 'C' || dataType == 'D' || dataType == 'F' || dataType == 'I' || dataType == 'J' || dataType == 'S' || dataType == 'Z' || dataType == '[' || dataType == 'L') {
 														List<Object> registry = new ArrayList<>();
 														registry.add(dataName);
 														registry.add(dataType);
+														if (dataType == '[' || dataType == 'L') {
+															if (inputStream.readUnsignedByte() == 116) registry.add(inputStream.readUTF());
+														}
 														data.add(registry);
 														var++;
+													} else {
+														return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! Unexpected Data Type Found " + dataType + "!");
 													}
 												}
-												// Outputs data to logs.
-												for (List<Object> value : data) {
-													Data.version.sendToLog(Helper.LogType.INFO, "Name: " + value.get(0) + " Type: " + value.get(1));
+												// There is more data to be read here, what is it?
+
+												byte endByte = inputStream.readByte();
+												if (endByte == 120) {
+													for (List<Object> registry : data) {
+														if (registry.get(1).equals('B')) {
+															inputStream.readByte();
+														} else if (registry.get(1).equals('C')) {
+															inputStream.readChar();
+														} else if (registry.get(1).equals('D')) {
+															inputStream.readDouble();
+														} else if (registry.get(1).equals('F')) {
+															inputStream.readFloat();
+														} else if (registry.get(1).equals('I')) {
+															int outInt = inputStream.readInt();
+															if (((String)registry.get(0)).equalsIgnoreCase("depth")) {
+																// depth was renamed to height in indev.
+																height = (short)outInt;
+																Data.version.sendToLog(Helper.LogType.INFO, "DEBUG: height: " + height);
+															} else if (((String)registry.get(0)).equalsIgnoreCase("height")) {
+																// height was renamed to length in indev.
+																length = (short)outInt;
+																Data.version.sendToLog(Helper.LogType.INFO, "DEBUG: length: " + length);
+															} else if (((String)registry.get(0)).equalsIgnoreCase("width")) {
+																width = (short)outInt;
+																Data.version.sendToLog(Helper.LogType.INFO, "DEBUG: width: " + width);
+															}
+														} else if (registry.get(1).equals('J')) {
+															inputStream.readLong();
+														} else if (registry.get(1).equals('S')) {
+															inputStream.readShort();
+														} else if (registry.get(1).equals('Z')) {
+															inputStream.readBoolean();
+														} else if (registry.get(1).equals('[')) {
+															String dataType = (String)registry.get(2);
+														} else if (registry.get(1).equals('L')) {
+															if (registry.size() > 2) {
+																String dataType = (String)registry.get(2);
+																dataType = dataType.substring(1, dataType.length() - 1);
+																if (dataType.equals("java/lang/String")) {
+																} else {
+																}
+															}
+														} else {
+															Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v2 Level! Unexpected Data Type Found " + registry.get(1) + "!");
+															return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! Unexpected Data Type Found " + registry.get(1) + "!");
+														}
+													}
+												} else {
+													Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v2 Level! Expected 120, got " + endByte + "!");
+													return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! Expected 120, got " + endByte + "!");
 												}
 											}
 										}
@@ -222,7 +275,7 @@ public final class LevelFile {
 								}
 							}
 						}
-						return new Couple(LoadOutputType.FAIL_CONVERT, "Converting Classic:v2 worlds is not yet supported!");
+						//return new Couple(LoadOutputType.FAIL_CONVERT, "Converting Classic:v2 worlds is not yet supported!");
 					} catch (Exception error) {
 						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
 						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
