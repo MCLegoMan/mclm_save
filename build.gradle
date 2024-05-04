@@ -14,6 +14,11 @@ group = project.maven_group
 loom {
 	customMinecraftManifest.set("https://skyrising.github.io/mc-versions/version/manifest/${minecraft_version}.json")
 	clientOnlyMinecraftJar()
+	mods {
+		"mclm_save" {
+			sourceSet("main")
+		}
+	}
 }
 
 ploceus {
