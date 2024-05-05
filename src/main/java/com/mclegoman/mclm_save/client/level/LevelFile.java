@@ -57,7 +57,6 @@ public final class LevelFile {
 								}
 							}
 						} catch (Exception error) {
-							Data.version.sendToLog(Helper.LogType.INFO, "Process World: Failed to process world!");
 							ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 						}
 					} else {
@@ -66,7 +65,6 @@ public final class LevelFile {
 						try {
 							(new World()).save(ClientData.minecraft.f_5854988, file);
 						} catch (Exception error) {
-							Data.version.sendToLog(Helper.LogType.INFO, "Process World: Failed to save world!");
 							ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to save world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 						} finally {
 							ClientData.minecraft.m_6408915(null);
@@ -75,7 +73,6 @@ public final class LevelFile {
 				}
 			}
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, "Loading World: " + error.getLocalizedMessage());
 			// We use InfoScreen instead of FatalErrorScreen so the player can use ESC to go back to the game.
 			ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 		}
@@ -92,11 +89,9 @@ public final class LevelFile {
 				}
 				if (clearScreen) ClientData.minecraft.m_6408915(null);
 			} else {
-				Data.version.sendToLog(Helper.LogType.INFO, "Process World: File not found!");
 				ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", "World does not exist.", InfoScreen.Type.ERROR, true));
 			}
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, "Loading World: " + error.getLocalizedMessage());
 			ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to load world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 		}
 	}
@@ -113,7 +108,6 @@ public final class LevelFile {
 			return convertWorld(file, "Generic Data File", ".dat");
 		}
 		else {
-			Data.version.sendToLog(Helper.LogType.WARN, "Get World: Invalid file format!");
 			return new Couple(LoadOutputType.FAIL_INVALID_FORMAT, "Invalid file format!");
 		}
 	}
@@ -156,7 +150,6 @@ public final class LevelFile {
 						blocks = new byte[width * length * height];
 						inputStream.readFully(blocks);
 					} catch (Exception error) {
-						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v1 Level! " + error.getLocalizedMessage());
 						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v1 Level! " + error.getLocalizedMessage());
 					}
 				} else if (version == 2) {
@@ -257,16 +250,13 @@ public final class LevelFile {
 																String dataType = (String)registry.get(2);
 																dataType = dataType.substring(1, dataType.length() - 1);
 																if (dataType.equals("java/lang/String")) {
-																} else {
 																}
+															} else {
 															}
-														} else {
-															Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v2 Level! Unexpected Data Type Found " + registry.get(1) + "!");
-															return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! Unexpected Data Type Found " + registry.get(1) + "!");
 														}
+														// There won't be any other types of data, so it's useless us checking for them.
 													}
 												} else {
-													Data.version.sendToLog(Helper.LogType.WARN, "Failed to convert Classic:v2 Level! Expected 120, got " + endByte + "!");
 													return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! Expected 120, got " + endByte + "!");
 												}
 											}
@@ -277,7 +267,6 @@ public final class LevelFile {
 						}
 						//return new Couple(LoadOutputType.FAIL_CONVERT, "Converting Classic:v2 worlds is not yet supported!");
 					} catch (Exception error) {
-						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
 						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
 					}
 				}
@@ -289,13 +278,11 @@ public final class LevelFile {
 					blocks = new byte[width * length * height];
 					inputStream.readFully(blocks);
 				} catch (Exception error) {
-					Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic:v0 Level! " + error.getLocalizedMessage());
 					return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v0 Level! " + error.getLocalizedMessage());
 				}
 			}
 			// If there is any other data left, we fail the conversion.
 			if (inputStream.read() != -1) {
-				Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert Classic Level due to unexpected data being found!");
 				return new Couple(LoadOutputType.FAIL_CONVERT_UNEXPECTED_DATA, "World conversion failed due to unexpected data!");
 			}
 			try {
@@ -315,7 +302,6 @@ public final class LevelFile {
 						Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
 						gzipOutputStream.close();
 					} catch (Exception error) {
-						Data.version.sendToLog(Helper.LogType.WARN, "Converting World: " + error.getLocalizedMessage());
 						return new Couple(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
 					}
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
@@ -324,11 +310,9 @@ public final class LevelFile {
 					return new Couple(LoadOutputType.SUCCESSFUL_CONVERT, "Successfully converted world!");
 				}
 			} catch (Exception error) {
-				Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to write to file! " + error.getLocalizedMessage());
 				return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to write to file! " + error.getLocalizedMessage());
 			}
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, "Converting World: Failed to convert world! " + error.getLocalizedMessage());
 			return new Couple(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
 		}
 		return new Couple(LoadOutputType.FAIL_CONVERT_UNKNOWN, "World conversion failed due to unknown causes!");

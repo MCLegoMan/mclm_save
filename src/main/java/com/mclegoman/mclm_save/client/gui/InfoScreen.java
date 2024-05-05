@@ -29,6 +29,7 @@ public final class InfoScreen extends Screen {
 		this.type = type;
 		this.canBeClosed = canBeClosed;
 		this.canBeClosedMessage = canBeClosedMessage;
+		for (String message : status) Data.version.sendToLog(this.type.equals(Type.ERROR) ? Helper.LogType.WARN : Helper.LogType.INFO, message);
 	}
 	public InfoScreen(String title, List<String> status, Type type, boolean canBeClosed) {
 		this(title, status, type, canBeClosed, "Press ESC to return to the game");
@@ -50,6 +51,7 @@ public final class InfoScreen extends Screen {
 		this.type = type;
 		this.canBeClosed = canBeClosed;
 		this.canBeClosedMessage = canBeClosedMessage;
+		Data.version.sendToLog(this.type.equals(Type.ERROR) ? Helper.LogType.WARN : Helper.LogType.INFO, status);
 	}
 	public InfoScreen(String title, String status, Type type, boolean canBeClosed) {
 		this(title, status, type, canBeClosed, "Press ESC to return to the game");
