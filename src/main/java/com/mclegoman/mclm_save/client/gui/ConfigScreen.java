@@ -11,6 +11,7 @@ import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.mclm_save.config.Theme;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.options.OptionsScreen;
 import org.lwjgl.input.Keyboard;
 import org.quiltmc.loader.api.QuiltLoader;
 
@@ -26,8 +27,9 @@ public class ConfigScreen extends Screen {
 		convertClassicInv.active = false;
 		this.buttons.add(convertClassicInv);
 		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 72, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
-		this.buttons.add(new ButtonWidget(4, this.width / 2 - 100, this.height / 6 + 168, 98, 20, "Reset to Default"));
-		this.buttons.add(new ButtonWidget(5, this.width / 2 + 2, this.height / 6 + 168, 98, 20, "Done"));
+		this.buttons.add(new ButtonWidget(4, this.width / 2 - 100, this.height / 6 + 144, 200, 20, "Credits and Attribution"));
+		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 168, 98, 20, "Reset to Default"));
+		this.buttons.add(new ButtonWidget(6, this.width / 2 + 2, this.height / 6 + 168, 98, 20, "Done"));
 	}
 
 	protected void buttonClicked(net.minecraft.client.gui.widget.ButtonWidget button) {
@@ -80,6 +82,9 @@ public class ConfigScreen extends Screen {
 				button.message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
 			if (button.id == 4) {
+				ClientData.minecraft.m_6408915(new CreditsScreen(new ConfigScreen(this.parent)));
+			}
+			if (button.id == 5) {
 				SaveConfig.instance.skipSaveLoadScreen.setValue(SaveConfig.instance.skipSaveLoadScreen.getDefaultValue());
 				SaveConfig.instance.forceAprilFools.setValue(SaveConfig.instance.forceAprilFools.getDefaultValue());
 				SaveConfig.instance.convertClassicInv.setValue(SaveConfig.instance.convertClassicInv.getDefaultValue());
@@ -90,7 +95,7 @@ public class ConfigScreen extends Screen {
 				((ButtonWidget)buttons.get(2)).message = "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value();
 				((ButtonWidget)buttons.get(3)).message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
-			if (button.id == 5) {
+			if (button.id == 6) {
 				SaveConfig.instance.save();
 				ClientData.minecraft.m_6408915(this.parent);
 			}
