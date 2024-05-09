@@ -17,9 +17,9 @@ Save allows the player to save, load, and convert worlds in older versions that 
 - [Material UI Swing](https://github.com/vincenzopalazzo/material-ui-swing).  
   - Licensed under [MIT](https://github.com/vincenzopalazzo/material-ui-swing/blob/master/LICENSE).  
 - [Feather Mappings](https://github.com/OrnitheMC/feather-mappings).  
-  - These mappings are licensed under [CC0-1.0](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
+  - Licensed under [CC0-1.0](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
 - [Quilt Loader](https://quiltmc.org/).  
-  - These mappings are licensed under [Apache 2](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
+  - Licensed under [Apache 2](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
 - [Minecraft](https://www.minecraft.net/) [in-20100124-2310](https://minecraft.wiki/w/Java_Edition_Indev_0.31_20100124-2).  
   - This mod uses some code from Minecraft in-20100124-2310, which was obtained using [Feather Mappings](https://github.com/OrnitheMC/feather-mappings), some classes and functions have been renamed to make them easier to use.  
 
