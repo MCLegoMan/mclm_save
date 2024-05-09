@@ -12,21 +12,21 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public final class FloatTag extends Tag {
-	public float f_0036635;
+	public float tag;
 
 	public FloatTag() {
 	}
 
 	public FloatTag(float f) {
-		this.f_0036635 = f;
+		this.tag = f;
 	}
 
 	void output(DataOutput dataOutput) throws IOException {
-		dataOutput.writeFloat(this.f_0036635);
+		dataOutput.writeFloat(this.tag);
 	}
 
 	void m_3656336(DataInput dataInput) throws IOException {
-		this.f_0036635 = dataInput.readFloat();
+		this.tag = dataInput.readFloat();
 	}
 
 	public byte m_7876673() {
@@ -34,6 +34,6 @@ public final class FloatTag extends Tag {
 	}
 
 	public String toString() {
-		return String.valueOf(this.f_0036635);
+		return String.valueOf(this.tag);
 	}
 }

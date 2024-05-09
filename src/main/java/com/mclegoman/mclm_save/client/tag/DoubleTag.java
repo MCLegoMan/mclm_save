@@ -12,17 +12,17 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public final class DoubleTag extends Tag {
-	private double f_3515327;
+	private double tag;
 
 	public DoubleTag() {
 	}
 
 	void output(DataOutput dataOutput) throws IOException {
-		dataOutput.writeDouble(this.f_3515327);
+		dataOutput.writeDouble(this.tag);
 	}
 
 	void m_3656336(DataInput dataInput) throws IOException {
-		this.f_3515327 = dataInput.readDouble();
+		this.tag = dataInput.readDouble();
 	}
 
 	public byte m_7876673() {
@@ -30,6 +30,6 @@ public final class DoubleTag extends Tag {
 	}
 
 	public String toString() {
-		return String.valueOf(this.f_3515327);
+		return String.valueOf(this.tag);
 	}
 }

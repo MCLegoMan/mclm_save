@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public abstract class Tag {
-	private String f_2921434 = null;
+	private String tag = null;
 
 	public Tag() {
 	}
@@ -25,11 +25,11 @@ public abstract class Tag {
 	public abstract byte m_7876673();
 
 	public final String m_1430143() {
-		return this.f_2921434 == null ? "" : this.f_2921434;
+		return this.tag == null ? "" : this.tag;
 	}
 
 	public final Tag m_3520709(String string) {
-		this.f_2921434 = string;
+		this.tag = string;
 		return this;
 	}
 
@@ -41,7 +41,7 @@ public abstract class Tag {
 			Tag var3 = get(var1);
 			byte[] var2 = new byte[dataInput.readShort()];
 			dataInput.readFully(var2);
-			var3.f_2921434 = new String(var2, StandardCharsets.UTF_8);
+			var3.tag = new String(var2, StandardCharsets.UTF_8);
 			var3.m_3656336(dataInput);
 			return var3;
 		}

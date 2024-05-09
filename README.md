@@ -1,5 +1,5 @@
-# ![](./assets/logo.png)
-Save allows the player to save, load, and convert worlds in older versions that didn't have saving.
+# ![](./assets/logo.png)  
+Save allows the player to save, load, and convert worlds in older versions that didn't have saving.  
 
 ## Dependencies  
 - [Quilt Loader](https://quiltmc.org/).  
@@ -12,16 +12,16 @@ Save allows the player to save, load, and convert worlds in older versions that 
   - This mod uses code from this version of Minecraft, which was obtained using [Feather Mappings](https://github.com/OrnitheMC/feather-mappings).  
 - [Feather Mappings](https://github.com/OrnitheMC/feather-mappings).  
   - These mappings are licensed under [CC0-1.0](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
-- [FlatLaf](https://github.com/JFormDesigner/FlatLaf/).
-  - Licensed under [Apache 2.0](https://github.com/JFormDesigner/FlatLaf/blob/main/LICENSE).
-- [Material UI Swing](https://github.com/vincenzopalazzo/material-ui-swing).
-  - Licensed under [MIT](https://github.com/vincenzopalazzo/material-ui-swing/blob/master/LICENSE).
 - [ClassicExplorer](https://github.com/bluecrab2/ClassicExplorer).  
-  - This program was really useful whilst developing the classic converter.  
+  - We include some code from ClassicExplorer with permission from bluecrab2 for our classic converter.  
+- [FlatLaf](https://github.com/JFormDesigner/FlatLaf/).  
+  - Licensed under [Apache 2.0](https://github.com/JFormDesigner/FlatLaf/blob/main/LICENSE).  
+- [Material UI Swing](https://github.com/vincenzopalazzo/material-ui-swing).  
+  - Licensed under [MIT](https://github.com/vincenzopalazzo/material-ui-swing/blob/master/LICENSE).  
 - [NBTExplorer](https://github.com/jaquadro/NBTExplorer).  
   - This program was really useful whilst developing the save/load function.  
 
-#
-Licensed under LGPL-3.0-or-later.
+#  
+Licensed under LGPL-3.0-or-later.  
 
 **This mod is not affiliated with/endorsed by Mojang Studios or Microsoft.**  

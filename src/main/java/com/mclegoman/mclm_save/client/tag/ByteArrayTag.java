@@ -12,24 +12,24 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public final class ByteArrayTag extends Tag {
-	public byte[] f_7219938;
+	public byte[] tag;
 
 	public ByteArrayTag() {
 	}
 
 	public ByteArrayTag(byte[] bs) {
-		this.f_7219938 = bs;
+		this.tag = bs;
 	}
 
 	void output(DataOutput dataOutput) throws IOException {
-		dataOutput.writeInt(this.f_7219938.length);
-		dataOutput.write(this.f_7219938);
+		dataOutput.writeInt(this.tag.length);
+		dataOutput.write(this.tag);
 	}
 
 	void m_3656336(DataInput dataInput) throws IOException {
 		int var2 = dataInput.readInt();
-		this.f_7219938 = new byte[var2];
-		dataInput.readFully(this.f_7219938);
+		this.tag = new byte[var2];
+		dataInput.readFully(this.tag);
 	}
 
 	public byte m_7876673() {
@@ -37,6 +37,6 @@ public final class ByteArrayTag extends Tag {
 	}
 
 	public String toString() {
-		return "[" + this.f_7219938.length + " bytes]";
+		return "[" + this.tag.length + " bytes]";
 	}
 }

@@ -12,21 +12,21 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public final class LongTag extends Tag {
-	public long f_2322285;
+	public long tag;
 
 	public LongTag() {
 	}
 
 	public LongTag(long l) {
-		this.f_2322285 = l;
+		this.tag = l;
 	}
 
 	void output(DataOutput dataOutput) throws IOException {
-		dataOutput.writeLong(this.f_2322285);
+		dataOutput.writeLong(this.tag);
 	}
 
 	void m_3656336(DataInput dataInput) throws IOException {
-		this.f_2322285 = dataInput.readLong();
+		this.tag = dataInput.readLong();
 	}
 
 	public byte m_7876673() {
@@ -34,7 +34,7 @@ public final class LongTag extends Tag {
 	}
 
 	public String toString() {
-		return String.valueOf(this.f_2322285);
+		return String.valueOf(this.tag);
 	}
 }
 

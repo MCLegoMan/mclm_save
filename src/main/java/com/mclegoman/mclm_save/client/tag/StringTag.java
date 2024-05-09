@@ -13,17 +13,17 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public final class StringTag extends Tag {
-	public String f_4042017;
+	public String tag;
 
 	public StringTag() {
 	}
 
 	public StringTag(String string) {
-		this.f_4042017 = string;
+		this.tag = string;
 	}
 
 	void output(DataOutput dataOutput) throws IOException {
-		byte[] var2 = this.f_4042017.getBytes(StandardCharsets.UTF_8);
+		byte[] var2 = this.tag.getBytes(StandardCharsets.UTF_8);
 		dataOutput.writeShort(var2.length);
 		dataOutput.write(var2);
 	}
@@ -31,7 +31,7 @@ public final class StringTag extends Tag {
 	void m_3656336(DataInput dataInput) throws IOException {
 		byte[] var2 = new byte[dataInput.readShort()];
 		dataInput.readFully(var2);
-		this.f_4042017 = new String(var2, StandardCharsets.UTF_8);
+		this.tag = new String(var2, StandardCharsets.UTF_8);
 	}
 
 	public byte m_7876673() {
@@ -39,6 +39,6 @@ public final class StringTag extends Tag {
 	}
 
 	public String toString() {
-		return this.f_4042017;
+		return this.tag;
 	}
 }

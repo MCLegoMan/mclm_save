@@ -15,6 +15,10 @@ import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.common.util.Couple;
 import com.mclegoman.releasetypeutils.common.version.Helper;
+import me.bluecrab2.classicexplorer.fields.ArrayField;
+import me.bluecrab2.classicexplorer.fields.Class;
+import me.bluecrab2.classicexplorer.fields.Field;
+import me.bluecrab2.classicexplorer.io.Reader;
 
 import java.io.*;
 import java.time.Instant;
@@ -155,117 +159,31 @@ public final class LevelFile {
 				} else if (version == 2) {
 					try {
 						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v2 Level");
-						// TODO: Version 2 Converter
-						// If we get permission from bluecrab2 to include Classic Explorer code, we can use this to convert the world.
-						//Settings.skipBlocks = false;
-						//Class classicSave =  Reader.read(file);
-						//ArrayList<Field> fields = classicSave.getFields();
-						//for (int a = 0; a < fields.size(); a++) {
-						//	if (fields.get(a).getFieldName().equals("width")) {
-						//		width = (short) (int) fields.get(a).getField();
-						//	}
-						//	if (fields.get(a).getFieldName().equals("depth")) {
-						//		height = (short) (int) fields.get(a).getField();
-						//	}
-						//	if (fields.get(a).getFieldName().equals("height")) {
-						//		length = (short) (int) fields.get(a).getField();
-						//	}
-						//	if (fields.get(a).getFieldName().equals("blocks")) {
-						//		ArrayList<Field> blockArray = ((ArrayField) fields.get(a)).getArray();
-						//		byte[] blockArray2 = new byte[width * height * length];
-						//		for (int b = 0; b < blockArray.size(); b++) {
-						//			blockArray2[b] = (byte) blockArray.get(b).getField();
-						//		}
-						//		blocks = blockArray2;
-						//	}
-						//	Data.version.sendToLog(Helper.LogType.INFO, fields.get(a).getFieldName() + ":" + fields.get(a).getField());
-						//}
-						//int i;
-						//while ((i = inputStream.read()) != -1) {}
-						if (inputStream.readUnsignedShort() == 44269) {
-							if (inputStream.readUnsignedShort() == 5) {
-								int obj1 = inputStream.readUnsignedByte();
-								if (obj1 == 115) {
-									int obj2 = inputStream.readUnsignedByte();
-									if (obj2 == 114) {
-										if (inputStream.readUTF().equals("com.mojang.minecraft.level.Level")) {
-											long serialVersionUID = inputStream.readLong();
-											List<List<Object>> data = new ArrayList<>();
-											int obj3 = inputStream.readUnsignedByte();
-											if (obj3 == 2) {
-												short varAmount = inputStream.readShort();
-												for (int var = 0; var < varAmount - 1;) {
-													char dataType = (char)inputStream.readByte();
-													String dataName = inputStream.readUTF();
-													if (dataType == 'B' || dataType == 'C' || dataType == 'D' || dataType == 'F' || dataType == 'I' || dataType == 'J' || dataType == 'S' || dataType == 'Z' || dataType == '[' || dataType == 'L') {
-														List<Object> registry = new ArrayList<>();
-														registry.add(dataName);
-														registry.add(dataType);
-														if (dataType == '[' || dataType == 'L') {
-															if (inputStream.readUnsignedByte() == 116) registry.add(inputStream.readUTF());
-														}
-														data.add(registry);
-														var++;
-													} else {
-														return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! Unexpected Data Type Found " + dataType + "!");
-													}
-												}
-												// There is more data to be read here, what is it?
-
-												byte endByte = inputStream.readByte();
-												if (endByte == 120) {
-													for (List<Object> registry : data) {
-														if (registry.get(1).equals('B')) {
-															inputStream.readByte();
-														} else if (registry.get(1).equals('C')) {
-															inputStream.readChar();
-														} else if (registry.get(1).equals('D')) {
-															inputStream.readDouble();
-														} else if (registry.get(1).equals('F')) {
-															inputStream.readFloat();
-														} else if (registry.get(1).equals('I')) {
-															int outInt = inputStream.readInt();
-															if (((String)registry.get(0)).equalsIgnoreCase("depth")) {
-																// depth was renamed to height in indev.
-																height = (short)outInt;
-																Data.version.sendToLog(Helper.LogType.INFO, "DEBUG: height: " + height);
-															} else if (((String)registry.get(0)).equalsIgnoreCase("height")) {
-																// height was renamed to length in indev.
-																length = (short)outInt;
-																Data.version.sendToLog(Helper.LogType.INFO, "DEBUG: length: " + length);
-															} else if (((String)registry.get(0)).equalsIgnoreCase("width")) {
-																width = (short)outInt;
-																Data.version.sendToLog(Helper.LogType.INFO, "DEBUG: width: " + width);
-															}
-														} else if (registry.get(1).equals('J')) {
-															inputStream.readLong();
-														} else if (registry.get(1).equals('S')) {
-															inputStream.readShort();
-														} else if (registry.get(1).equals('Z')) {
-															inputStream.readBoolean();
-														} else if (registry.get(1).equals('[')) {
-															String dataType = (String)registry.get(2);
-														} else if (registry.get(1).equals('L')) {
-															if (registry.size() > 2) {
-																String dataType = (String)registry.get(2);
-																dataType = dataType.substring(1, dataType.length() - 1);
-																if (dataType.equals("java/lang/String")) {
-																}
-															} else {
-															}
-														}
-														// There won't be any other types of data, so it's useless us checking for them.
-													}
-												} else {
-													return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! Expected 120, got " + endByte + "!");
-												}
-											}
-										}
-									}
-								}
+						// TODO: Make all versions use ClassicExplorer instead of just v2.
+						Class classicSave =  Reader.read(file);
+						ArrayList<Field> fields = classicSave.getFields();
+						for (int a = 0; a < fields.size(); a++) {
+							if (fields.get(a).getFieldName().equals("width")) {
+								width = (short) (int) fields.get(a).getField();
 							}
+							if (fields.get(a).getFieldName().equals("depth")) {
+								height = (short) (int) fields.get(a).getField();
+							}
+							if (fields.get(a).getFieldName().equals("height")) {
+								length = (short) (int) fields.get(a).getField();
+							}
+							if (fields.get(a).getFieldName().equals("blocks")) {
+								ArrayList<Field> blockArray = ((ArrayField) fields.get(a)).getArray();
+								byte[] blockArray2 = new byte[width * height * length];
+								for (int b = 0; b < blockArray.size(); b++) {
+									blockArray2[b] = (byte) blockArray.get(b).getField();
+								}
+								blocks = blockArray2;
+							}
+							Data.version.sendToLog(Helper.LogType.INFO, fields.get(a).getFieldName() + ":" + fields.get(a).getField());
 						}
-						//return new Couple(LoadOutputType.FAIL_CONVERT, "Converting Classic:v2 worlds is not yet supported!");
+						int i;
+						while ((i = inputStream.read()) != -1) {}
 					} catch (Exception error) {
 						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
 					}
@@ -304,7 +222,6 @@ public final class LevelFile {
 					} catch (Exception error) {
 						return new Couple(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
 					}
-					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Successfully converted world and saved at: " + outputPath);
 					LevelFile.file = new File(outputPath);
 					shouldLoad = new Couple(true, false);
 					return new Couple(LoadOutputType.SUCCESSFUL_CONVERT, "Successfully converted world!");

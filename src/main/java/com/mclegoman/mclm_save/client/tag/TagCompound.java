@@ -21,8 +21,8 @@ public final class TagCompound extends Tag {
 
 	void output(DataOutput dataOutput) throws IOException {
 
-		for (Object o : this.elements.values()) {
-			Tag.output((Tag) o, dataOutput);
+		for (Object tag : this.elements.values()) {
+			Tag.output((Tag) tag, dataOutput);
 		}
 
 		dataOutput.writeByte(0);
@@ -31,9 +31,9 @@ public final class TagCompound extends Tag {
 	void m_3656336(DataInput dataInput) throws IOException {
 		this.elements.clear();
 
-		Tag var2;
-		while((var2 = Tag.input(dataInput)).m_7876673() != 0) {
-			this.elements.put(var2.m_1430143(), var2);
+		Tag tag;
+		while((tag = Tag.input(dataInput)).m_7876673() != 0) {
+			this.elements.put(tag.m_1430143(), tag);
 		}
 
 	}
@@ -87,23 +87,23 @@ public final class TagCompound extends Tag {
 	}
 
 	public int getInt(String string) {
-		return !this.elements.containsKey(string) ? 0 : ((IntTag)this.elements.get(string)).f_0046147;
+		return !this.elements.containsKey(string) ? 0 : ((IntTag)this.elements.get(string)).tag;
 	}
 
 	public long m_6044735(String string) {
-		return !this.elements.containsKey(string) ? 0L : ((LongTag)this.elements.get(string)).f_2322285;
+		return !this.elements.containsKey(string) ? 0L : ((LongTag)this.elements.get(string)).tag;
 	}
 
 	public float m_0000382(String string) {
-		return !this.elements.containsKey(string) ? 0.0F : ((FloatTag)this.elements.get(string)).f_0036635;
+		return !this.elements.containsKey(string) ? 0.0F : ((FloatTag)this.elements.get(string)).tag;
 	}
 
 	public String getString(String string) {
-		return !this.elements.containsKey(string) ? "" : ((StringTag)this.elements.get(string)).f_4042017;
+		return !this.elements.containsKey(string) ? "" : ((StringTag)this.elements.get(string)).tag;
 	}
 
 	public byte[] m_5601145(String string) {
-		return !this.elements.containsKey(string) ? new byte[0] : ((ByteArrayTag)this.elements.get(string)).f_7219938;
+		return !this.elements.containsKey(string) ? new byte[0] : ((ByteArrayTag)this.elements.get(string)).tag;
 	}
 
 	public TagCompound getNbt(String string) {

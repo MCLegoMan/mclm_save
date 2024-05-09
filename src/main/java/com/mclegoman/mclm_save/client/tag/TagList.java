@@ -14,24 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class TagList extends Tag {
-	private List<Tag> f_4282966 = new ArrayList<>();
+	private List<Tag> tags = new ArrayList<>();
 	private byte f_1918247;
 
 	public TagList() {
 	}
 
 	void output(DataOutput dataOutput) throws IOException {
-		if (this.f_4282966.size() > 0) {
-			this.f_1918247 = this.f_4282966.get(0).m_7876673();
+		if (this.tags.size() > 0) {
+			this.f_1918247 = this.tags.get(0).m_7876673();
 		} else {
 			this.f_1918247 = 1;
 		}
 
 		dataOutput.writeByte(this.f_1918247);
-		dataOutput.writeInt(this.f_4282966.size());
+		dataOutput.writeInt(this.tags.size());
 
-		for(int var2 = 0; var2 < this.f_4282966.size(); ++var2) {
-			this.f_4282966.get(var2).output(dataOutput);
+		for(int var2 = 0; var2 < this.tags.size(); ++var2) {
+			this.tags.get(var2).output(dataOutput);
 		}
 
 	}
@@ -39,12 +39,12 @@ public final class TagList extends Tag {
 	void m_3656336(DataInput dataInput) throws IOException {
 		this.f_1918247 = dataInput.readByte();
 		int var2 = dataInput.readInt();
-		this.f_4282966 = new ArrayList<>();
+		this.tags = new ArrayList<>();
 
 		for(int var3 = 0; var3 < var2; ++var3) {
 			Tag var4 = Tag.get(this.f_1918247);
 			var4.m_3656336(dataInput);
-			this.f_4282966.add(var4);
+			this.tags.add(var4);
 		}
 
 	}
@@ -54,7 +54,7 @@ public final class TagList extends Tag {
 	}
 
 	public String toString() {
-		StringBuilder var10000 = (new StringBuilder()).append(this.f_4282966.size()).append(" entries of type ");
+		StringBuilder var10000 = (new StringBuilder()).append(this.tags.size()).append(" entries of type ");
 		String var10001;
 		switch (this.f_1918247) {
 			case 0:
@@ -99,14 +99,14 @@ public final class TagList extends Tag {
 
 	public void addNbt(Tag tag) {
 		this.f_1918247 = tag.m_7876673();
-		this.f_4282966.add(tag);
+		this.tags.add(tag);
 	}
 
 	public Tag getNbt(int i) {
-		return this.f_4282966.get(i);
+		return this.tags.get(i);
 	}
 
 	public int index() {
-		return this.f_4282966.size();
+		return this.tags.size();
 	}
 }
