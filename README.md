@@ -8,18 +8,20 @@ Save allows the player to save, load, and convert worlds in older versions that 
 - [Minecraft Indev 0.31 in-20100110](https://minecraft.wiki/w/Java_Edition_Indev_0.31_20100110).  
 
 ## Attributions  
-- Minecraft [in-20100124-2310](https://minecraft.wiki/w/Java_Edition_Indev_0.31_20100124-2).  
-  - This mod uses code from this version of Minecraft, which was obtained using [Feather Mappings](https://github.com/OrnitheMC/feather-mappings).  
-- [Feather Mappings](https://github.com/OrnitheMC/feather-mappings).  
-  - These mappings are licensed under [CC0-1.0](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
 - [ClassicExplorer](https://github.com/bluecrab2/ClassicExplorer).  
   - We include some code from ClassicExplorer with permission from bluecrab2 for our classic converter.  
-- [FlatLaf](https://github.com/JFormDesigner/FlatLaf/).  
+- [ReleaseTypeUtils](https://github.com/mclegoMan/releasetypeutils).  
+  - Licensed under [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt).  
+- [FlatLaf](https://github.com/JFormDesigner/FlatLaf/).
   - Licensed under [Apache 2.0](https://github.com/JFormDesigner/FlatLaf/blob/main/LICENSE).  
 - [Material UI Swing](https://github.com/vincenzopalazzo/material-ui-swing).  
   - Licensed under [MIT](https://github.com/vincenzopalazzo/material-ui-swing/blob/master/LICENSE).  
-- [NBTExplorer](https://github.com/jaquadro/NBTExplorer).  
-  - This program was really useful whilst developing the save/load function.  
+- [Feather Mappings](https://github.com/OrnitheMC/feather-mappings).  
+  - These mappings are licensed under [CC0-1.0](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
+- [Quilt Loader](https://quiltmc.org/).  
+  - These mappings are licensed under [Apache 2](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
+- [Minecraft](https://www.minecraft.net/) [in-20100124-2310](https://minecraft.wiki/w/Java_Edition_Indev_0.31_20100124-2).  
+  - This mod uses some code from Minecraft in-20100124-2310, which was obtained using [Feather Mappings](https://github.com/OrnitheMC/feather-mappings), some classes and functions have been renamed to make them easier to use.  
 
 #  
 Licensed under LGPL-3.0-or-later.  

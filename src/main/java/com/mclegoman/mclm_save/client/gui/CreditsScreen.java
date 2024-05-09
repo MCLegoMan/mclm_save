@@ -24,10 +24,12 @@ public class CreditsScreen extends Screen {
 	}
 	public void init() {
 		this.credits.add(new Couple("Save", 0xFFAA00));
-		this.credits.add(new Couple("License: LGPL-3.0-or-later", 0xFFFFFF));
 		this.credits.add(new Couple("", 0xFFFFFF));
-		this.credits.add(new Couple("Phantazap (Owner)", 0xFFFFFF));
-		this.credits.add(new Couple("MCLegoMan (Lead Developer)", 0xFFFFFF));
+		this.credits.add(new Couple("A quilt mod that adds saving to older versions of Minecraft", 0xAAAAAA));
+		this.credits.add(new Couple("Authors:", 0xAAAAAA));
+		this.credits.add(new Couple("Phantazap (Owner)", 0xAAAAAA));
+		this.credits.add(new Couple("MCLegoMan (Lead Developer)", 0xAAAAAA));
+		this.credits.add(new Couple("License: LGPL-3.0-or-later", 0xAAAAAA));
 		this.credits.add(new Couple("", 0xFFFFFF));
 		this.credits.add(new Couple("Attribution", 0xFFAA00));
 		this.credits.add(new Couple("", 0xFFFFFF));
@@ -36,6 +38,11 @@ public class CreditsScreen extends Screen {
 		this.credits.add(new Couple("Author: bluecrab2", 0xAAAAAA));
 		this.credits.add(new Couple("License: All Rights Reserved (c) bluecrab2", 0xAAAAAA));
 		this.credits.add(new Couple("Included with permission from bluecrab2.", 0xAAAAAA));
+		this.credits.add(new Couple("", 0xFFFFFF));
+		this.credits.add(new Couple("ReleaseTypeUtils", 0xFFFFFF));
+		this.credits.add(new Couple("Versioning Helper.", 0xAAAAAA));
+		this.credits.add(new Couple("Author: MCLegoMan", 0xAAAAAA));
+		this.credits.add(new Couple("License: CC0-1.0", 0xAAAAAA));
 		this.credits.add(new Couple("", 0xFFFFFF));
 		this.credits.add(new Couple("FlatLaf", 0xFFFFFF));
 		this.credits.add(new Couple("Darcula/IntelliJ dialog themes.", 0xAAAAAA));
