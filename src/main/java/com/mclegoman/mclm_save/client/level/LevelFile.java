@@ -24,7 +24,6 @@ import java.io.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public final class LevelFile {
@@ -117,9 +116,8 @@ public final class LevelFile {
 	}
 	public static Couple convertWorld(File file, String type, String ext) {
 		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " (" + ext + ") world to Indev format", InfoScreen.Type.DIRT, false));
-		try (FileInputStream classicLevel = new FileInputStream(file)) {
+		try {
 			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
-			DataInputStream inputStream = new DataInputStream(new GZIPInputStream(classicLevel));
 			String name = "A Nice World";
 			String creator = "Player";
 			long createTime = Instant.now().getEpochSecond();
@@ -139,72 +137,57 @@ public final class LevelFile {
 			short length = 256;
 			short width = 256;
 			byte[] blocks = null;
-			if (inputStream.readInt() == 656127880) {
-				Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Checking Version");
-				byte version = inputStream.readByte();
-				if (version == 1) {
-					try {
-						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v1 Level");
-						name = inputStream.readUTF();
-						creator = inputStream.readUTF();
-						createTime = inputStream.readLong();
-						width = inputStream.readShort();
-						length = inputStream.readShort();
-						height = inputStream.readShort();
-						blocks = new byte[width * length * height];
-						inputStream.readFully(blocks);
-					} catch (Exception error) {
-						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v1 Level! " + error.getLocalizedMessage());
-					}
-				} else if (version == 2) {
-					try {
-						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Reading Classic:v2 Level");
-						// TODO: Make all versions use ClassicExplorer instead of just v2.
-						Class classicSave =  Reader.read(file);
-						ArrayList<Field> fields = classicSave.getFields();
-						for (int a = 0; a < fields.size(); a++) {
-							if (fields.get(a).getFieldName().equals("width")) {
-								width = (short) (int) fields.get(a).getField();
-							}
-							if (fields.get(a).getFieldName().equals("depth")) {
-								height = (short) (int) fields.get(a).getField();
-							}
-							if (fields.get(a).getFieldName().equals("height")) {
-								length = (short) (int) fields.get(a).getField();
-							}
-							if (fields.get(a).getFieldName().equals("blocks")) {
-								ArrayList<Field> blockArray = ((ArrayField) fields.get(a)).getArray();
-								byte[] blockArray2 = new byte[width * height * length];
-								for (int b = 0; b < blockArray.size(); b++) {
-									blockArray2[b] = (byte) blockArray.get(b).getField();
-								}
-								blocks = blockArray2;
-							}
-							Data.version.sendToLog(Helper.LogType.INFO, fields.get(a).getFieldName() + ":" + fields.get(a).getField());
-						}
-						int i;
-						while ((i = inputStream.read()) != -1) {}
-					} catch (Exception error) {
-						return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v2 Level! " + error.getLocalizedMessage());
-					}
+			Class classicSave =  Reader.read(file);
+			ArrayList<Field> fields = classicSave.getFields();
+			for (Field field : fields) {
+				// IntelliJ, if we weren't using Java 8, I would use a switch. But we're using it, so stop telling me to use a switch.
+				if (field.getFieldName().equals("cloudColor")) {
+					cloudColor = (int) field.getField();
 				}
-			} else {
-				try {
-					// Pre-Classic/Early Classic didn't have a magic number, so we just hope that this is a Pre-Classic or Early Classic file.
-					length = 257;
-					width = 257;
-					blocks = new byte[width * length * height];
-					inputStream.readFully(blocks);
-				} catch (Exception error) {
-					return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to convert Classic:v0 Level! " + error.getLocalizedMessage());
+				else if (field.getFieldName().equals("createTime")) {
+					createTime = (long) field.getField();
+				}
+				else if (field.getFieldName().equals("depth")) {
+					height = (short) (int) field.getField(); // Was changed from "depth" to "height" in Indev.
+				}
+				else if (field.getFieldName().equals("fogColor")) {
+					fogColor = (int) field.getField();
+				}
+				else if (field.getFieldName().equals("height")) {
+					length = (short) (int) field.getField(); // Was changed from "height" to "length" in Indev.
+				}
+				else if (field.getFieldName().equals("skyColor")) {
+					skyColor = (int) field.getField();
+				}
+				else if (field.getFieldName().equals("width")) {
+					width = (short) (int) field.getField();
+				}
+				else if (field.getFieldName().equals("spawnX")) {
+					spawnX = (short) (int) field.getField();
+				}
+				else if (field.getFieldName().equals("spawnY")) {
+					spawnY = (short) (int) field.getField();
+				}
+				else if (field.getFieldName().equals("spawnZ")) {
+					spawnZ = (short) (int) field.getField();
+				}
+				else if (field.getFieldName().equals("blocks")) {
+					ArrayList<Field> blockArray = ((ArrayField) field).getArray();
+					byte[] blockArray2 = new byte[width * height * length];
+					for (int b = 0; b < blockArray.size(); b++) {
+						blockArray2[b] = (byte) blockArray.get(b).getField();
+					}
+					blocks = blockArray2;
+				}
+				else if (field.getFieldName().equals("creator")) {
+					creator = (String) field.getField();
+				}
+				else if (field.getFieldName().equals("name")) {
+					name = (String) field.getField();
 				}
 			}
-			// If there is any other data left, we fail the conversion.
-			if (inputStream.read() != -1) {
-				return new Couple(LoadOutputType.FAIL_CONVERT_UNEXPECTED_DATA, "World conversion failed due to unexpected data!");
-			}
-			try {
-				if (blocks != null) {
+			try {if (blocks != null) {
+				if (blocks.length == (width * height * length)) {
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
 					TagCompound convertedLevel = createLevel(creator, createTime, name, cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
 					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
@@ -225,14 +208,18 @@ public final class LevelFile {
 					LevelFile.file = new File(outputPath);
 					shouldLoad = new Couple(true, false);
 					return new Couple(LoadOutputType.SUCCESSFUL_CONVERT, "Successfully converted world!");
+				} else {
+					return new Couple(LoadOutputType.FAIL_CONVERT, "World conversion failed due to block amount not matching!");
 				}
+			} else {
+				return new Couple(LoadOutputType.FAIL_CONVERT, "World conversion failed due to blocks not existing!");
+			}
 			} catch (Exception error) {
 				return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to write to file! " + error.getLocalizedMessage());
 			}
 		} catch (Exception error) {
 			return new Couple(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
 		}
-		return new Couple(LoadOutputType.FAIL_CONVERT_UNKNOWN, "World conversion failed due to unknown causes!");
 	}
 	public static TagCompound createLevel(String creator, long createTime, String name, int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, int skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks) {
 		TagCompound Level = new TagCompound();
@@ -269,8 +256,6 @@ public final class LevelFile {
 		SUCCESSFUL,
 		SUCCESSFUL_CONVERT,
 		FAIL_INVALID_FORMAT,
-		FAIL_CONVERT,
-		FAIL_CONVERT_UNEXPECTED_DATA,
-		FAIL_CONVERT_UNKNOWN
+		FAIL_CONVERT
 	}
 }

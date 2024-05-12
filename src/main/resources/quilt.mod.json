@@ -21,7 +21,6 @@
       "icon": "assets/save/icon.png"
     },
     "intermediate_mappings": "net.fabricmc:intermediary",
-    "entrypoint": {},
     "depends": [
       {
         "id": "quilt_loader",
