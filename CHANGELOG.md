@@ -2,13 +2,14 @@
 
 ## Save 1.0.0-rc.1 for in-20100110  
 
-### Changes
+### Changes  
 #### Config  
 - Added default converter values.  
   - These can only be changed by editing the config file.  
+- Convert Classic Inventory has been renamed to Convert Classic Player.  
 #### Converter  
 - All classic saves will now use ClassicExplorer to convert.  
-- Conversion will fail if the blocks can't be found or if they don't match the output of `height*length*width`.
+- Conversion will fail if the blocks can't be found or if they don't match the output of `height*length*width`.  
 
 #  
 Licensed under LGPL-3.0-or-later.  
