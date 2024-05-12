@@ -195,56 +195,54 @@ public final class LevelFile {
 				if (blocks.length == (width * height * length)) {
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
 					TagCompound convertedLevel = createLevel(creator, createTime, name, cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
-
 					if (SaveConfig.instance.convertClassicInv.value()) {
 						TagList entities = new TagList();
 						if (blockMap != null) {
-							for (Field field : blockMap.getClassField().getFields()) {
+							blockMap.getClassField().getFields().forEach((field) -> {
 								if (field.getFieldName().equals("all")) {
-									// *cough* WHHY THE FUCK DO YOU ONLY READ THE SIZE?! AHHHHH *cough*
-									((ClassField)field).getClassField().getFields().forEach(field1 -> {
-										Data.version.sendToLog(Helper.LogType.INFO, String.valueOf(field1));
+									((ClassField)field).getArrayList().forEach(entityData -> {
+										if (entityData.getName().equals("com.mojang.minecraft.player.Player")) {
+											TagCompound data = new TagCompound();
+											data.addNbt("id", new StringTag("LocalPlayer"));
+											entityData.getFields().forEach(player -> {
+												if (player.getFieldName().equals("inventory")) {
+													TagList inventory = new TagList();
+													ArrayList<Field> inventory1 = ((ClassField)player).getClassField().getFields();
+													inventory1.forEach(invField -> {
+														if (invField.getFieldName().equals("count")) {
+															for (Field field2 : ((ArrayField)invField).getArray()) {
+																TagCompound itemData = new TagCompound();
+																itemData.addNbt("Count", new ByteTag(((Integer)field2.getField()).byteValue()));
+																inventory.addNbt(itemData);
+															}
+														} else if (invField.getFieldName().equals("slots")) {
+															int index = 0;
+															for (Field field2 : ((ArrayField)invField).getArray()) {
+																TagCompound itemData = (TagCompound) inventory.getNbt(index);
+																itemData.addNbt("id", new ByteTag(((Integer)field2.getField()).byteValue()));
+																itemData.addNbt("Slot", new ByteTag(((Integer)index).byteValue()));
+																index++;
+															}
+														}
+													});
+													data.addNbt("Inventory", inventory);
+												}
+												if (player.getFieldName().equals("score")) {
+													data.addNbt("Score", new IntTag((int) player.getField()));
+												}
+											});
+											entityData.getSuperClass().getFields().forEach(mob -> {
+											});
+											entityData.getSuperClass().getSuperClass().getFields().forEach(entity -> {
+											});
+											if (!data.isEmpty()) entities.addNbt(data);
+										}
 									});
 								}
-							}
-
-//							ClassField player = null;
-//
-//							TagCompound entityData = new TagCompound();
-//							entityData.addNbt("id", new StringTag("LocalPlayer"));
-//
-//							for (Field field : player.getClassField().getFields()) {
-//								if (field.getFieldName().equals("inventory")) {
-//									TagList inventory = new TagList();
-//									ArrayList<Field> inventory1 = ((ClassField)field).getClassField().getFields();
-//									inventory1.forEach(invField -> {
-//										if (invField.getFieldName().equals("count")) {
-//											for (Field field2 : ((ArrayField)invField).getArray()) {
-//												TagCompound itemData = new TagCompound();
-//												itemData.addNbt("Count", new ByteTag(((Integer)field2.getField()).byteValue()));
-//												inventory.addNbt(itemData);
-//											}
-//										} else if (invField.getFieldName().equals("slots")) {
-//											int index = 0;
-//											for (Field field2 : ((ArrayField)invField).getArray()) {
-//												TagCompound itemData = (TagCompound) inventory.getNbt(index);
-//												itemData.addNbt("id", new ByteTag(((Integer)field2.getField()).byteValue()));
-//												itemData.addNbt("Slot", new ByteTag(((Integer)index).byteValue()));
-//												index++;
-//											}
-//										}
-//									});
-//									entityData.addNbt("Inventory", inventory);
-//								}
-//								if (field.getFieldName().equals("score")) {
-//									entityData.addNbt("Score", new IntTag((int) field.getField()));
-//								}
-//							}
-//							if (!entityData.isEmpty()) entities.addNbt(entityData);
+							});
 						}
 						convertedLevel.addNbt("Entities", entities);
 					}
-
 					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
 					String outputPathCheck = outputPath;
 					int fileAmount = 1;
