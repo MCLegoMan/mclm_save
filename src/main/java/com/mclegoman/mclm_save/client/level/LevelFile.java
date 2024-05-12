@@ -18,6 +18,7 @@ import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 import me.bluecrab2.classicexplorer.fields.ArrayField;
 import me.bluecrab2.classicexplorer.fields.Class;
+import me.bluecrab2.classicexplorer.fields.ClassField;
 import me.bluecrab2.classicexplorer.fields.Field;
 import me.bluecrab2.classicexplorer.io.Reader;
 
@@ -55,7 +56,7 @@ public final class LevelFile {
 									List<String> status = new ArrayList<>();
 									status.add("Saved at: " + file.getPath());
 									status.add("");
-									status.add("Reminder: Keep your classic save backed up!");
+									status.add("Please keep your classic save backed up!");
 									ClientData.minecraft.m_6408915(new InfoScreen("Classic Conversion Successful!", status, InfoScreen.Type.DIRT, true));
 								}
 							}
@@ -137,6 +138,7 @@ public final class LevelFile {
 			short length = SaveConfig.instance.convertClassicDefaultLength.value().shortValue();
 			short width = SaveConfig.instance.convertClassicDefaultWidth.value().shortValue();
 			byte[] blocks = null;
+			ClassField blockMap = null;
 			Class classicSave =  Reader.read(file);
 			ArrayList<Field> fields = classicSave.getFields();
 			for (Field field : fields) {
@@ -185,11 +187,64 @@ public final class LevelFile {
 				else if (field.getFieldName().equals("name")) {
 					name = (String) field.getField();
 				}
+				else if (field.getFieldName().equals("blockMap")) {
+					blockMap = ((ClassField) field);
+				}
 			}
 			try {if (blocks != null) {
 				if (blocks.length == (width * height * length)) {
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
 					TagCompound convertedLevel = createLevel(creator, createTime, name, cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
+
+					if (SaveConfig.instance.convertClassicInv.value()) {
+						TagList entities = new TagList();
+						if (blockMap != null) {
+							for (Field field : blockMap.getClassField().getFields()) {
+								if (field.getFieldName().equals("all")) {
+									// *cough* WHHY THE FUCK DO YOU ONLY READ THE SIZE?! AHHHHH *cough*
+									((ClassField)field).getClassField().getFields().forEach(field1 -> {
+										Data.version.sendToLog(Helper.LogType.INFO, String.valueOf(field1));
+									});
+								}
+							}
+
+//							ClassField player = null;
+//
+//							TagCompound entityData = new TagCompound();
+//							entityData.addNbt("id", new StringTag("LocalPlayer"));
+//
+//							for (Field field : player.getClassField().getFields()) {
+//								if (field.getFieldName().equals("inventory")) {
+//									TagList inventory = new TagList();
+//									ArrayList<Field> inventory1 = ((ClassField)field).getClassField().getFields();
+//									inventory1.forEach(invField -> {
+//										if (invField.getFieldName().equals("count")) {
+//											for (Field field2 : ((ArrayField)invField).getArray()) {
+//												TagCompound itemData = new TagCompound();
+//												itemData.addNbt("Count", new ByteTag(((Integer)field2.getField()).byteValue()));
+//												inventory.addNbt(itemData);
+//											}
+//										} else if (invField.getFieldName().equals("slots")) {
+//											int index = 0;
+//											for (Field field2 : ((ArrayField)invField).getArray()) {
+//												TagCompound itemData = (TagCompound) inventory.getNbt(index);
+//												itemData.addNbt("id", new ByteTag(((Integer)field2.getField()).byteValue()));
+//												itemData.addNbt("Slot", new ByteTag(((Integer)index).byteValue()));
+//												index++;
+//											}
+//										}
+//									});
+//									entityData.addNbt("Inventory", inventory);
+//								}
+//								if (field.getFieldName().equals("score")) {
+//									entityData.addNbt("Score", new IntTag((int) field.getField()));
+//								}
+//							}
+//							if (!entityData.isEmpty()) entities.addNbt(entityData);
+						}
+						convertedLevel.addNbt("Entities", entities);
+					}
+
 					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
 					String outputPathCheck = outputPath;
 					int fileAmount = 1;

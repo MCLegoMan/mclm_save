@@ -23,9 +23,7 @@ public class ConfigScreen extends Screen {
 	public final void init() {
 		this.buttons.add(new ButtonWidget(0, this.width / 2 - 150, this.height / 6, 300, 20, "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value()));
 		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 24, 300, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
-		ButtonWidget convertClassicInv = new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value());
-		convertClassicInv.active = false;
-		this.buttons.add(convertClassicInv);
+		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value()));
 		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 72, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
 		this.buttons.add(new ButtonWidget(4, this.width / 2 - 100, this.height / 6 + 144, 200, 20, "Credits and Attribution"));
 		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 168, 98, 20, "Reset to Default"));

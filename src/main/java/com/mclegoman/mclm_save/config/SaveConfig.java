@@ -22,12 +22,12 @@ public class SaveConfig extends ReflectiveConfig {
 	public final TrackedValue<Boolean> skipSaveLoadScreen = this.value(true);
 	@Comment("When set to true, the game will think it's always april fools'.")
 	public final TrackedValue<Boolean> forceAprilFools = this.value(false);
-	@Comment("When set to true, the game will think it's always april fools'.")
-	public final TrackedValue<Boolean> convertClassicInv = this.value(false);
 	@Comment("This sets the theme of the save/load dialog")
 	public final TrackedValue<Theme> dialogTheme = this.value(Theme.system);
 	@Comment("This sets where the save/load dialog opens")
 	public final TrackedValue<String> dialogDir = this.value(QuiltLoader.getGameDir().toString());
+	@Comment("This sets weather or not the player inventory should be converted from a classic save.")
+	public final TrackedValue<Boolean> convertClassicInv = this.value(true);
 	@Comment("This sets the default name of a classic world if it can't be found in the save.")
 	public final TrackedValue<String> convertClassicDefaultName = this.value("A Nice World");
 	@Comment("This sets the default creator of a classic world if it can't be found in the save.")
