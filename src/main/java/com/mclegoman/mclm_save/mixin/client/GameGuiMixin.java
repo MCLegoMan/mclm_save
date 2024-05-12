@@ -7,7 +7,7 @@
 
 package com.mclegoman.mclm_save.mixin.client;
 
-import com.mclegoman.mclm_save.client.april_fools.AprilFoolsHelper;
+import com.mclegoman.mclm_save.client.april_fools.AprilFools;
 import net.minecraft.client.gui.GameGui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +17,6 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public abstract class GameGuiMixin {
 	@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/TextRenderer;drawWithShadow(Ljava/lang/String;III)V", ordinal = 1))
 	private String save$version(String text) {
-		return AprilFoolsHelper.getVersionString(text);
+		return AprilFools.getVersionString(text);
 	}
 }
