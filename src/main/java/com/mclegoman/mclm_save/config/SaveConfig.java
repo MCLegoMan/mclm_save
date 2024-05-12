@@ -14,8 +14,6 @@ import org.quiltmc.config.api.values.TrackedValue;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.loader.api.config.v2.QuiltConfig;
 
-import java.time.Instant;
-
 public class SaveConfig extends ReflectiveConfig {
 	public static final SaveConfig instance = QuiltConfig.create(Data.version.getID(), Data.version.getID(), SaveConfig.class);
 	@Comment("When set to true, the Save and Load level buttons will open the dialog directly.")
@@ -26,8 +24,8 @@ public class SaveConfig extends ReflectiveConfig {
 	public final TrackedValue<Theme> dialogTheme = this.value(Theme.system);
 	@Comment("This sets where the save/load dialog opens")
 	public final TrackedValue<String> dialogDir = this.value(QuiltLoader.getGameDir().toString());
-	@Comment("This sets weather or not the player inventory should be converted from a classic save.")
-	public final TrackedValue<Boolean> convertClassicInv = this.value(true);
+	@Comment("This sets weather or not the player should be converted from a classic save.")
+	public final TrackedValue<Boolean> convertClassicPlayer = this.value(true);
 	@Comment("This sets the default name of a classic world if it can't be found in the save.")
 	public final TrackedValue<String> convertClassicDefaultName = this.value("A Nice World");
 	@Comment("This sets the default creator of a classic world if it can't be found in the save.")

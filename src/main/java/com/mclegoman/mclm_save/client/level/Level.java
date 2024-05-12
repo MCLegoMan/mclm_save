@@ -120,7 +120,7 @@ public abstract class Level {
 		entity.pitch = ((FloatTag)var4.getNbt(1)).tag;
 		Accessors.getEntity(entity).setFallDistance(nbtCompound.m_0000382("FallDistance"));
 		entity.onFireTimer = nbtCompound.getShort("Fire");
-		if (entity instanceof LivingEntity) ((LivingEntity) entity).f_0554371 = nbtCompound.getShort("Air");
+		if (entity instanceof LivingEntity) ((LivingEntity) entity).f_0554371 = nbtCompound.getInt("Air");
 		entity.refreshPositionAndAngles(entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
 		if (entity instanceof PlayerEntity) {
 			TagList inventory = nbtCompound.getList("Inventory");

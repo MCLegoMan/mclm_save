@@ -11,9 +11,7 @@ import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.mclm_save.config.Theme;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.options.OptionsScreen;
 import org.lwjgl.input.Keyboard;
-import org.quiltmc.loader.api.QuiltLoader;
 
 public class ConfigScreen extends Screen {
 	private final Screen parent;
@@ -23,7 +21,7 @@ public class ConfigScreen extends Screen {
 	public final void init() {
 		this.buttons.add(new ButtonWidget(0, this.width / 2 - 150, this.height / 6, 300, 20, "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value()));
 		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 24, 300, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
-		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value()));
+		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value()));
 		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 72, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
 		this.buttons.add(new ButtonWidget(4, this.width / 2 - 100, this.height / 6 + 144, 200, 20, "Credits and Attribution"));
 		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 168, 98, 20, "Reset to Default"));
@@ -41,8 +39,8 @@ public class ConfigScreen extends Screen {
 				button.message = "Force April Fools: " + SaveConfig.instance.forceAprilFools.value();
 			}
 			if (button.id == 2) {
-				SaveConfig.instance.convertClassicInv.setValue(!SaveConfig.instance.convertClassicInv.value());
-				button.message = "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value();
+				SaveConfig.instance.convertClassicPlayer.setValue(!SaveConfig.instance.convertClassicPlayer.value());
+				button.message = "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value();
 			}
 			if (button.id == 3) {
 				Theme theme = SaveConfig.instance.dialogTheme.value();
@@ -85,12 +83,12 @@ public class ConfigScreen extends Screen {
 			if (button.id == 5) {
 				SaveConfig.instance.skipSaveLoadScreen.setValue(SaveConfig.instance.skipSaveLoadScreen.getDefaultValue());
 				SaveConfig.instance.forceAprilFools.setValue(SaveConfig.instance.forceAprilFools.getDefaultValue());
-				SaveConfig.instance.convertClassicInv.setValue(SaveConfig.instance.convertClassicInv.getDefaultValue());
+				SaveConfig.instance.convertClassicPlayer.setValue(SaveConfig.instance.convertClassicPlayer.getDefaultValue());
 				SaveConfig.instance.dialogTheme.setValue(SaveConfig.instance.dialogTheme.getDefaultValue());
 				SaveConfig.instance.dialogDir.setValue(SaveConfig.instance.dialogDir.getDefaultValue());
 				((ButtonWidget)buttons.get(0)).message = "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value();
 				((ButtonWidget)buttons.get(1)).message = "Force April Fools: " + SaveConfig.instance.forceAprilFools.value();
-				((ButtonWidget)buttons.get(2)).message = "Convert Classic Inventory: " + SaveConfig.instance.convertClassicInv.value();
+				((ButtonWidget)buttons.get(2)).message = "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value();
 				((ButtonWidget)buttons.get(3)).message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
 			if (button.id == 6) {

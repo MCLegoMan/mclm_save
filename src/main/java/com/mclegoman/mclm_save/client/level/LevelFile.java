@@ -195,7 +195,7 @@ public final class LevelFile {
 				if (blocks.length == (width * height * length)) {
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
 					TagCompound convertedLevel = createLevel(creator, createTime, name, cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
-					if (SaveConfig.instance.convertClassicInv.value()) {
+					if (SaveConfig.instance.convertClassicPlayer.value()) {
 						TagList entities = new TagList();
 						if (blockMap != null) {
 							blockMap.getClassField().getFields().forEach((field) -> {
@@ -212,16 +212,22 @@ public final class LevelFile {
 														if (invField.getFieldName().equals("count")) {
 															for (Field field2 : ((ArrayField)invField).getArray()) {
 																TagCompound itemData = new TagCompound();
-																itemData.addNbt("Count", new ByteTag(((Integer)field2.getField()).byteValue()));
-																inventory.addNbt(itemData);
+																byte count = ((Integer)field2.getField()).byteValue();
+																itemData.addNbt("Count", new ByteTag(count));
+																if (count != 0) inventory.addNbt(itemData);
 															}
 														} else if (invField.getFieldName().equals("slots")) {
 															int index = 0;
+															int slot = 0;
 															for (Field field2 : ((ArrayField)invField).getArray()) {
-																TagCompound itemData = (TagCompound) inventory.getNbt(index);
-																itemData.addNbt("id", new ByteTag(((Integer)field2.getField()).byteValue()));
-																itemData.addNbt("Slot", new ByteTag(((Integer)index).byteValue()));
-																index++;
+																short id = ((Integer)field2.getField()).shortValue();
+																if (id >= 0) {
+																	TagCompound itemData = (TagCompound) inventory.getNbt(index);
+																	itemData.addNbt("id", new ShortTag(id));
+																	itemData.addNbt("Slot", new ByteTag(((Integer)slot).byteValue()));
+																	index++;
+																}
+																slot++;
 															}
 														}
 													});
@@ -233,8 +239,26 @@ public final class LevelFile {
 											});
 											entityData.getSuperClass().getFields().forEach(mob -> {
 											});
+											TagList motion = new TagList();
+											TagList pos = new TagList();
+											TagList rotation = new TagList();
 											entityData.getSuperClass().getSuperClass().getFields().forEach(entity -> {
+												if (entity.getFieldName().equals("x") || entity.getFieldName().equals("y") || entity.getFieldName().equals("z")) {
+													pos.addNbt(new FloatTag((float) entity.getField()));
+												}
+												if (entity.getFieldName().equals("fallDistance")) {
+													data.addNbt("FallDistance", new FloatTag((float) entity.getField()));
+												}
 											});
+											motion.addNbt(new FloatTag(0.0F));
+											motion.addNbt(new FloatTag(-0.8F));
+											motion.addNbt(new FloatTag(0.0F));
+											rotation.addNbt(new FloatTag(0.0F));
+											rotation.addNbt(new FloatTag(0.0F));
+											data.addNbt("Motion", motion);
+											data.addNbt("Pos", pos);
+											data.addNbt("Rotation", rotation);
+											data.addNbt("Fire", new ShortTag((short) -1));
 											if (!data.isEmpty()) entities.addNbt(data);
 										}
 									});
