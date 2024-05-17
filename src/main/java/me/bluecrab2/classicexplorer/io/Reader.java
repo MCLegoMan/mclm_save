@@ -9,6 +9,9 @@
 
 package me.bluecrab2.classicexplorer.io;
 
+import me.bluecrab2.classicexplorer.fields.Class;
+import me.bluecrab2.classicexplorer.fields.*;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,19 +19,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
-
-import me.bluecrab2.classicexplorer.fields.ArrayField;
-import me.bluecrab2.classicexplorer.fields.BooleanField;
-import me.bluecrab2.classicexplorer.fields.ByteField;
-import me.bluecrab2.classicexplorer.fields.CharField;
-import me.bluecrab2.classicexplorer.fields.Class;
-import me.bluecrab2.classicexplorer.fields.ClassField;
-import me.bluecrab2.classicexplorer.fields.DoubleField;
-import me.bluecrab2.classicexplorer.fields.Field;
-import me.bluecrab2.classicexplorer.fields.FloatField;
-import me.bluecrab2.classicexplorer.fields.IntField;
-import me.bluecrab2.classicexplorer.fields.LongField;
-import me.bluecrab2.classicexplorer.fields.ShortField;
 
 /**
  * The main reader class for the Minecraft Classic file. It works to deserialize 
@@ -149,27 +139,30 @@ public class Reader {
 	 */
 	private static Class readPreClassicOrEarlyClassic(int readInt) throws IOException {
 		Class ret = new Class("Level");
-		ArrayField blocks = new ArrayField("blocks", "[B");
+		BlocksField blocks = new BlocksField("blocks", "[B");
 		ret.addField(blocks);
 
 		// Save (mclm_save) doesn't include the settings class, and we need to read the blocks anyway. - MCLegoMan
 
 		//if(!Settings.skipBlocks) {
 			int i = 0;//Current byte #
-
+			int blockAmount = 256 * 256 * 64;
+			blocks.blocksContents = new byte[blockAmount];
 			//Convert the readInt back to bytes
 			byte[] intBytes = ByteBuffer.allocate(4).putInt(readInt).array();
 			for(byte b : intBytes) {
 				ByteField bField = new ByteField("blocks[" + i + "]");
 				bField.setField(b);
-				blocks.addField(bField);
+				blocks.blocksContents[i] = (byte)bField.getField();
+				//blocks.addField(bField);
 				i++;
 			}
 
-			for(; i < 256 * 256 * 64; i++) {
+			for(; i < blockAmount; i++) {
 				ByteField bField = new ByteField("blocks[" + i + "]");
 				bField.read();
-				blocks.addField(bField);
+				blocks.blocksContents[i] = (byte)bField.getField();
+				//blocks.addField(bField);
 			}
 
 			//Ensure no more bytes remain
@@ -221,20 +214,23 @@ public class Reader {
 		ret.addField(width);
 		ret.addField(height);
 		ret.addField(depth);
-		
-		ArrayField blocks = new ArrayField("blocks", "[B");
+
+		BlocksField blocks = new BlocksField("blocks", "[B");
 		ret.addField(blocks);
 
 		// Save (mclm_save) doesn't include the settings class, and we need to read the blocks anyway. - MCLegoMan
 
 		//if(!Settings.skipBlocks) {
 			int blockAmount = (Short) width.getField() * (Short) height.getField() * (Short) depth.getField();
+//			for(int i = 0; i < blockAmount; i++) {
+//				ByteField bField = new ByteField("blocks[" + i + "]");
+//				bField.read();
+//				blocks.addField(bField);
+//			}
+			blocks.blocksContents = new byte[blockAmount];
 			for(int i = 0; i < blockAmount; i++) {
-				ByteField bField = new ByteField("blocks[" + i + "]");
-				bField.read();
-				blocks.addField(bField);
+				blocks.blocksContents[i] = Reader.din.readByte();
 			}
-			
 			//Ensure no more bytes remain
 			if(din.read() != -1) {
 				throw new IllegalArgumentException("Excess bytes inside file");
@@ -455,8 +451,13 @@ public class Reader {
 		} else if('[' == type) {
 			//Class representing the string name, the class name is set to the string
 			Class stringName = readObject();
-			
-			return new ArrayField(fieldName, stringName.getName());
+
+			// BlocksField was added for mclm_save to help make converting large worlds not hang.
+			if (fieldName.equals("blocks")) {
+				return new BlocksField(fieldName, stringName.getName());
+			} else {
+				return new ArrayField(fieldName, stringName.getName());
+			}
 		} else if('L' == type) {
 			//Class representing the string name, the class name is set to the string
 			Class stringName = readObject();

@@ -1,15 +1,12 @@
 # ![](./assets/logo.png)  
 
-## Save 1.0.0-rc.1 for in-20100110  
+## Save 1.0.0-rc.2 for in-20100110  
 
 ### Changes  
-#### Config  
-- Added default converter values.  
-  - These can only be changed by editing the config file.  
-- Convert Classic Inventory has been renamed to Convert Classic Player.  
-#### Converter  
-- All classic saves will now use ClassicExplorer to convert.  
-- Conversion will fail if the blocks can't be found or if they don't match the output of `height*length*width`.  
+- Blocks are now loaded into a `byte[]` array as bytes, instead of ByteFields in an ArrayField.  
+  - This should make conversion of large worlds faster.  
+- Added an error catcher for a chunk sorter function in WorldRenderer.  
+  - This function was causing issues when loading a large world at some positions, from my limited testing it seems fine.  
 
 #  
 Licensed under LGPL-3.0-or-later.  

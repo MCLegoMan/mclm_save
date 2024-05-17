@@ -56,6 +56,7 @@ public class SaveLoadScreen extends Thread {
 		fileChooser.setFileFilter(var2);
 		ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", isLoad ? "Select a world": "Select directory", InfoScreen.Type.DIRT, false));
 		if ((isLoad ? fileChooser.showOpenDialog(Accessors.MinecraftClient.canvas) : fileChooser.showSaveDialog(Accessors.MinecraftClient.canvas)) == 0) {
+			ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Please wait...", InfoScreen.Type.DIRT, false));
 			LevelFile.file = fileChooser.getSelectedFile();
 			LevelFile.isLoad = isLoad;
 			LevelFile.shouldProcess = true;

@@ -18,23 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class InfoScreen extends Screen {
-	private String title;
-	private List<String> status;
-	private Type type;
-	public boolean canBeClosed;
+	public String title;
+	public List<String> status;
+	public Type type;
 	public String canBeClosedMessage;
-	public InfoScreen(String title, List<String> status, Type type, boolean canBeClosed, String canBeClosedMessage) {
+	public String extraInfoMessage;
+	public InfoScreen(String title, List<String> status, Type type, String canBeClosedMessage, String extraInfoMessage) {
 		this.title = title;
 		this.status = status;
 		this.type = type;
-		this.canBeClosed = canBeClosed;
 		this.canBeClosedMessage = canBeClosedMessage;
+		this.extraInfoMessage = extraInfoMessage;
 		for (String message : status) Data.version.sendToLog(this.type.equals(Type.ERROR) ? Helper.LogType.WARN : Helper.LogType.INFO, message);
 	}
-	public InfoScreen(String title, List<String> status, Type type, boolean canBeClosed) {
-		this(title, status, type, canBeClosed, "Press ESC to return to the game");
-	}
-	public InfoScreen(String title, String status, Type type, boolean canBeClosed, String canBeClosedMessage) {
+	public InfoScreen(String title, String status, Type type, String canBeClosedMessage, String extraInfoMessage) {
 		this.title = title;
 		List<String> messages = new ArrayList<>();
 		if (status.length() <= 64) {
@@ -49,12 +46,21 @@ public final class InfoScreen extends Screen {
 		}
 		this.status = messages;
 		this.type = type;
-		this.canBeClosed = canBeClosed;
 		this.canBeClosedMessage = canBeClosedMessage;
+		this.extraInfoMessage = extraInfoMessage;
 		Data.version.sendToLog(this.type.equals(Type.ERROR) ? Helper.LogType.WARN : Helper.LogType.INFO, status);
 	}
+	public InfoScreen(String title, List<String> status, Type type, boolean canBeClosed, String extraInfoMessage) {
+		this(title, status, type, canBeClosed ? "Press ESC to return to the game" : "", extraInfoMessage);
+	}
+	public InfoScreen(String title, List<String> status, Type type, boolean canBeClosed) {
+		this(title, status, type, canBeClosed ? "Press ESC to return to the game" : "", "");
+	}
+	public InfoScreen(String title, String status, Type type, boolean canBeClosed, String extraInfoMessage) {
+		this(title, status, type, canBeClosed ? "Press ESC to return to the game" : "", extraInfoMessage);
+	}
 	public InfoScreen(String title, String status, Type type, boolean canBeClosed) {
-		this(title, status, type, canBeClosed, "Press ESC to return to the game");
+		this(title, status, type, canBeClosed ? "Press ESC to return to the game" : "", "");
 	}
 	public void render(int i, int j) {
 		if (this.type == Type.DIRT) {
@@ -80,7 +86,8 @@ public final class InfoScreen extends Screen {
 			drawCenteredString(this.textRenderer, string, this.width / 2, y, 16777215);
 			y += 11;
 		}
-		if (this.canBeClosed) drawCenteredString(this.textRenderer, this.canBeClosedMessage, this.width / 2, this.height - 20, 16777215);
+		if (this.canBeClosedMessage != null && !this.canBeClosedMessage.equals("")) drawCenteredString(this.textRenderer, this.canBeClosedMessage, this.width / 2, this.height - 20, 16777215);
+		if (this.extraInfoMessage != null && !this.extraInfoMessage.equals("")) drawCenteredString(this.textRenderer, this.extraInfoMessage, this.width / 2, this.height - 31, 16777215);
 		if (Data.version.isDevelopmentBuild()) {
 			textRenderer.drawWithShadow(Data.version.getName() + " " + Data.version.getFriendlyString(), 2, this.height - 23, 16777215);
 			textRenderer.drawWithShadow("Development Build", 2, this.height - 12, 0xFFAA00);
@@ -88,7 +95,7 @@ public final class InfoScreen extends Screen {
 		super.render(i, j);
 	}
 	public void keyPressed(char chr, int key) {
-		if (this.canBeClosed) {
+		if (this.canBeClosedMessage != null && !this.canBeClosedMessage.equals("")) {
 			if (key == 1) {
 				ClientData.minecraft.m_6408915(null);
 				ClientData.minecraft.m_5690108();

@@ -16,10 +16,8 @@ import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.common.util.Couple;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.releasetypeutils.common.version.Helper;
-import me.bluecrab2.classicexplorer.fields.ArrayField;
+import me.bluecrab2.classicexplorer.fields.*;
 import me.bluecrab2.classicexplorer.fields.Class;
-import me.bluecrab2.classicexplorer.fields.ClassField;
-import me.bluecrab2.classicexplorer.fields.Field;
 import me.bluecrab2.classicexplorer.io.Reader;
 
 import java.io.*;
@@ -106,17 +104,18 @@ public final class LevelFile {
 			return new Couple(LoadOutputType.SUCCESSFUL, "Successfully loaded world!");
 		}
 		else if (filePath.endsWith(".mine")) {
-			return convertWorld(file, "Classic", ".mine");
+			ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting Classic (.mine) world to Indev format", InfoScreen.Type.DIRT, false));
+			return convertWorld(file, ".mine");
 		}
 		else if (filePath.endsWith(".dat")) {
-			return convertWorld(file, "Generic Data File", ".dat");
+			ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting Generic Data File (.dat) world to Indev format", InfoScreen.Type.DIRT, false));
+			return convertWorld(file, ".dat");
 		}
 		else {
 			return new Couple(LoadOutputType.FAIL_INVALID_FORMAT, "Invalid file format!");
 		}
 	}
-	public static Couple convertWorld(File file, String type, String ext) {
-		ClientData.minecraft.m_6408915(new InfoScreen("Loading World", "Converting " + type + " (" + ext + ") world to Indev format", InfoScreen.Type.DIRT, false));
+	public static Couple convertWorld(File file, String ext) {
 		try {
 			Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Loading File");
 			String name = SaveConfig.instance.convertClassicDefaultName.value();
@@ -174,18 +173,20 @@ public final class LevelFile {
 					spawnZ = (short) (int) field.getField();
 				}
 				else if (field.getFieldName().equals("blocks")) {
-					ArrayList<Field> blockArray = ((ArrayField) field).getArray();
-					byte[] blockArray2 = new byte[width * height * length];
-					for (int b = 0; b < blockArray.size(); b++) {
-						blockArray2[b] = (byte) blockArray.get(b).getField();
-					}
-					blocks = blockArray2;
+					//ArrayList<Field> blockArray = ((ArrayField) field).getArray();
+
+					//byte[] blockArray2 = new byte[width * height * length];
+					//for (int b = 0; b < blockArray.size(); b++) {
+					//	blockArray2[b] = (byte) blockArray.get(b).getField();
+					//}
+					//blocks = blockArray2;
+					blocks = ((BlocksField)field).getBlocks();
 				}
 				else if (field.getFieldName().equals("creator")) {
-					creator = (String) field.getField();
+					creator = (((ClassField)field).getString());
 				}
 				else if (field.getFieldName().equals("name")) {
-					name = (String) field.getField();
+					name = (((ClassField)field).getString());
 				}
 				else if (field.getFieldName().equals("blockMap")) {
 					blockMap = ((ClassField) field);
@@ -198,6 +199,9 @@ public final class LevelFile {
 					if (SaveConfig.instance.convertClassicPlayer.value()) {
 						TagList entities = new TagList();
 						if (blockMap != null) {
+							short spawnX1 = spawnX;
+							short spawnY1 = spawnY;
+							short spawnZ1 = spawnZ;
 							blockMap.getClassField().getFields().forEach((field) -> {
 								if (field.getFieldName().equals("all")) {
 									((ClassField)field).getArrayList().forEach(entityData -> {
@@ -250,6 +254,9 @@ public final class LevelFile {
 													data.addNbt("FallDistance", new FloatTag((float) entity.getField()));
 												}
 											});
+											//pos.addNbt(new FloatTag(spawnX1));
+											//pos.addNbt(new FloatTag(spawnY1));
+											//pos.addNbt(new FloatTag(spawnZ1));
 											motion.addNbt(new FloatTag(0.0F));
 											motion.addNbt(new FloatTag(-0.8F));
 											motion.addNbt(new FloatTag(0.0F));
