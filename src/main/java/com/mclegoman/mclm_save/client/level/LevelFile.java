@@ -149,19 +149,22 @@ public final class LevelFile {
 					createTime = (long) field.getField();
 				}
 				else if (field.getFieldName().equals("depth")) {
-					height = (short) (int) field.getField(); // Was changed from "depth" to "height" in Indev.
+					// We get the short value of the stringified value as it could either be a short or an int, depending on the version it was saved in.
+					height = Short.parseShort(String.valueOf(field.getField())); // Was changed from "depth" to "height" in Indev.
 				}
 				else if (field.getFieldName().equals("fogColor")) {
 					fogColor = (int) field.getField();
 				}
 				else if (field.getFieldName().equals("height")) {
-					length = (short) (int) field.getField(); // Was changed from "height" to "length" in Indev.
+					// We get the short value of the stringified value as it could either be a short or an int, depending on the version it was saved in.
+					length = Short.parseShort(String.valueOf(field.getField())); // Was changed from "height" to "length" in Indev.
 				}
 				else if (field.getFieldName().equals("skyColor")) {
 					skyColor = (int) field.getField();
 				}
 				else if (field.getFieldName().equals("width")) {
-					width = (short) (int) field.getField();
+					// We get the short value of the stringified value as it could either be a short or an int, depending on the version it was saved in.
+					width = Short.parseShort(String.valueOf(field.getField()));
 				}
 				else if (field.getFieldName().equals("spawnX")) {
 					spawnX = (short) (int) field.getField();
@@ -199,9 +202,6 @@ public final class LevelFile {
 					if (SaveConfig.instance.convertClassicPlayer.value()) {
 						TagList entities = new TagList();
 						if (blockMap != null) {
-							short spawnX1 = spawnX;
-							short spawnY1 = spawnY;
-							short spawnZ1 = spawnZ;
 							blockMap.getClassField().getFields().forEach((field) -> {
 								if (field.getFieldName().equals("all")) {
 									((ClassField)field).getArrayList().forEach(entityData -> {
@@ -254,9 +254,6 @@ public final class LevelFile {
 													data.addNbt("FallDistance", new FloatTag((float) entity.getField()));
 												}
 											});
-											//pos.addNbt(new FloatTag(spawnX1));
-											//pos.addNbt(new FloatTag(spawnY1));
-											//pos.addNbt(new FloatTag(spawnZ1));
 											motion.addNbt(new FloatTag(0.0F));
 											motion.addNbt(new FloatTag(-0.8F));
 											motion.addNbt(new FloatTag(0.0F));
