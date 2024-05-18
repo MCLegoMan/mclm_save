@@ -24,6 +24,10 @@ public class SaveConfig extends ReflectiveConfig {
 	public final TrackedValue<Theme> dialogTheme = this.value(Theme.system);
 	@Comment("This sets where the save/load dialog opens")
 	public final TrackedValue<String> dialogDir = this.value(QuiltLoader.getGameDir().toString());
+	@Comment("This sets the load dialog filter.")
+	public final TrackedValue<Filter> loadDialogFilter = this.value(Filter.minecraft);
+	@Comment("This sets the save dialog filter.")
+	public final TrackedValue<Filter> saveDialogFilter = this.value(Filter.indev);
 	@Comment("This sets weather or not the player should be converted from a classic save.")
 	public final TrackedValue<Boolean> convertClassicPlayer = this.value(true);
 	@Comment("This sets the default name of a classic world if it can't be found in the save.")
