@@ -52,9 +52,17 @@ public class SaveLoadScreen extends Thread {
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, "Error setting Save/Load dialog theme: " + error.getLocalizedMessage());
 		}
-		FileNameExtensionFilter var2 = isLoad ? new FileNameExtensionFilter("Minecraft levels (.mclevel, .mine, .dat)", "mclevel", "mine", "dat") : new FileNameExtensionFilter("Minecraft level (.mclevel)", "mclevel");
-		fileChooser.setFileFilter(var2);
-		ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", isLoad ? "Select a world": "Select directory", InfoScreen.Type.DIRT, false));
+		FileNameExtensionFilter[] filters = new FileNameExtensionFilter[3];
+		if (isLoad) {
+			filters[0] = new FileNameExtensionFilter("Minecraft level (.mclevel, .mine, .dat)", "mclevel", "mine", "dat");
+			filters[1] = new FileNameExtensionFilter("Indev Minecraft level (.mclevel)", "mclevel");
+			filters[2] = new FileNameExtensionFilter("Classic Minecraft level (.mine, .dat)", "mine", "dat");
+		} else {
+			filters[0] = new FileNameExtensionFilter("Indev Minecraft level (.mclevel)", "mclevel");
+		}
+		for (FileNameExtensionFilter filter : filters) fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filters[0]);
+			ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", isLoad ? "Select a world": "Select directory", InfoScreen.Type.DIRT, false));
 		if ((isLoad ? fileChooser.showOpenDialog(Accessors.MinecraftClient.canvas) : fileChooser.showSaveDialog(Accessors.MinecraftClient.canvas)) == 0) {
 			ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Please wait...", InfoScreen.Type.DIRT, false));
 			LevelFile.file = fileChooser.getSelectedFile();
