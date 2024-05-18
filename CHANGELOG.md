@@ -11,6 +11,10 @@
   - This function was causing issues when loading a large world at some positions, from my limited testing it seems fine.  
 - The death screen will now close if the player has more than 0 health.
   - This fixes an issue where on loading a world after you have died, the death screen would still be open.
+- The issue that made the window stop responding after requesting the window to be closed has been fixed.
+  - This issue affected all 110 mods, and wasn't caused by mclm_save, but we wanted to fix it anyway!
+  - mclm_debug 1.1.0 will also fix this issue.
+
 #  
 Licensed under LGPL-3.0-or-later.  
 
