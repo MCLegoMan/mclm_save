@@ -10,7 +10,6 @@ package com.mclegoman.mclm_save.client;
 import com.mclegoman.mclm_save.client.april_fools.AprilFools;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.level.LevelFile;
-import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.common.util.Couple;
 import net.minecraft.client.gui.screen.DeathScreen;
 import org.quiltmc.loader.api.ModContainer;

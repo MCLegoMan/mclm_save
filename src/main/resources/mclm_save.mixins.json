@@ -14,12 +14,13 @@
 		"client.SaveScreenMixin",
 		"client.WorldMixin",
 		"client.accessors.EntityAccessor",
-		"client.accessors.PlayerEntityAccessor"
+		"client.accessors.PlayerEntityAccessor",
+		"client.WorldRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
 	},
 	"mixins": [
-		"client.WorldRendererMixin"
+		"common.exit.MinecraftAppletMixin"
 	]
 }
