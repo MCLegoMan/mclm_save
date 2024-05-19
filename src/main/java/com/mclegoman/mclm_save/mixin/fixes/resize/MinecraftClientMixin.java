@@ -27,6 +27,8 @@ public abstract class MinecraftClientMixin {
 	@Inject(method = "m_8832598", at = @At(value = "TAIL"))
 	private void save$tick(CallbackInfo ci) {
 		// Resizes the game to fit in the game window.
+		// TODO: Fix Overlays not being in the right place after resizing.
+		// TODO: Fix Screens not being updated after resizing, and fix screen button positions.
 		try {
 			if (LevelFile.dialog == null || !LevelFile.dialog.isAlive()) {
 				this.f_0545414 = this.f_0769488.getParent().getWidth();
