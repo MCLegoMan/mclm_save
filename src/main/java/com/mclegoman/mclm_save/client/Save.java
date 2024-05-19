@@ -21,6 +21,8 @@ public class Save {
 	public static void onTick(ModContainer mod) {
 		if (LevelFile.shouldProcess) {
 			LevelFile.shouldProcess = false;
+			LevelFile.dialog.interrupt();
+			LevelFile.dialog = null;
 			LevelFile.processWorld();
 		}
 		if (LevelFile.shouldLoad != null) {

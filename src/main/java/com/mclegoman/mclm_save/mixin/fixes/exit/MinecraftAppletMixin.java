@@ -5,7 +5,7 @@
     Licence: GNU LGPLv3
 */
 
-package com.mclegoman.mclm_save.mixin.common.exit;
+package com.mclegoman.mclm_save.mixin.fixes.exit;
 
 import com.mclegoman.mclm_save.common.data.Data;
 import net.minecraft.client.MinecraftApplet;

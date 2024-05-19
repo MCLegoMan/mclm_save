@@ -29,16 +29,19 @@ public abstract class MinecraftClientMixin {
 	@Shadow protected abstract void m_8603410(World world);
 	@Inject(method = "m_8832598", at = @At(value = "TAIL"))
 	private void save$tick(CallbackInfo ci) {
+		// Updates Canvas Accessor and checks if the world needs to load.
 		Accessors.MinecraftClient.canvas = this.f_0769488;
 		if (Accessors.MinecraftClient.shouldLoad && Accessors.MinecraftClient.world != null) {
 			Accessors.MinecraftClient.shouldLoad = false;
 			this.m_8603410(Accessors.MinecraftClient.world);
 		}
+		// Runs our Save::onTick function.
 		Optional<ModContainer> modContainer = QuiltLoader.getModContainer(Data.version.getID());
 		modContainer.ifPresent(Save::onTick);
 	}
 	@Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GameGui;<init>(Lnet/minecraft/client/C_5664496;II)V"))
 	private void save$run(CallbackInfo ci) {
+		// Runs our Save::onInitialize function.
 		Optional<ModContainer> modContainer = QuiltLoader.getModContainer(Data.version.getID());
 		modContainer.ifPresent(Save::onInitialize);
 	}

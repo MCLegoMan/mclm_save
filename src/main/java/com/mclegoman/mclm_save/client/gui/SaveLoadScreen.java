@@ -30,80 +30,84 @@ public class SaveLoadScreen extends Thread {
 		this.isLoad = isLoad;
 	}
 	public void run() {
-		File openInPath = new File(SaveConfig.instance.dialogDir.value());
-		if (!openInPath.exists() || !openInPath.isDirectory()) openInPath = new File(SaveConfig.instance.dialogDir.getDefaultValue());
-		JFileChooser fileChooser = new JFileChooser(openInPath);
-		try {
-			Theme theme = SaveConfig.instance.dialogTheme.value();
-			if (theme.equals(Theme.system)) {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} else if (theme.equals(Theme.light)) {
-				UIManager.setLookAndFeel(new FlatIntelliJLaf());
+		if (Accessors.MinecraftClient.canvas != null) {
+			File openInPath = new File(SaveConfig.instance.dialogDir.value());
+			if (!openInPath.exists() || !openInPath.isDirectory()) openInPath = new File(SaveConfig.instance.dialogDir.getDefaultValue());
+			JFileChooser fileChooser = new JFileChooser(openInPath);
+			try {
+				Theme theme = SaveConfig.instance.dialogTheme.value();
+				if (theme.equals(Theme.system)) {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} else if (theme.equals(Theme.light)) {
+					UIManager.setLookAndFeel(new FlatIntelliJLaf());
+				}
+				else if (theme.equals(Theme.dark)) {
+					UIManager.setLookAndFeel(new FlatDarculaLaf());
+				}
+				else if (theme.equals(Theme.metal)) {
+					UIManager.setLookAndFeel(new MetalLookAndFeel());
+				}
+				else if (theme.equals(Theme.material)) {
+					UIManager.setLookAndFeel(new MaterialLookAndFeel());
+				}
+				fileChooser.updateUI();
+			} catch (Exception error) {
+				Data.version.sendToLog(Helper.LogType.WARN, "Error setting Save/Load dialog theme: " + error.getLocalizedMessage());
 			}
-			else if (theme.equals(Theme.dark)) {
-				UIManager.setLookAndFeel(new FlatDarculaLaf());
-			}
-			else if (theme.equals(Theme.metal)) {
-				UIManager.setLookAndFeel(new MetalLookAndFeel());
-			}
-			else if (theme.equals(Theme.material)) {
-				UIManager.setLookAndFeel(new MaterialLookAndFeel());
-			}
-			fileChooser.updateUI();
-		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, "Error setting Save/Load dialog theme: " + error.getLocalizedMessage());
-		}
-		FileNameExtensionFilter[] filters = new FileNameExtensionFilter[3];
-		if (isLoad) {
-			filters[0] = new FileNameExtensionFilter("Minecraft level (.mclevel, .mine, .dat)", "mclevel", "mine", "dat");
-			filters[1] = new FileNameExtensionFilter("Indev Minecraft level (.mclevel)", "mclevel");
-			filters[2] = new FileNameExtensionFilter("Classic Minecraft level (.mine, .dat)", "mine", "dat");
-		} else {
-			filters[0] = new FileNameExtensionFilter("Indev Minecraft level (.mclevel)", "mclevel");
-		}
-		for (FileNameExtensionFilter filter : filters) fileChooser.addChoosableFileFilter(filter);
-		if (isLoad) {
-			if (SaveConfig.instance.loadDialogFilter.value() == Filter.minecraft) {
-				fileChooser.setFileFilter(filters[0]);
-			} else if (SaveConfig.instance.loadDialogFilter.value() == Filter.indev) {
-				fileChooser.setFileFilter(filters[1]);
-			} else if (SaveConfig.instance.loadDialogFilter.value() == Filter.classic) {
-				fileChooser.setFileFilter(filters[2]);
-			}
-		} else {
-			if (SaveConfig.instance.saveDialogFilter.value() == Filter.indev) {
-				fileChooser.setFileFilter(filters[0]);
-			}
-		}
-		ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", isLoad ? "Select a world": "Select directory", InfoScreen.Type.DIRT, false));
-		if ((isLoad ? fileChooser.showOpenDialog(Accessors.MinecraftClient.canvas) : fileChooser.showSaveDialog(Accessors.MinecraftClient.canvas)) == 0) {
-			ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Please wait...", InfoScreen.Type.DIRT, false));
-			LevelFile.file = fileChooser.getSelectedFile();
-			LevelFile.isLoad = isLoad;
-			LevelFile.shouldProcess = true;
-		} else {
-			ClientData.minecraft.m_6408915(null);
-		}
-		if (LevelFile.file != null) {
-			SaveConfig.instance.dialogDir.setValue(String.valueOf(LevelFile.file.toPath().getParent().toFile()));
+			FileNameExtensionFilter[] filters = new FileNameExtensionFilter[3];
 			if (isLoad) {
-				if (fileChooser.getFileFilter() == filters[0]) {
-					SaveConfig.instance.loadDialogFilter.setValue(Filter.minecraft);
-				} else if (fileChooser.getFileFilter() == filters[1]) {
-					SaveConfig.instance.loadDialogFilter.setValue(Filter.indev);
-				} else if (fileChooser.getFileFilter() == filters[2]) {
-					SaveConfig.instance.loadDialogFilter.setValue(Filter.classic);
-				} else {
-					SaveConfig.instance.loadDialogFilter.setValue(Filter.all);
+				filters[0] = new FileNameExtensionFilter("Minecraft level (.mclevel, .mine, .dat)", "mclevel", "mine", "dat");
+				filters[1] = new FileNameExtensionFilter("Indev Minecraft level (.mclevel)", "mclevel");
+				filters[2] = new FileNameExtensionFilter("Classic Minecraft level (.mine, .dat)", "mine", "dat");
+			} else {
+				filters[0] = new FileNameExtensionFilter("Indev Minecraft level (.mclevel)", "mclevel");
+			}
+			for (FileNameExtensionFilter filter : filters) fileChooser.addChoosableFileFilter(filter);
+			if (isLoad) {
+				if (SaveConfig.instance.loadDialogFilter.value() == Filter.minecraft) {
+					fileChooser.setFileFilter(filters[0]);
+				} else if (SaveConfig.instance.loadDialogFilter.value() == Filter.indev) {
+					fileChooser.setFileFilter(filters[1]);
+				} else if (SaveConfig.instance.loadDialogFilter.value() == Filter.classic) {
+					fileChooser.setFileFilter(filters[2]);
 				}
 			} else {
-				if (fileChooser.getFileFilter() == filters[0]) {
-					SaveConfig.instance.saveDialogFilter.setValue(Filter.indev);
-				} else {
-					SaveConfig.instance.saveDialogFilter.setValue(Filter.all);
+				if (SaveConfig.instance.saveDialogFilter.value() == Filter.indev) {
+					fileChooser.setFileFilter(filters[0]);
 				}
 			}
+			ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", isLoad ? "Select a world": "Select directory", InfoScreen.Type.DIRT, false));
+			if ((isLoad ? fileChooser.showOpenDialog(Accessors.MinecraftClient.canvas) : fileChooser.showSaveDialog(Accessors.MinecraftClient.canvas)) == 0) {
+				ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Please wait...", InfoScreen.Type.DIRT, false));
+				LevelFile.file = fileChooser.getSelectedFile();
+				LevelFile.isLoad = isLoad;
+				LevelFile.shouldProcess = true;
+			} else {
+				ClientData.minecraft.m_6408915(null);
+			}
+			if (LevelFile.file != null) {
+				SaveConfig.instance.dialogDir.setValue(String.valueOf(LevelFile.file.toPath().getParent().toFile()));
+				if (isLoad) {
+					if (fileChooser.getFileFilter() == filters[0]) {
+						SaveConfig.instance.loadDialogFilter.setValue(Filter.minecraft);
+					} else if (fileChooser.getFileFilter() == filters[1]) {
+						SaveConfig.instance.loadDialogFilter.setValue(Filter.indev);
+					} else if (fileChooser.getFileFilter() == filters[2]) {
+						SaveConfig.instance.loadDialogFilter.setValue(Filter.classic);
+					} else {
+						SaveConfig.instance.loadDialogFilter.setValue(Filter.all);
+					}
+				} else {
+					if (fileChooser.getFileFilter() == filters[0]) {
+						SaveConfig.instance.saveDialogFilter.setValue(Filter.indev);
+					} else {
+						SaveConfig.instance.saveDialogFilter.setValue(Filter.all);
+					}
+				}
+			}
+			interrupt();
+		} else {
+			ClientData.minecraft.m_6408915(new InfoScreen("Saving/Loading World", "Canvas doesn't seem to exist.", InfoScreen.Type.ERROR, true));
 		}
-		interrupt();
 	}
 }

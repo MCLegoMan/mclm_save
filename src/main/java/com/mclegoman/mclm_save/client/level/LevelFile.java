@@ -31,10 +31,11 @@ public final class LevelFile {
 	public static boolean isLoad;
 	public static boolean shouldProcess;
 	public static Couple shouldLoad;
+	public static SaveLoadScreen dialog;
 	public static void load(boolean isLoad) {
 		try {
-			SaveLoadScreen screen = new SaveLoadScreen(isLoad);
-			screen.start();
+			dialog = new SaveLoadScreen(isLoad);
+			dialog.start();
 		} finally {
 			ClientData.minecraft.m_6408915(new InfoScreen(isLoad ? "Loading World" : "Saving World", "Please Wait", InfoScreen.Type.DIRT, false));
 		}
