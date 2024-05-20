@@ -16,8 +16,10 @@
 		"client.WorldRendererMixin",
 		"client.accessors.EntityAccessor",
 		"client.accessors.PlayerEntityAccessor",
+		"client.accessors.ScreenAccessor",
 		"fixes.exit.MinecraftAppletMixin",
-		"fixes.resize.MinecraftClientMixin"
+		"fixes.resize.MinecraftClientMixin",
+		"fixes.resize.GameGuiMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
