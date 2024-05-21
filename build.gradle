@@ -50,7 +50,6 @@ dependencies {
 
 	// Save/Load Dialog Themes
 	include(implementation "com.formdev:flatlaf:3.4.1")
-	include(implementation "io.github.vincenzopalazzo:material-ui-swing:1.1.4")
 
 	// Development Environment Only
 	modImplementation "maven.modrinth:mclm_debug:1.1.0-release.1+in-20100110"

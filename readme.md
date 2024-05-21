@@ -14,8 +14,6 @@ Save allows the player to save, load, and convert worlds in older versions that 
   - Licensed under [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt).  
 - [FlatLaf](https://github.com/JFormDesigner/FlatLaf/).
   - Licensed under [Apache 2.0](https://github.com/JFormDesigner/FlatLaf/blob/main/LICENSE).  
-- [Material UI Swing](https://github.com/vincenzopalazzo/material-ui-swing).  
-  - Licensed under [MIT](https://github.com/vincenzopalazzo/material-ui-swing/blob/master/LICENSE).  
 - [Feather Mappings](https://github.com/OrnitheMC/feather-mappings).  
   - Licensed under [CC0-1.0](https://github.com/OrnitheMC/feather-mappings/blob/main/LICENSE).  
 - [Quilt Loader](https://quiltmc.org/).  

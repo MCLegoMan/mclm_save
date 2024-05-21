@@ -46,7 +46,7 @@ public class ConfigScreen extends Screen {
 				Theme theme = SaveConfig.instance.dialogTheme.value();
 				if (theme.equals(Theme.system)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-						SaveConfig.instance.dialogTheme.setValue(Theme.material);
+						SaveConfig.instance.dialogTheme.setValue(Theme.metal);
 					} else {
 						SaveConfig.instance.dialogTheme.setValue(Theme.light);
 					}
@@ -65,12 +65,6 @@ public class ConfigScreen extends Screen {
 				} else if (theme.equals(Theme.metal)) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 						SaveConfig.instance.dialogTheme.setValue(Theme.dark);
-					} else {
-						SaveConfig.instance.dialogTheme.setValue(Theme.material);
-					}
-				} else if (theme.equals(Theme.material)) {
-					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-						SaveConfig.instance.dialogTheme.setValue(Theme.metal);
 					} else {
 						SaveConfig.instance.dialogTheme.setValue(Theme.system);
 					}

@@ -17,7 +17,6 @@ import com.mclegoman.mclm_save.config.Filter;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.mclm_save.config.Theme;
 import com.mclegoman.releasetypeutils.common.version.Helper;
-import mdlaf.MaterialLookAndFeel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -46,9 +45,6 @@ public class SaveLoadScreen extends Thread {
 				}
 				else if (theme.equals(Theme.metal)) {
 					UIManager.setLookAndFeel(new MetalLookAndFeel());
-				}
-				else if (theme.equals(Theme.material)) {
-					UIManager.setLookAndFeel(new MaterialLookAndFeel());
 				}
 				fileChooser.updateUI();
 			} catch (Exception error) {
