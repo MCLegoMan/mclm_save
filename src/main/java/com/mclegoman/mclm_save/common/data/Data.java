@@ -14,7 +14,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.openal.AL;
 
 public class Data {
-	public static Version version = new Version("Save", "mclm_save", 1, 0, 0, Helper.ReleaseType.RELEASE_CANDIDATE, 3);
+	public static Version version = new Version("Save", "mclm_save", 1, 0, 0, Helper.ReleaseType.RELEASE_CANDIDATE, 4);
 	public static void exit(int status) {
 		version.sendToLog(Helper.LogType.INFO, "Halting with status code: " + status + "!");
 		if (Mouse.isCreated()) Mouse.destroy();

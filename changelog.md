@@ -1,10 +1,10 @@
 # ![](./assets/logo.png)  
 
-## Save 1.0.0-rc.3 for in-20100110  
+## Save 1.0.0-rc.4 for in-20100110
 
 ### Changes  
-- The issue that made the game not be resized with the window has been fixed.
-  - This issue affected all 110 mods, and wasn't caused by mclm_save, but we wanted to fix it anyway!
+- Removed `Material` dialog theme.
+  - _This theme caused class not found issues in builds._
 
 #  
 Licensed under LGPL-3.0-or-later.  
