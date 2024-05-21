@@ -18,8 +18,9 @@
 		"client.accessors.PlayerEntityAccessor",
 		"client.accessors.ScreenAccessor",
 		"fixes.exit.MinecraftAppletMixin",
+		"fixes.resize.GameGuiMixin",
 		"fixes.resize.MinecraftClientMixin",
-		"fixes.resize.GameGuiMixin"
+		"client.EntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
