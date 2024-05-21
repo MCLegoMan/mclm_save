@@ -167,23 +167,16 @@ public final class LevelFile {
 					// We get the short value of the stringified value as it could either be a short or an int, depending on the version it was saved in.
 					width = Short.parseShort(String.valueOf(field.getField()));
 				}
-				else if (field.getFieldName().equals("spawnX")) {
+				else if (field.getFieldName().equals("xSpawn")) {
 					spawnX = (short) (int) field.getField();
 				}
-				else if (field.getFieldName().equals("spawnY")) {
+				else if (field.getFieldName().equals("ySpawn")) {
 					spawnY = (short) (int) field.getField();
 				}
-				else if (field.getFieldName().equals("spawnZ")) {
+				else if (field.getFieldName().equals("zSpawn")) {
 					spawnZ = (short) (int) field.getField();
 				}
 				else if (field.getFieldName().equals("blocks")) {
-					//ArrayList<Field> blockArray = ((ArrayField) field).getArray();
-
-					//byte[] blockArray2 = new byte[width * height * length];
-					//for (int b = 0; b < blockArray.size(); b++) {
-					//	blockArray2[b] = (byte) blockArray.get(b).getField();
-					//}
-					//blocks = blockArray2;
 					blocks = ((BlocksField)field).getBlocks();
 				}
 				else if (field.getFieldName().equals("creator")) {
