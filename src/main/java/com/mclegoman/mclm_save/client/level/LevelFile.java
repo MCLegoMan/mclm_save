@@ -66,7 +66,7 @@ public final class LevelFile {
 						if (!file.getPath().toLowerCase().endsWith(".mclevel")) file = new File(file.getPath() + ".mclevel");
 						Data.version.sendToLog(Helper.LogType.INFO, "Process World: Saving World...");
 						try {
-							(new World()).save(ClientData.minecraft.f_5854988, file);
+							new World().save(ClientData.minecraft.f_5854988, file);
 						} catch (Exception error) {
 							ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to save world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 						} finally {

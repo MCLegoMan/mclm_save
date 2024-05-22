@@ -64,4 +64,6 @@ public class SaveConfig extends ReflectiveConfig {
 	public final TrackedValue<Integer> convertClassicDefaultLength = this.value(256);
 	@Comment("This sets the default width of a classic world if it can't be found in the save.")
 	public final TrackedValue<Integer> convertClassicDefaultWidth = this.value(256);
+	@Comment("When set to true, the current world will be saved to %rundir%/level.mclevel")
+	public final TrackedValue<Boolean> saveWorldOnExit = this.value(true);
 }

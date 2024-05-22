@@ -23,9 +23,10 @@ public class ConfigScreen extends Screen {
 		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 24, 300, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
 		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value()));
 		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 72, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
-		this.buttons.add(new ButtonWidget(4, this.width / 2 - 100, this.height / 6 + 144, 200, 20, "Credits and Attribution"));
-		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 168, 98, 20, "Reset to Default"));
-		this.buttons.add(new ButtonWidget(6, this.width / 2 + 2, this.height / 6 + 168, 98, 20, "Done"));
+		this.buttons.add(new ButtonWidget(4, this.width / 2 - 150, this.height / 6 + 96, 300, 20, "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value()));
+		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 144, 200, 20, "Credits and Attribution"));
+		this.buttons.add(new ButtonWidget(6, this.width / 2 - 100, this.height / 6 + 168, 98, 20, "Reset to Default"));
+		this.buttons.add(new ButtonWidget(7, this.width / 2 + 2, this.height / 6 + 168, 98, 20, "Done"));
 	}
 
 	protected void buttonClicked(net.minecraft.client.gui.widget.ButtonWidget button) {
@@ -72,9 +73,13 @@ public class ConfigScreen extends Screen {
 				button.message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
 			if (button.id == 4) {
-				ClientData.minecraft.m_6408915(new CreditsScreen(new ConfigScreen(this.parent)));
+				SaveConfig.instance.saveWorldOnExit.setValue(!SaveConfig.instance.saveWorldOnExit.value());
+				button.message = "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value();
 			}
 			if (button.id == 5) {
+				ClientData.minecraft.m_6408915(new CreditsScreen(new ConfigScreen(this.parent)));
+			}
+			if (button.id == 6) {
 				SaveConfig.instance.skipSaveLoadScreen.setValue(SaveConfig.instance.skipSaveLoadScreen.getDefaultValue());
 				SaveConfig.instance.forceAprilFools.setValue(SaveConfig.instance.forceAprilFools.getDefaultValue());
 				SaveConfig.instance.convertClassicPlayer.setValue(SaveConfig.instance.convertClassicPlayer.getDefaultValue());
@@ -85,7 +90,7 @@ public class ConfigScreen extends Screen {
 				((ButtonWidget)buttons.get(2)).message = "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value();
 				((ButtonWidget)buttons.get(3)).message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
 			}
-			if (button.id == 6) {
+			if (button.id == 7) {
 				SaveConfig.instance.save();
 				ClientData.minecraft.m_6408915(this.parent);
 			}
