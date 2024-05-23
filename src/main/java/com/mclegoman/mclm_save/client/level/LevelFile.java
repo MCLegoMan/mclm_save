@@ -123,14 +123,14 @@ public final class LevelFile {
 			String creator = SaveConfig.instance.convertClassicDefaultCreator.value();
 			long createTime = Instant.now().getEpochSecond();
 			int cloudColor = SaveConfig.instance.convertClassicDefaultCloudColor.value();
-			short cloudHeight = SaveConfig.instance.convertClassicDefaultCloudHeight.value().shortValue();
+			//short cloudHeight = SaveConfig.instance.convertClassicDefaultCloudHeight.value().shortValue();
 			int fogColor = SaveConfig.instance.convertClassicDefaultFogColor.value();
-			byte skyBrightness = SaveConfig.instance.convertClassicDefaultSkyBrightness.value().byteValue();
+			//byte skyBrightness = SaveConfig.instance.convertClassicDefaultSkyBrightness.value().byteValue();
 			int skyColor = SaveConfig.instance.convertClassicDefaultSkyColor.value();
-			short surroundingGroundHeight = SaveConfig.instance.convertClassicDefaultSurroundingGroundHeight.value().shortValue();
+			//short surroundingGroundHeight = SaveConfig.instance.convertClassicDefaultSurroundingGroundHeight.value().shortValue();
 			byte surroundingGroundType = SaveConfig.instance.convertClassicDefaultSurroundingGroundType.value().byteValue();
 			short surroundingWaterHeight = SaveConfig.instance.convertClassicDefaultSurroundingWaterHeight.value().shortValue();
-			byte surroundingWaterType = SaveConfig.instance.convertClassicDefaultSurroundingWaterType.value().byteValue();
+			//byte surroundingWaterType = SaveConfig.instance.convertClassicDefaultSurroundingWaterType.value().byteValue();
 			short spawnX = SaveConfig.instance.convertClassicDefaultSpawnX.value().shortValue();
 			short spawnY = SaveConfig.instance.convertClassicDefaultSpawnY.value().shortValue();
 			short spawnZ = SaveConfig.instance.convertClassicDefaultSpawnZ.value().shortValue();
@@ -192,7 +192,7 @@ public final class LevelFile {
 			try {if (blocks != null) {
 				if (blocks.length == (width * height * length)) {
 					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
-					TagCompound convertedLevel = createLevel(creator, createTime, name, cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
+					TagCompound convertedLevel = createLevel(creator, createTime, name, cloudColor, fogColor, skyColor, surroundingGroundType, surroundingWaterHeight, spawnX, spawnY, spawnZ, height, length, width, blocks);
 					if (SaveConfig.instance.convertClassicPlayer.value()) {
 						TagList entities = new TagList();
 						if (blockMap != null) {
@@ -296,7 +296,7 @@ public final class LevelFile {
 			return new Couple(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
 		}
 	}
-	public static TagCompound createLevel(String creator, long createTime, String name, int cloudColor, short cloudHeight, int fogColor, byte skyBrightness, int skyColor, short surroundingGroundHeight, byte surroundingGroundType, short surroundingWaterHeight, byte surroundingWaterType, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks) {
+	public static TagCompound createLevel(String creator, long createTime, String name, int cloudColor, int fogColor, int skyColor, byte surroundingGroundType, short surroundingWaterHeight, short spawnX, short spawnY, short spawnZ, short height, short length, short width, byte[] blocks) {
 		TagCompound Level = new TagCompound();
 		TagCompound About = new TagCompound();
 		About.addNbt("Author", new StringTag(creator));
@@ -305,14 +305,14 @@ public final class LevelFile {
 		Level.addNbt("About", About);
 		TagCompound Environment = new TagCompound();
 		Environment.addNbt("CloudColor", new IntTag(cloudColor));
-		Environment.addNbt("CloudHeight", new ShortTag(cloudHeight));
+		//Environment.addNbt("CloudHeight", new ShortTag(cloudHeight));
 		Environment.addNbt("FogColor", new IntTag(fogColor));
-		Environment.addNbt("SkyBrightness", new ByteTag(skyBrightness));
+		//Environment.addNbt("SkyBrightness", new ByteTag(skyBrightness));
 		Environment.addNbt("SkyColor", new IntTag(skyColor));
-		Environment.addNbt("SurroundingGroundHeight", new ShortTag(surroundingGroundHeight));
+		//Environment.addNbt("SurroundingGroundHeight", new ShortTag(surroundingGroundHeight));
 		Environment.addNbt("SurroundingGroundType", new ByteTag(surroundingGroundType));
 		Environment.addNbt("SurroundingWaterHeight", new ShortTag(surroundingWaterHeight));
-		Environment.addNbt("SurroundingWaterType", new ByteTag(surroundingWaterType));
+		//Environment.addNbt("SurroundingWaterType", new ByteTag(surroundingWaterType));
 		Level.addNbt("Environment", Environment);
 		TagCompound Map = new TagCompound();
 		TagList Spawn = new TagList();

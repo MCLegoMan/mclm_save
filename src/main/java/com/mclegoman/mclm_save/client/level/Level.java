@@ -60,11 +60,11 @@ public abstract class Level {
 		world.f_1709243 = environment.getInt("CloudColor");
 		world.f_3766825 = environment.getInt("SkyColor");
 		world.f_2946178 = environment.getInt("FogColor");
-		world.f_6732352 = (float)environment.getByte("SkyBrightness") / 100.0F;
-		world.f_4971921 = environment.getShort("CloudHeight");
-		world.f_0183464 = environment.getShort("SurroundingGroundHeight");
+		//world.f_6732352 = (float)environment.getByte("SkyBrightness") / 100.0F;
+		//world.f_4971921 = environment.getShort("CloudHeight");
+		//world.f_0183464 = environment.getShort("SurroundingGroundHeight");
 		world.f_8873427 = environment.getShort("SurroundingWaterHeight");
-		world.f_3241378 = environment.getByte("SurroundingWaterType");
+		//world.f_3241378 = environment.getByte("SurroundingWaterType");
 		byte[] blocks = map.m_5601145("Blocks");
 		world.m_2817546(width, height, length, blocks);
 		if (this.f_1154694 != null) {
@@ -87,7 +87,7 @@ public abstract class Level {
 
 	public final void save(World world, File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);
-		TagCompound level = LevelFile.createLevel("Player", Instant.now().getEpochSecond(), "A Nice World", world.f_1709243, (short) world.f_4971921, world.f_2946178, (byte) (world.f_6732352 * 100.0F), (int) world.f_3766825, (short) world.f_0183464, (byte) Block.GRASS.id, (short) world.f_8873427, (byte) world.f_3241378, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554);
+		TagCompound level = LevelFile.createLevel("Player", Instant.now().getEpochSecond(), "A Nice World", world.f_1709243, world.f_2946178, world.f_3766825, (byte) Block.GRASS.id, (short) world.f_8873427, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554);
 		TagList entities = new TagList();
 		for (Object entity : world.f_7148360.f_6899876) {
 			Entity currentEntity = (Entity)entity;
@@ -119,7 +119,7 @@ public abstract class Level {
 		entity.yaw = ((FloatTag)var4.getNbt(0)).tag;
 		entity.pitch = ((FloatTag)var4.getNbt(1)).tag;
 		Accessors.getEntity(entity).setFallDistance(nbtCompound.m_0000382("FallDistance"));
-		entity.onFireTimer = nbtCompound.getShort("Fire");
+		//entity.onFireTimer = nbtCompound.getShort("Fire");
 		if (entity instanceof LivingEntity) ((LivingEntity) entity).f_0554371 = nbtCompound.getInt("Air");
 		entity.refreshPositionAndAngles(entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
 		if (entity instanceof PlayerEntity) {
@@ -153,7 +153,7 @@ public abstract class Level {
 		rotation.addNbt(new FloatTag(entity.pitch));
 		nbtCompound.addNbt("Rotation", rotation);
 		nbtCompound.addNbt("FallDistance", new FloatTag(Accessors.getEntity(entity).getFallDistance()));
-		nbtCompound.addNbt("Fire", new ShortTag((short) entity.onFireTimer));
+		//nbtCompound.addNbt("Fire", new ShortTag((short) entity.onFireTimer));
 		if (entity instanceof PlayerEntity) {
 			nbtCompound.addNbt("id", new StringTag("LocalPlayer"));
 			TagList inventory = new TagList();
