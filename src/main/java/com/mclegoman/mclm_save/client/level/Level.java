@@ -87,7 +87,7 @@ public abstract class Level {
 
 	public final void save(World world, File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);
-		TagCompound level = LevelFile.createLevel("Player", Instant.now().getEpochSecond(), "A Nice World", world.f_1709243, world.f_2946178, world.f_3766825, (byte) Block.GRASS.id, (short) world.f_8873427, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554);
+		TagCompound level = LevelFile.createLevel("Player", Instant.now().getEpochSecond(), "A Nice World", world.f_1709243, (short) 66, world.f_2946178, (byte) 100, world.f_3766825, (short) 32, (byte) Block.GRASS.id, (short) world.f_8873427, (byte) 8, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554);
 		TagList entities = new TagList();
 		for (Object entity : world.f_7148360.f_6899876) {
 			Entity currentEntity = (Entity)entity;
@@ -153,7 +153,7 @@ public abstract class Level {
 		rotation.addNbt(new FloatTag(entity.pitch));
 		nbtCompound.addNbt("Rotation", rotation);
 		nbtCompound.addNbt("FallDistance", new FloatTag(Accessors.getEntity(entity).getFallDistance()));
-		//nbtCompound.addNbt("Fire", new ShortTag((short) entity.onFireTimer));
+		nbtCompound.addNbt("Fire", new ShortTag((short) -1));
 		if (entity instanceof PlayerEntity) {
 			nbtCompound.addNbt("id", new StringTag("LocalPlayer"));
 			TagList inventory = new TagList();

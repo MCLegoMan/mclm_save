@@ -1,15 +1,15 @@
 # ![](./assets/logo.png)
 
-## Save 1.0.0 for Minecraft in-20100110
-### Features
-- **Saving**
-  - This mod saves in the Indev level format.
-- **Loading**
-  - This mod loads in the Indev level format.
-  - When loading a classic world, the level will first be converted first.
-- **Converting**
-  - As previously mentioned, loading a classic save will convert the level first, and then will load the converted level.
-  - Larger worlds may take longer to convert, be patient!
+## Save 1.0.0-rc.1 for Minecraft in-20100104  
+*Please note: OrnitheMC has in-20100104 listed as in-20100105.*  
+### Changes  
+- Ported 1.0.0-release.1+in-20100110 to in-20100104.  
+  - The following values will not be loaded, and will save default values:  
+    - `CloudHeight`
+    - `SkyBrightness`
+    - `SurroundingGroundHeight`
+    - `SurroundingWaterType`
+    - `Entity/Fire`
 
 ### How to Install
 1. Goto [OrnitheMC](https://ornithemc.net/)'s website and download the latest installer.
