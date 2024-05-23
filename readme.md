@@ -22,6 +22,7 @@ Save allows the player to save, load, and convert worlds in older versions that 
   - This mod uses some code from Minecraft in-20100124-2310, which was obtained using [Feather Mappings](https://github.com/OrnitheMC/feather-mappings), some classes and functions have been renamed to make them easier to use.  
 
 #  
-Licensed under LGPL-3.0-or-later.  
+Licensed under LGPL-3.0-or-later.
 
 **This mod is not affiliated with/endorsed by Mojang Studios or Microsoft.**  
+[Minecraft](https://minecraft.net/) is a trademark of Microsoft Corporation.  
