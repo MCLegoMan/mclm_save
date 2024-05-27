@@ -130,7 +130,7 @@ public abstract class Level {
 				int count = index.getByte("Count");
 				int id = index.getShort("id");
 				int slot = index.getByte("Slot");
-				setStack(playerInventory.inventorySlots, slot, new ItemStack(id, count));
+				if (id != -1) setStack(playerInventory.inventorySlots, slot, new ItemStack(id, count));
 			}
 			((PlayerEntity)entity).inventory = playerInventory;
 			Accessors.getPlayerEntity((PlayerEntity)entity).setPlayerScore(nbtCompound.getInt("Score"));
@@ -153,7 +153,7 @@ public abstract class Level {
 		rotation.addNbt(new FloatTag(entity.pitch));
 		nbtCompound.addNbt("Rotation", rotation);
 		nbtCompound.addNbt("FallDistance", new FloatTag(Accessors.getEntity(entity).getFallDistance()));
-		nbtCompound.addNbt("Fire", new ShortTag((short) -1));
+		nbtCompound.addNbt("Fire", new ShortTag((short) -20));
 		if (entity instanceof PlayerEntity) {
 			nbtCompound.addNbt("id", new StringTag("LocalPlayer"));
 			TagList inventory = new TagList();
@@ -161,10 +161,13 @@ public abstract class Level {
 				TagCompound inventorySlot = new TagCompound();
 				ItemStack stack = ((PlayerEntity)entity).inventory.inventorySlots[invSlot];
 				if (stack != null) {
-					inventorySlot.addNbt("Count", new ByteTag((byte) stack.size));
-					inventorySlot.addNbt("id", new ShortTag((short) stack.itemId));
-					inventorySlot.addNbt("Slot", new ByteTag((byte) invSlot));
-					inventory.addNbt(inventorySlot);
+					if (stack.itemId != -1) {
+						// Items
+						inventorySlot.addNbt("Count", new ByteTag((byte) stack.size));
+						inventorySlot.addNbt("id", new ShortTag((short) stack.itemId));
+						inventorySlot.addNbt("Slot", new ByteTag((byte) invSlot));
+						inventory.addNbt(inventorySlot);
+					}
 				}
 			}
 			nbtCompound.addNbt("Inventory", inventory);
