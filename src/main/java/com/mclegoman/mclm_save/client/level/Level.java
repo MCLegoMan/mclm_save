@@ -181,6 +181,6 @@ public abstract class Level {
 		return nbtCompound;
 	}
 	public final void setStack(ItemStack[] inventorySlots, int slot, ItemStack stack) {
-		inventorySlots[slot] = stack;
+		if (stack != null) inventorySlots[slot] = stack;
 	}
 }
