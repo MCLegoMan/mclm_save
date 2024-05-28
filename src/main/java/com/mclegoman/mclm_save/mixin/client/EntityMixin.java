@@ -9,7 +9,6 @@ package com.mclegoman.mclm_save.mixin.client;
 
 import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.releasetypeutils.common.version.Helper;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -32,23 +31,7 @@ public abstract class EntityMixin {
 	@Inject(method = "setPosition", at = @At(value = "HEAD"), cancellable = true)
 	private void save$checkCoords(float f, float g, float h, CallbackInfo ci) {
 		try {
-			float newY = g;
-			if ((int)g > this.world.f_8212213) {
-				if (world.f_2923303 > this.world.f_8212213) {
-					newY = (float) world.f_8212213;
-				}
-				else {
-					newY = world.f_2923303;
-				}
-			}
-			for (int worldY = (int) newY; worldY < this.world.f_8212213; worldY++) {
-				int blockId = this.world.m_5102244((int) f, worldY, (int) h);
-				if (blockId == 0) {
-					// We add one so the player isn't half in a block.
-					newY = worldY + 1;
-					break;
-				}
-			}
+			float newY = save$getY(f, g, h);
 			this.x = f;
 			this.y = newY;
 			this.z = h;
@@ -61,32 +44,25 @@ public abstract class EntityMixin {
 		}
 	}
 	@Unique
-	private float save$getY(float newX, float newY, float newZ) {
-		if (newY <= this.world.f_8212213 && newY >= 0) {
-			if (Block.BY_ID[this.world.m_5102244((int) newX, (int)newY, (int) newZ)] == null) return newY;
-			else {
-				for (int worldY = (int) newY; worldY < this.world.f_8212213; worldY++) {
-					if (Block.BY_ID[this.world.m_5102244((int) newX, worldY, (int) newZ)] == null) {
-						return worldY + 1;
-					}
-				}
+	private float save$getY(float f, float g, float h) {
+		float newY = g;
+		if (g > this.world.f_8212213) {
+			if (world.f_2923303 > this.world.f_8212213) {
+				newY = (float) world.f_8212213;
 			}
-		} else if (this.world.f_2923303 <= this.world.f_8212213) {
-			if (Block.BY_ID[this.world.m_5102244((int) newX, this.world.f_2923303, (int) newZ)] == null) return this.world.f_2923303;
 			else {
-				for (int worldY = this.world.f_2923303; worldY < this.world.f_8212213; worldY++) {
-					if (Block.BY_ID[this.world.m_5102244((int) newX, worldY, (int) newZ)] == null) {
-						return worldY + 1;
-					}
-				}
-			}
-		} else {
-			for (int worldY = 0; worldY < this.world.f_8212213; worldY++) {
-				if (Block.BY_ID[this.world.m_5102244((int) newX, worldY, (int) newZ)] == null) {
-					return worldY + 1;
-				}
+				newY = world.f_2923303;
 			}
 		}
-		return this.world.f_8212213;
+		for (float worldY = newY; worldY < this.world.f_8212213; worldY++) {
+			int blockId = this.world.m_5102244((int) f, (int) worldY, (int) h);
+			if (blockId == 0) {
+				newY = worldY - 0.5F;
+				break;
+			}
+		}
+		int blockId = this.world.m_5102244((int) f, (int)newY, (int) h);
+		if (blockId != 0) newY = this.world.f_8212213;
+		return newY;
 	}
 }
