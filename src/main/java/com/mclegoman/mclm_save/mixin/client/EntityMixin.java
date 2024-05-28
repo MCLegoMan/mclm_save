@@ -9,7 +9,6 @@ package com.mclegoman.mclm_save.mixin.client;
 
 import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.releasetypeutils.common.version.Helper;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -30,47 +29,32 @@ public abstract class EntityMixin {
 	@Shadow public Box shape;
 	@Shadow protected World world;
 	@Inject(method = "setPosition", at = @At(value = "HEAD"), cancellable = true)
-	private void save$checkCoords(float f, float g, float h, CallbackInfo ci) {
+	private void save$checkCoords(float x, float g, float z, CallbackInfo ci) {
 		try {
-			float newX = f;
-			float newY = g;
-			float newZ = h;
-			if ((f <= this.world.f_3061106) && (h <= this.world.f_4184003)) {
-				if (g <= this.world.f_8212213) {
-					if (Block.BY_ID[this.world.m_5102244((int) newX, (int) newY, (int) newZ)] != null)
-						newY = save$getY(newX, newZ);
-				} else newY = save$getY(newX, newZ);
-			} else {
-				newX = save$getX();
-				newZ = save$getZ();
-				newY = save$getY(newX, newZ);
-			}
-			this.x = newX;
+			float newY = save$getY(x, g, z);
+			this.x = x;
 			this.y = newY;
-			this.z = newZ;
-			float var4 = this.width / 2.0F;
-			float var5 = this.height / 2.0F;
-			this.shape = new Box(newX - var4, newY - var5, newZ - var4, newX + var4, newY + var5, newZ + var4);
+			this.z = z;
+			float halfWidth = this.width / 2.0F;
+			float halfHeight = this.height / 2.0F;
+			this.shape = new Box(x - halfWidth, newY - halfHeight, z - halfWidth, x + halfWidth, newY + halfHeight, z + halfWidth);
 			ci.cancel();
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, "There was an issue trying to change entity positions: " + error);
+			Data.version.sendToLog(Helper.LogType.WARN, "There was an error changing entity position: " + error.getLocalizedMessage());
 		}
 	}
 	@Unique
-	private float save$getX() {
-		return Math.min(128, ((float) this.world.f_3061106 / 2));
-	}
-	@Unique
-	private float save$getY(float newX, float newZ) {
-		for (int worldY = 0; worldY < this.world.f_8212213; worldY++) {
-			if (Block.BY_ID[this.world.m_5102244((int) newX, worldY, (int) newZ)] == null) {
-				return worldY + 1;
+	private float save$getY(float x, float y, float z) {
+		float newY = y;
+		if (newY <= this.world.f_8212213) {
+			for (float worldY = newY; worldY < this.world.f_8212213; worldY++) {
+				int blockId = this.world.m_5102244((int) x, (int) worldY, (int) z);
+				if (blockId == 0) {
+					newY = worldY - 0.5F;
+					break;
+				}
 			}
 		}
-		return this.world.f_8212213;
-	}
-	@Unique
-	private float save$getZ() {
-		return Math.min(128, ((float) this.world.f_4184003 / 2));
+		return newY;
 	}
 }

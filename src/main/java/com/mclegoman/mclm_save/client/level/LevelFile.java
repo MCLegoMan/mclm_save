@@ -152,6 +152,8 @@ public final class LevelFile {
 				else if (field.getFieldName().equals("depth")) {
 					// We get the short value of the stringified value as it could either be a short or an int, depending on the version it was saved in.
 					height = Short.parseShort(String.valueOf(field.getField())); // Was changed from "depth" to "height" in Indev.
+					if (surroundingGroundHeight > height) surroundingGroundHeight = (short) ((height - 1) / 2);
+					if (surroundingWaterHeight > height) surroundingWaterHeight = (short) (height - 1);
 				}
 				else if (field.getFieldName().equals("fogColor")) {
 					fogColor = (int) field.getField();
