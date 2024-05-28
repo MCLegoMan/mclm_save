@@ -5,20 +5,26 @@
 ### Changes  
 - Ported 1.0.0-release.1+in-20100110 to in-20100104.  
   - The following values will not be loaded, and will save default values:  
-    - `CloudHeight`
-    - `SkyBrightness`
-    - `SurroundingGroundHeight`
-    - `SurroundingWaterType`
-    - `Entity/Fire`
+    - `CloudHeight`  
+    - `SkyBrightness`  
+    - `SurroundingGroundHeight`  
+    - `SurroundingWaterType`  
+    - `Entity/Fire`  
+- Dead entities are no longer saved.  
+- Updated Entity in Block fix.
+  - Check the current location first before defaulting.  
+- Added Save Block Items Config Option.  
+  - Disabled by default, use the config screen to enable.  
+  - When enabled, block items will be saved. However, you will need to save the world in 110 using Save 1.0.1 or higher to be compatible with vanilla.  
 
 ### How to Install
 1. Goto [OrnitheMC](https://ornithemc.net/)'s website and download the latest installer.
-2. Select the **Show snapshots** checkbox. (This may take awhile to reload)
+2. Select the **Show snapshots** checkbox. (This may take a while to reload)
 3. Select **in-20100110** as your Minecraft version.
 4. Select your launcher type. You can either select the Official Minecraft Launcher or MultiMC/Prism.
 5. Select **Quilt** as your Loader type. (This is important, this mod won't work on Fabric!)
 6. Press Install and wait for your instance to be generated.
-7. Add the `mclm_save-1.0.0-release.1+in-20100110.jar` file to the instance's mods folder.
+7. Add the `mclm_save-1.0.0-rc.1+in-20100110.jar` file to the instance's mods folder.
 8. Launch and Enjoy!
 
 ### Issues

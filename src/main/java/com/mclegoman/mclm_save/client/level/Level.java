@@ -11,6 +11,7 @@ import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.tag.*;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.data.Data;
+import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -88,19 +89,13 @@ public abstract class Level {
 
 	public final void save(World world, File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);
-		TagCompound level = LevelFile.createLevel("Player", Instant.now().getEpochSecond(), "A Nice World", world.f_1709243, (short) 66, world.f_2946178, (byte) 100, world.f_3766825, (short) 32, (byte) Block.GRASS.id, (short) world.f_8873427, (byte) 8, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554);
+		TagCompound level = LevelFile.createLevel("Player", Instant.now().getEpochSecond(), "A Nice World", world.f_1709243, (short) 66, world.f_2946178, (byte) 100, world.f_3766825, (short) 23, (byte) Block.GRASS.id, (short) world.f_8873427, (byte) 8, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554);
 		TagList entities = new TagList();
 		for (Object entity : world.f_7148360.f_6899876) {
 			Entity currentEntity = (Entity)entity;
 			currentEntity.m_2914294(currentEntity);
 			TagCompound entityData = saveEntityData(currentEntity);
-			if (!entityData.isEmpty()) {
-				if (!(ClientData.minecraft.f_6058446.health > 0)) {
-					if (ClientData.minecraft.f_6058446.deathTime != 0) {
-						entities.addNbt(entityData);
-					}
-				}
-			}
+			if (!entityData.isEmpty() && ClientData.minecraft.f_6058446.deathTime == 0) entities.addNbt(entityData);
 		}
 		level.addNbt("Entities", entities);
 		try {
@@ -138,6 +133,9 @@ public abstract class Level {
 				int id = index.getShort("id");
 				int slot = index.getByte("Slot");
 				if (id != -1) setStack(playerInventory.inventorySlots, slot, new ItemStack(id, count));
+				// 104 Block Saving Converter - We don't check the config here as the config is only for saving!
+				int blockId = index.getShort("blockId");
+				if (blockId != -1 && Block.BY_ID[blockId] != null) setStack(playerInventory.inventorySlots, slot, new ItemStack(Block.BY_ID[blockId], count));
 			}
 			((PlayerEntity)entity).inventory = playerInventory;
 			Accessors.getPlayerEntity((PlayerEntity)entity).setPlayerScore(nbtCompound.getInt("Score"));
@@ -167,10 +165,11 @@ public abstract class Level {
 			for(int invSlot = 0; invSlot < ((PlayerEntity)entity).inventory.inventorySlots.length; ++invSlot) {
 				TagCompound inventorySlot = new TagCompound();
 				ItemStack stack = ((PlayerEntity)entity).inventory.inventorySlots[invSlot];
-				if (stack != null && stack.itemId != -1) {
+				if (stack != null && (stack.itemId != -1 || (SaveConfig.instance.saveBlockItems.value() && stack.f_9064670 != -1))) {
 					inventorySlot.addNbt("Count", new ByteTag((byte) stack.size));
 					inventorySlot.addNbt("id", new ShortTag((short) stack.itemId));
 					inventorySlot.addNbt("Slot", new ByteTag((byte) invSlot));
+					if (SaveConfig.instance.saveBlockItems.value() && stack.f_9064670 != -1) inventorySlot.addNbt("blockId", new ShortTag((short) stack.f_9064670));
 					inventory.addNbt(inventorySlot);
 				}
 			}
@@ -185,6 +184,6 @@ public abstract class Level {
 		return nbtCompound;
 	}
 	public final void setStack(ItemStack[] inventorySlots, int slot, ItemStack stack) {
-		if (stack != null && stack.itemId != -1) inventorySlots[slot] = stack;
+		if (stack != null && (stack.itemId != -1 || stack.f_9064670 != -1)) inventorySlots[slot] = stack;
 	}
 }

@@ -7,10 +7,10 @@
 
 package com.mclegoman.mclm_save.mixin.client;
 
-import com.mclegoman.mclm_save.common.entity.GetEntity;
+import com.mclegoman.mclm_save.common.data.Data;
+import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements GetEntity {
+public abstract class EntityMixin {
 	@Shadow public float y;
 	@Shadow public float x;
 	@Shadow public float z;
@@ -31,13 +31,14 @@ public abstract class EntityMixin implements GetEntity {
 	@Shadow protected World world;
 	@Inject(method = "setPosition", at = @At(value = "HEAD"), cancellable = true)
 	private void save$checkCoords(float f, float g, float h, CallbackInfo ci) {
-		if (save$getEntity() instanceof LivingEntity) {
+		try {
 			float newX = f;
 			float newY = g;
 			float newZ = h;
 			if ((f <= this.world.f_3061106) && (h <= this.world.f_4184003)) {
 				if (g <= this.world.f_8212213) {
-					if (Block.BY_ID[this.world.m_5102244((int)newX, (int)newY, (int)newZ)] != null) newY = save$getY(newX, newZ);
+					if (Block.BY_ID[this.world.m_5102244((int) newX, (int) newY, (int) newZ)] != null)
+						newY = save$getY(newX, newZ);
 				} else newY = save$getY(newX, newZ);
 			} else {
 				newX = save$getX();
@@ -51,11 +52,9 @@ public abstract class EntityMixin implements GetEntity {
 			float var5 = this.height / 2.0F;
 			this.shape = new Box(newX - var4, newY - var5, newZ - var4, newX + var4, newY + var5, newZ + var4);
 			ci.cancel();
+		} catch (Exception error) {
+			Data.version.sendToLog(Helper.LogType.WARN, "There was an issue trying to change entity positions: " + error);
 		}
-	}
-	@Override
-	public Entity save$getEntity() {
-		return (Entity) ((GetEntity)this);
 	}
 	@Unique
 	private float save$getX() {
