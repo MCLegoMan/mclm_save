@@ -17,6 +17,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.unmapped.C_2411117;
 import net.minecraft.world.World;
@@ -160,7 +161,7 @@ public abstract class Level {
 			for(int invSlot = 0; invSlot < ((PlayerEntity)entity).inventory.inventorySlots.length; ++invSlot) {
 				TagCompound inventorySlot = new TagCompound();
 				ItemStack stack = ((PlayerEntity)entity).inventory.inventorySlots[invSlot];
-				if (stack != null) {
+				if (stack != null && Item.BY_ID[stack.itemId] != null) {
 					inventorySlot.addNbt("Count", new ByteTag((byte) stack.size));
 					inventorySlot.addNbt("id", new ShortTag((short) stack.itemId));
 					inventorySlot.addNbt("Slot", new ByteTag((byte) invSlot));
@@ -178,6 +179,6 @@ public abstract class Level {
 		return nbtCompound;
 	}
 	public final void setStack(ItemStack[] inventorySlots, int slot, ItemStack stack) {
-		if (stack != null) inventorySlots[slot] = stack;
+		if (stack != null && Item.BY_ID[stack.itemId] != null) inventorySlots[slot] = stack;
 	}
 }
