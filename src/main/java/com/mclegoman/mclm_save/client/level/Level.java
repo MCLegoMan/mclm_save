@@ -140,7 +140,7 @@ public abstract class Level {
 				int slot = index.getByte("Slot");
 				int blockId = index.getByte("blockId");
 				// 104 Block Saving Converter.
-				if (blockId != 0 && Block.BY_ID[blockId] != null) id = blockId;
+				if (blockId != 0 && (blockId <= Item.BY_ID.length) && Block.BY_ID[blockId] != null) id = blockId;
 				setStack(playerInventory.inventorySlots, slot, new ItemStack(id, count));
 			}
 			((PlayerEntity)entity).inventory = playerInventory;
@@ -189,6 +189,6 @@ public abstract class Level {
 		return nbtCompound;
 	}
 	public final void setStack(ItemStack[] inventorySlots, int slot, ItemStack stack) {
-		if (stack != null && Item.BY_ID[stack.itemId] != null) inventorySlots[slot] = stack;
+		if (stack != null && (stack.itemId >= 0 && stack.itemId <= Item.BY_ID.length) && Item.BY_ID[stack.itemId] != null) inventorySlots[slot] = stack;
 	}
 }
