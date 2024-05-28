@@ -46,23 +46,15 @@ public abstract class EntityMixin {
 	@Unique
 	private float save$getY(float x, float y, float z) {
 		float newY = y;
-		if (y > this.world.f_8212213) {
-			if (world.f_2923303 > this.world.f_8212213) {
-				newY = (float) world.f_8212213;
-			}
-			else {
-				newY = world.f_2923303;
-			}
-		}
-		for (float worldY = newY; worldY < this.world.f_8212213; worldY++) {
-			int blockId = this.world.m_5102244((int) x, (int) worldY, (int) z);
-			if (blockId == 0) {
-				newY = worldY - 0.5F;
-				break;
+		if (newY <= this.world.f_8212213) {
+			for (float worldY = newY; worldY < this.world.f_8212213; worldY++) {
+				int blockId = this.world.m_5102244((int) x, (int) worldY, (int) z);
+				if (blockId == 0) {
+					newY = worldY - 0.5F;
+					break;
+				}
 			}
 		}
-		int blockId = this.world.m_5102244((int) x, (int)newY, (int) z);
-		if (blockId != 0) newY = this.world.f_8212213;
 		return newY;
 	}
 }

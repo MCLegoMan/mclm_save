@@ -152,6 +152,8 @@ public final class LevelFile {
 				else if (field.getFieldName().equals("depth")) {
 					// We get the short value of the stringified value as it could either be a short or an int, depending on the version it was saved in.
 					height = Short.parseShort(String.valueOf(field.getField())); // Was changed from "depth" to "height" in Indev.
+					if (surroundingGroundHeight > height) surroundingGroundHeight = (short) ((height - 1) / 2);
+					if (surroundingWaterHeight > height) surroundingWaterHeight = (short) (height - 1);
 				}
 				else if (field.getFieldName().equals("fogColor")) {
 					fogColor = (int) field.getField();
@@ -189,106 +191,107 @@ public final class LevelFile {
 					blockMap = ((ClassField) field);
 				}
 			}
-			try {if (blocks != null) {
-				if (blocks.length == (width * height * length)) {
-					Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
-					TagCompound convertedLevel = createLevel(creator, createTime, name, cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
-					if (SaveConfig.instance.convertClassicPlayer.value()) {
-						TagList entities = new TagList();
-						if (blockMap != null) {
-							blockMap.getClassField().getFields().forEach((field) -> {
-								if (field.getFieldName().equals("all")) {
-									((ClassField)field).getArrayList().forEach(entityData -> {
-										if (entityData.getName().equals("com.mojang.minecraft.player.Player")) {
-											TagCompound data = new TagCompound();
-											data.addNbt("id", new StringTag("LocalPlayer"));
-											entityData.getFields().forEach(player -> {
-												if (player.getFieldName().equals("inventory")) {
-													TagList inventory = new TagList();
-													ArrayList<Field> inventory1 = ((ClassField)player).getClassField().getFields();
-													inventory1.forEach(invField -> {
-														if (invField.getFieldName().equals("count")) {
-															for (Field field2 : ((ArrayField)invField).getArray()) {
-																TagCompound itemData = new TagCompound();
-																byte count = ((Integer)field2.getField()).byteValue();
-																itemData.addNbt("Count", new ByteTag(count));
-																if (count != 0) inventory.addNbt(itemData);
-															}
-														} else if (invField.getFieldName().equals("slots")) {
-															int index = 0;
-															int slot = 0;
-															for (Field field2 : ((ArrayField)invField).getArray()) {
-																short id = ((Integer)field2.getField()).shortValue();
-																if (id >= 0) {
-																	TagCompound itemData = (TagCompound) inventory.getNbt(index);
-																	itemData.addNbt("id", new ShortTag(id));
-																	itemData.addNbt("Slot", new ByteTag(((Integer)slot).byteValue()));
-																	index++;
+			try {
+				if (blocks != null) {
+					if (blocks.length == (width * height * length)) {
+						Data.version.sendToLog(Helper.LogType.INFO, "Converting World: Writing File");
+						TagCompound convertedLevel = createLevel(creator, createTime, name, cloudColor, cloudHeight, fogColor, skyBrightness, skyColor, surroundingGroundHeight, surroundingGroundType, surroundingWaterHeight, surroundingWaterType, spawnX, spawnY, spawnZ, height, length, width, blocks);
+						if (SaveConfig.instance.convertClassicPlayer.value()) {
+							TagList entities = new TagList();
+							if (blockMap != null) {
+								blockMap.getClassField().getFields().forEach((field) -> {
+									if (field.getFieldName().equals("all")) {
+										((ClassField)field).getArrayList().forEach(entityData -> {
+											if (entityData.getName().equals("com.mojang.minecraft.player.Player")) {
+												TagCompound data = new TagCompound();
+												data.addNbt("id", new StringTag("LocalPlayer"));
+												entityData.getFields().forEach(player -> {
+													if (player.getFieldName().equals("inventory")) {
+														TagList inventory = new TagList();
+														ArrayList<Field> inventory1 = ((ClassField)player).getClassField().getFields();
+														inventory1.forEach(invField -> {
+															if (invField.getFieldName().equals("count")) {
+																for (Field field2 : ((ArrayField)invField).getArray()) {
+																	TagCompound itemData = new TagCompound();
+																	byte count = ((Integer)field2.getField()).byteValue();
+																	itemData.addNbt("Count", new ByteTag(count));
+																	if (count != 0) inventory.addNbt(itemData);
 																}
-																slot++;
+															} else if (invField.getFieldName().equals("slots")) {
+																int index = 0;
+																int slot = 0;
+																for (Field field2 : ((ArrayField)invField).getArray()) {
+																	short id = ((Integer)field2.getField()).shortValue();
+																	if (id >= 0) {
+																		TagCompound itemData = (TagCompound) inventory.getNbt(index);
+																		itemData.addNbt("id", new ShortTag(id));
+																		itemData.addNbt("Slot", new ByteTag(((Integer)slot).byteValue()));
+																		index++;
+																	}
+																	slot++;
+																}
 															}
-														}
-													});
-													data.addNbt("Inventory", inventory);
-												}
-												if (player.getFieldName().equals("score")) {
-													data.addNbt("Score", new IntTag((int) player.getField()));
-												}
-											});
-											entityData.getSuperClass().getFields().forEach(mob -> {
-											});
-											TagList motion = new TagList();
-											TagList pos = new TagList();
-											TagList rotation = new TagList();
-											entityData.getSuperClass().getSuperClass().getFields().forEach(entity -> {
-												if (entity.getFieldName().equals("x") || entity.getFieldName().equals("y") || entity.getFieldName().equals("z")) {
-													pos.addNbt(new FloatTag((float) entity.getField()));
-												}
-												if (entity.getFieldName().equals("fallDistance")) {
-													data.addNbt("FallDistance", new FloatTag((float) entity.getField()));
-												}
-											});
-											motion.addNbt(new FloatTag(0.0F));
-											motion.addNbt(new FloatTag(-0.8F));
-											motion.addNbt(new FloatTag(0.0F));
-											rotation.addNbt(new FloatTag(0.0F));
-											rotation.addNbt(new FloatTag(0.0F));
-											data.addNbt("Motion", motion);
-											data.addNbt("Pos", pos);
-											data.addNbt("Rotation", rotation);
-											data.addNbt("Fire", new ShortTag((short) -1));
-											if (!data.isEmpty()) entities.addNbt(data);
-										}
-									});
-								}
-							});
+														});
+														data.addNbt("Inventory", inventory);
+													}
+													if (player.getFieldName().equals("score")) {
+														data.addNbt("Score", new IntTag((int) player.getField()));
+													}
+												});
+												entityData.getSuperClass().getFields().forEach(mob -> {
+												});
+												TagList motion = new TagList();
+												TagList pos = new TagList();
+												TagList rotation = new TagList();
+												entityData.getSuperClass().getSuperClass().getFields().forEach(entity -> {
+													if (entity.getFieldName().equals("x") || entity.getFieldName().equals("y") || entity.getFieldName().equals("z")) {
+														pos.addNbt(new FloatTag((float) entity.getField()));
+													}
+													if (entity.getFieldName().equals("fallDistance")) {
+														data.addNbt("FallDistance", new FloatTag((float) entity.getField()));
+													}
+												});
+												motion.addNbt(new FloatTag(0.0F));
+												motion.addNbt(new FloatTag(-0.8F));
+												motion.addNbt(new FloatTag(0.0F));
+												rotation.addNbt(new FloatTag(0.0F));
+												rotation.addNbt(new FloatTag(0.0F));
+												data.addNbt("Motion", motion);
+												data.addNbt("Pos", pos);
+												data.addNbt("Rotation", rotation);
+												data.addNbt("Fire", new ShortTag((short) -1));
+												if (!data.isEmpty()) entities.addNbt(data);
+											}
+										});
+									}
+								});
+							}
+							convertedLevel.addNbt("Entities", entities);
 						}
-						convertedLevel.addNbt("Entities", entities);
+						String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
+						String outputPathCheck = outputPath;
+						int fileAmount = 1;
+						while (new File(outputPathCheck + ".mclevel").exists()) {
+							outputPathCheck = outputPath + "(" + fileAmount + ")";
+							fileAmount++;
+						}
+						outputPath = outputPathCheck + ".mclevel";
+						try (FileOutputStream outputStream = new FileOutputStream(outputPath)) {
+							GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream);
+							Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
+							gzipOutputStream.close();
+						} catch (Exception error) {
+							return new Couple(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
+						}
+						LevelFile.file = new File(outputPath);
+						shouldLoad = new Couple(true, false);
+						return new Couple(LoadOutputType.SUCCESSFUL_CONVERT, "Successfully converted world!");
+					} else {
+						return new Couple(LoadOutputType.FAIL_CONVERT, "World conversion failed due to block amount not matching!");
 					}
-					String outputPath = file.getPath().endsWith(ext) ? file.getPath().substring(0, file.getPath().length() - ext.length()) : file.getPath();
-					String outputPathCheck = outputPath;
-					int fileAmount = 1;
-					while (new File(outputPathCheck + ".mclevel").exists()) {
-						outputPathCheck = outputPath + "(" + fileAmount + ")";
-						fileAmount++;
-					}
-					outputPath = outputPathCheck + ".mclevel";
-					try (FileOutputStream outputStream = new FileOutputStream(outputPath)) {
-						GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream);
-						Tag.output(convertedLevel, new DataOutputStream(gzipOutputStream));
-						gzipOutputStream.close();
-					} catch (Exception error) {
-						return new Couple(LoadOutputType.FAIL_CONVERT, error.getLocalizedMessage());
-					}
-					LevelFile.file = new File(outputPath);
-					shouldLoad = new Couple(true, false);
-					return new Couple(LoadOutputType.SUCCESSFUL_CONVERT, "Successfully converted world!");
 				} else {
-					return new Couple(LoadOutputType.FAIL_CONVERT, "World conversion failed due to block amount not matching!");
+					return new Couple(LoadOutputType.FAIL_CONVERT, "World conversion failed due to blocks not existing!");
 				}
-			} else {
-				return new Couple(LoadOutputType.FAIL_CONVERT, "World conversion failed due to blocks not existing!");
-			}
 			} catch (Exception error) {
 				return new Couple(LoadOutputType.FAIL_CONVERT, "Failed to write to file! " + error.getLocalizedMessage());
 			}
