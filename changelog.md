@@ -11,8 +11,8 @@
     - `SurroundingWaterType`  
     - `Entity/Fire`  
 - Dead entities are no longer saved.  
-- Updated Entity in Block fix.
-  - Check the current location first before defaulting.  
+- Updated Entity in Block fix.  
+- Updated Converter surrounding heights.
 - Added Save Block Items Config Option.  
   - Disabled by default, use the config screen to enable.  
   - When enabled, block items will be saved. However, you will need to save the world in 110 using Save 1.0.1 or higher to be compatible with vanilla.  
