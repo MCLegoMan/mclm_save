@@ -160,7 +160,7 @@ public abstract class Level {
 			for(int invSlot = 0; invSlot < ((PlayerEntity)entity).inventory.inventorySlots.length; ++invSlot) {
 				TagCompound inventorySlot = new TagCompound();
 				ItemStack stack = ((PlayerEntity)entity).inventory.inventorySlots[invSlot];
-				if (stack != null && stack.itemId != -1) {
+				if (stack != null) {
 					inventorySlot.addNbt("Count", new ByteTag((byte) stack.size));
 					inventorySlot.addNbt("id", new ShortTag((short) stack.itemId));
 					inventorySlot.addNbt("Slot", new ByteTag((byte) invSlot));
@@ -178,6 +178,6 @@ public abstract class Level {
 		return nbtCompound;
 	}
 	public final void setStack(ItemStack[] inventorySlots, int slot, ItemStack stack) {
-		if (stack != null && stack.itemId != -1) inventorySlots[slot] = stack;
+		if (stack != null) inventorySlots[slot] = stack;
 	}
 }
