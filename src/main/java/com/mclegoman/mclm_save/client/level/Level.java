@@ -140,7 +140,7 @@ public abstract class Level {
 				int slot = index.getByte("Slot");
 				int blockId = index.getByte("blockId");
 				// 104 Block Saving Converter.
-				if (id == -1 && blockId != 0 && Block.BY_ID[blockId] != null) id = blockId;
+				if (blockId != 0 && Block.BY_ID[blockId] != null) id = blockId;
 				setStack(playerInventory.inventorySlots, slot, new ItemStack(id, count));
 			}
 			((PlayerEntity)entity).inventory = playerInventory;
