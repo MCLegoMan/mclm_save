@@ -32,36 +32,46 @@ public abstract class EntityMixin {
 	@Inject(method = "setPosition", at = @At(value = "HEAD"), cancellable = true)
 	private void save$checkCoords(float f, float g, float h, CallbackInfo ci) {
 		try {
-			float newX = f;
 			float newY = g;
-			float newZ = h;
-			if ((f <= this.world.f_3061106) && (h <= this.world.f_4184003)) {
-				if (g <= this.world.f_8212213) {
-					if (Block.BY_ID[this.world.m_5102244((int)newX, (int)newY, (int)newZ)] != null) newY = save$getY(newX, newZ);
-				} else newY = save$getY(newX, newZ);
-			} else {
-				newX = save$getX();
-				newZ = save$getZ();
-				newY = save$getY(newX, newZ);
+			if ((int)g > this.world.f_8212213) {
+				if (world.f_2923303 > this.world.f_8212213) {
+					newY = (float) world.f_8212213;
+				}
+				else {
+					newY = world.f_2923303;
+				}
 			}
-			this.x = newX;
+			for (int worldY = (int) newY; worldY < this.world.f_8212213; worldY++) {
+				int blockId = this.world.m_5102244((int) f, worldY, (int) h);
+				if (blockId == 0) {
+					// We add one so the player isn't half in a block.
+					newY = worldY + 1;
+					break;
+				}
+			}
+			this.x = f;
 			this.y = newY;
-			this.z = newZ;
+			this.z = h;
 			float var4 = this.width / 2.0F;
 			float var5 = this.height / 2.0F;
-			this.shape = new Box(newX - var4, newY - var5, newZ - var4, newX + var4, newY + var5, newZ + var4);
+			this.shape = new Box(f - var4, newY - var5, h - var4, f + var4, newY + var5, h + var4);
 			ci.cancel();
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, "There was an error changing entity position: " + error.getLocalizedMessage());
 		}
 	}
 	@Unique
-	private float save$getX() {
-		return Math.min(this.world.f_3926541, ((float) this.world.f_3061106 / 2));
-	}
-	@Unique
-	private float save$getY(float newX, float newZ) {
-		if (this.world.f_2923303 <= this.world.f_8212213) {
+	private float save$getY(float newX, float newY, float newZ) {
+		if (newY <= this.world.f_8212213 && newY >= 0) {
+			if (Block.BY_ID[this.world.m_5102244((int) newX, (int)newY, (int) newZ)] == null) return newY;
+			else {
+				for (int worldY = (int) newY; worldY < this.world.f_8212213; worldY++) {
+					if (Block.BY_ID[this.world.m_5102244((int) newX, worldY, (int) newZ)] == null) {
+						return worldY + 1;
+					}
+				}
+			}
+		} else if (this.world.f_2923303 <= this.world.f_8212213) {
 			if (Block.BY_ID[this.world.m_5102244((int) newX, this.world.f_2923303, (int) newZ)] == null) return this.world.f_2923303;
 			else {
 				for (int worldY = this.world.f_2923303; worldY < this.world.f_8212213; worldY++) {
@@ -78,9 +88,5 @@ public abstract class EntityMixin {
 			}
 		}
 		return this.world.f_8212213;
-	}
-	@Unique
-	private float save$getZ() {
-		return Math.min(128, ((float) this.world.f_4184003 / 2));
 	}
 }

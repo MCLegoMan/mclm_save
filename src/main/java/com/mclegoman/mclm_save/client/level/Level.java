@@ -96,11 +96,9 @@ public abstract class Level {
 			currentEntity.m_2914294(currentEntity);
 			TagCompound entityData = saveEntityData(currentEntity);
 			if (!entityData.isEmpty()) {
-				if (!(ClientData.minecraft.f_6058446.health > 0)) {
-					if (ClientData.minecraft.f_6058446.deathTime != 0) {
-						entities.addNbt(entityData);
-					}
-				}
+				if (entity instanceof LivingEntity) {
+					if ((((LivingEntity) entity).health > 0) || ((LivingEntity) entity).deathTime <= 0) entities.addNbt(entityData);
+				} else entities.addNbt(entityData);
 			}
 		}
 		level.addNbt("Entities", entities);

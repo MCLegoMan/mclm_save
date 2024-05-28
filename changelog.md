@@ -3,8 +3,7 @@
 ## Save 1.0.1-rc.1 for Minecraft in-20100110
 ### Changes  
 - **Updated spawning in a block fix.**  
-  - Now only affects living entities, and checks if the current location is valid first.  
-  - This fixes issues with particles, items, and tnt at y levels under 2.  
+  - Now only checks if y level is valid position, and then checks for the first air block from either current location, world spawn, or world height.  
 - **Updated Saving.**  
   - No longer saves dead entities.  
 
