@@ -1,12 +1,8 @@
 # ![](./assets/logo.png)
 
-## Save 1.0.1-rc.1 for Minecraft in-20100110
+## Save 1.0.1-rc.2 for Minecraft in-20100110
 ### Changes  
-- **Updated spawning in a block fix.**  
-- **Updated Classic Converter**  
-  - If the height of the world is smaller than the default surrounding heights, the surrounding heights will be set to be smaller than the world height.  
-- **Updated Saving.**  
-  - No longer saves dead entities.  
+- **Fixed Loading 104 Save Block Items.**  
 
 ### How to Install
 1. Goto [OrnitheMC](https://ornithemc.net/)'s website and download the latest installer.
