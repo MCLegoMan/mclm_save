@@ -29,24 +29,24 @@ public abstract class EntityMixin {
 	@Shadow public Box shape;
 	@Shadow protected World world;
 	@Inject(method = "setPosition", at = @At(value = "HEAD"), cancellable = true)
-	private void save$checkCoords(float f, float g, float h, CallbackInfo ci) {
+	private void save$checkCoords(float x, float g, float z, CallbackInfo ci) {
 		try {
-			float newY = save$getY(f, g, h);
-			this.x = f;
+			float newY = save$getY(x, g, z);
+			this.x = x;
 			this.y = newY;
-			this.z = h;
-			float var4 = this.width / 2.0F;
-			float var5 = this.height / 2.0F;
-			this.shape = new Box(f - var4, newY - var5, h - var4, f + var4, newY + var5, h + var4);
+			this.z = z;
+			float halfWidth = this.width / 2.0F;
+			float halfHeight = this.height / 2.0F;
+			this.shape = new Box(x - halfWidth, newY - halfHeight, z - halfWidth, x + halfWidth, newY + halfHeight, z + halfWidth);
 			ci.cancel();
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, "There was an error changing entity position: " + error.getLocalizedMessage());
 		}
 	}
 	@Unique
-	private float save$getY(float f, float g, float h) {
-		float newY = g;
-		if (g > this.world.f_8212213) {
+	private float save$getY(float x, float y, float z) {
+		float newY = y;
+		if (y > this.world.f_8212213) {
 			if (world.f_2923303 > this.world.f_8212213) {
 				newY = (float) world.f_8212213;
 			}
@@ -55,13 +55,13 @@ public abstract class EntityMixin {
 			}
 		}
 		for (float worldY = newY; worldY < this.world.f_8212213; worldY++) {
-			int blockId = this.world.m_5102244((int) f, (int) worldY, (int) h);
+			int blockId = this.world.m_5102244((int) x, (int) worldY, (int) z);
 			if (blockId == 0) {
 				newY = worldY - 0.5F;
 				break;
 			}
 		}
-		int blockId = this.world.m_5102244((int) f, (int)newY, (int) h);
+		int blockId = this.world.m_5102244((int) x, (int)newY, (int) z);
 		if (blockId != 0) newY = this.world.f_8212213;
 		return newY;
 	}
