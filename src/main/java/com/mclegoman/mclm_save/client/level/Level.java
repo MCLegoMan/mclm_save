@@ -136,7 +136,7 @@ public abstract class Level {
 				int count = index.getByte("Count");
 				int id = index.getShort("id");
 				int slot = index.getByte("Slot");
-				int blockId = index.getByte("blockId");
+				int blockId = index.getShort("blockId");
 				// 104 Block Saving Converter.
 				if (blockId != 0 && (blockId <= Item.BY_ID.length) && Block.BY_ID[blockId] != null) id = blockId;
 				setStack(playerInventory.inventorySlots, slot, new ItemStack(id, count));
