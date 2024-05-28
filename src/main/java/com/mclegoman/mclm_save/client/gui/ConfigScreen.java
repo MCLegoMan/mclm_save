@@ -24,6 +24,7 @@ public class ConfigScreen extends Screen {
 		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value()));
 		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 72, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
 		this.buttons.add(new ButtonWidget(4, this.width / 2 - 150, this.height / 6 + 96, 300, 20, "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value()));
+		this.buttons.add(new ButtonWidget(9, this.width / 2 - 150, this.height / 6 + 120, 300, 20, "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value()));
 		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 144, 200, 20, "Credits and Attribution"));
 		this.buttons.add(new ButtonWidget(6, this.width / 2 - 100, this.height / 6 + 168, 98, 20, "Reset to Default"));
 		this.buttons.add(new ButtonWidget(7, this.width / 2 + 2, this.height / 6 + 168, 98, 20, "Done"));
@@ -75,6 +76,10 @@ public class ConfigScreen extends Screen {
 			if (button.id == 4) {
 				SaveConfig.instance.saveWorldOnExit.setValue(!SaveConfig.instance.saveWorldOnExit.value());
 				button.message = "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value();
+			}
+			if (button.id == 9) {
+				SaveConfig.instance.blockPosFix.setValue(!SaveConfig.instance.blockPosFix.value());
+				button.message = "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value();
 			}
 			if (button.id == 5) {
 				ClientData.minecraft.m_6408915(new CreditsScreen(new ConfigScreen(this.parent)));

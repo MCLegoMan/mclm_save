@@ -66,4 +66,6 @@ public class SaveConfig extends ReflectiveConfig {
 	public final TrackedValue<Integer> convertClassicDefaultWidth = this.value(256);
 	@Comment("When set to true, the current world will be saved to %rundir%/level.mclevel")
 	public final TrackedValue<Boolean> saveWorldOnExit = this.value(false);
+	@Comment("When enabled, entities will be teleported to a air block.")
+	public final TrackedValue<Boolean> blockPosFix = this.value(false);
 }
