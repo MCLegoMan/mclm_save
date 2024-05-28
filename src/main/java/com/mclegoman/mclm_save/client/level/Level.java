@@ -7,6 +7,7 @@
 
 package com.mclegoman.mclm_save.client.level;
 
+import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.tag.*;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.data.Data;
@@ -94,7 +95,13 @@ public abstract class Level {
 			Entity currentEntity = (Entity)entity;
 			currentEntity.m_2914294(currentEntity);
 			TagCompound entityData = saveEntityData(currentEntity);
-			if (!entityData.isEmpty()) entities.addNbt(entityData);
+			if (!entityData.isEmpty()) {
+				if (!(ClientData.minecraft.f_6058446.health > 0)) {
+					if (ClientData.minecraft.f_6058446.deathTime != 0) {
+						entities.addNbt(entityData);
+					}
+				}
+			}
 		}
 		level.addNbt("Entities", entities);
 		try {

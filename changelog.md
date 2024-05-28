@@ -1,25 +1,25 @@
 # ![](./assets/logo.png)
 
-## Save 1.0.0 for Minecraft in-20100110
-### Features
-- **Saving**
-  - This mod saves in the Indev level format.
-- **Loading**
-  - This mod loads in the Indev level format.
-  - When loading a classic world, the level will first be converted first.
-- **Converting**
-  - As previously mentioned, loading a classic save will convert the level first, and then will load the converted level.
-  - Larger worlds may take longer to convert, be patient!
+## Save 1.0.1-rc.1 for Minecraft in-20100110
+### Changes  
+- **Updated spawning in a block fix.**  
+  - Now only affects living entities, and checks if the current location is valid first.  
+  - This fixes issues with particles, items, and tnt at y levels under 2.  
+- **Updated Saving.**  
+  - No longer saves dead entities.  
 
 ### How to Install
 1. Goto [OrnitheMC](https://ornithemc.net/)'s website and download the latest installer.
-2. Select the **Show snapshots** checkbox. (This may take awhile to reload)
+2. Select the **Show snapshots** checkbox. (This may take a while to reload)
 3. Select **in-20100110** as your Minecraft version.
 4. Select your launcher type. You can either select the Official Minecraft Launcher or MultiMC/Prism.
 5. Select **Quilt** as your Loader type. (This is important, this mod won't work on Fabric!)
 6. Press Install and wait for your instance to be generated.
-7. Add the `mclm_save-1.0.0-release.1+in-20100110.jar` file to the instance's mods folder.
+7. Add the `mclm_save-1.0.1-rc.1+in-20100110.jar` file to the instance's mods folder.
 8. Launch and Enjoy!
+
+It's recommended to use `-Djava.util.Arrays.useLegacyMergeSort=true` in your java arguments.  
+To fix sounds, follow this [tutorial](https://mclegoman.com/Tutorials/Indev_Sound_Fix).
 
 ### Issues
 Please help us improve by submitting [bug reports](https://github.com/MCLegoMan/mclm_save/issues) if you encounter any issues.  
