@@ -2,6 +2,9 @@
 
 ## Save 1.0.0-rc.1 for Minecraft in-20100104  
 *Please note: OrnitheMC has in-20100104 listed as in-20100105.*  
+
+**Due to differences in how 104 saves block items, blocks will only be saved if you enable the save block items config option. Worlds saved with this enabled, will need to be run through Save 1.0.1 or newer for 110 to be compatible with vanilla versions.**  
+
 ### Changes  
 - Ported 1.0.0-release.1+in-20100110 to in-20100104.  
   - The following values will not be loaded, and will save default values:  
@@ -11,8 +14,11 @@
     - `SurroundingWaterType`  
     - `Entity/Fire`  
 - Dead entities are no longer saved.  
-- Updated Entity in Block fix.  
-- Updated Converter surrounding heights.
+- **Updated Update Position.**  
+  - This fix will now only check the y level for the first air block.
+  - There will likely still be issues relating to particles/tnt.
+- Updated Converter.
+  - If the world height is lower than the surrounding heights, the surrounding heights will be set to lower than the world height.
 - Added Save Block Items Config Option.  
   - Disabled by default, use the config screen to enable.  
   - When enabled, block items will be saved. However, you will need to save the world in 110 using Save 1.0.1 or higher to be compatible with vanilla.  

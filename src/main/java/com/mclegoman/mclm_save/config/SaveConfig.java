@@ -68,4 +68,6 @@ public class SaveConfig extends ReflectiveConfig {
 	public final TrackedValue<Boolean> saveWorldOnExit = this.value(false);
 	@Comment("104 separates item ids and block ids, this config enables block saving however to load the save in future versions you will need to use Save for 110 or later.")
 	public final TrackedValue<Boolean> saveBlockItems = this.value(false);
+	@Comment("When enabled, entities will be teleported to a air block.")
+	public final TrackedValue<Boolean> blockPosFix = this.value(false);
 }
