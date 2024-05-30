@@ -68,4 +68,6 @@ public class SaveConfig extends ReflectiveConfig {
 	public final TrackedValue<Boolean> saveWorldOnExit = this.value(false);
 	@Comment("When enabled, entities will be teleported to a air block.")
 	public final TrackedValue<Boolean> blockPosFix = this.value(false);
+	@Comment("Enables development debug.")
+	public final TrackedValue<Boolean> debug = this.value(false);
 }
