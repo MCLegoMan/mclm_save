@@ -106,7 +106,7 @@ if (rootProject.file(".env").exists()) {
 		token rootProject.file(".env").text.readLines().get(1).replace("GITHUB=", "").replace("\"", "")
 		owner "MCLegoMan"
 		repo "${project.archives_base_name}"
-		tagName "${project.mod_version}-${project.actual_minecraft_version.replace("/", "-")}"
+		tagName "${project.mod_version}+${project.actual_minecraft_version.replace("/", "-")}"
 		targetCommitish "${project.actual_minecraft_version.replace("/", "-")}"
 		releaseName "[${project.actual_minecraft_version}] ${project.mod_name} ${project.truncated_mod_version}"
 		generateReleaseNotes false
@@ -125,7 +125,7 @@ if (rootProject.file(".env").exists()) {
 		token = rootProject.file(".env").text.readLines().get(0).replace("MODRINTH=", "").replace("\"", "")
 		projectId = "${project.modrinth_id}"
 		versionName = "[${project.actual_minecraft_version}] ${project.mod_name} ${project.truncated_mod_version}"
-		versionNumber = "${project.mod_version}${project.actual_minecraft_version}"
+		versionNumber = "${project.mod_version}+${project.actual_minecraft_version}"
 		versionType = "release"
 		uploadFile = tasks.remapJar
 		gameVersions = List.of(project.modrinth_version.split(", "))
