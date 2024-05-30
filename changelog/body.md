@@ -1,10 +1,8 @@
-*Please make sure you use Quilt Loader and Minecraft in-20100110!*
+*Please make sure you use Quilt Loader and Minecraft in-20100104!*  
+*OrnitheMC incorrectly lists in-20100104 as in-20100105.*  
 
 ## Changes  
-- Added support for `in-20100104` saves with Save Block Items enabled.  
-  - When the world is saved in `in-20100110`, the block items will be saved normally allowing vanilla versions to read them.  
-- Updated Config Screen.  
-- Added In-Block Fix config option.  
-  - It is recommended to leave this disabled.  
-  - This option re-enables the fix that would teleport you out of blocks on world load.  
-    - When enabled, you will notice issues relating to entities, particles, and tnt.  
+- Ported 1.0.1+in-20100110 to in-20100104.  
+- Added Save Block Items Config Option.  
+  - When enabled, block items will be saved.  
+  - For levels saved with this config option enabled, please load and save in 1.0.1 for in-20100110, before using in vanilla versions.  
