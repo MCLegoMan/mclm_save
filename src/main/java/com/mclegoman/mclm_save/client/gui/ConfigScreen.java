@@ -20,12 +20,12 @@ public class ConfigScreen extends Screen {
 	}
 	public final void init() {
 		this.buttons.add(new ButtonWidget(8, this.width / 2 - 150, this.height / 6, 300, 20, "Save Block Items: " + SaveConfig.instance.saveBlockItems.value()));
-		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 24, 148, 20, "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value()));
-		this.buttons.add(new ButtonWidget(0, this.width / 2 + 2, this.height / 6 + 24, 148, 20, "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value()));
-		this.buttons.add(new ButtonWidget(4, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value()));
-		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 72, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
-		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 94, 148, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
-		this.buttons.add(new ButtonWidget(9, this.width / 2 + 2, this.height / 6 + 94, 148, 20, "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value()));
+		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 24, 300, 20, "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value()));
+		this.buttons.add(new ButtonWidget(0, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value()));
+		this.buttons.add(new ButtonWidget(4, this.width / 2 - 150, this.height / 6 + 72, 300, 20, "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value()));
+		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 94, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
+		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 116, 148, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
+		this.buttons.add(new ButtonWidget(9, this.width / 2 + 2, this.height / 6 + 116, 148, 20, "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value()));
 		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 144, 200, 20, "Credits and Attribution"));
 		this.buttons.add(new ButtonWidget(6, this.width / 2 - 100, this.height / 6 + 168, 98, 20, "Reset to Default"));
 		this.buttons.add(new ButtonWidget(7, this.width / 2 + 2, this.height / 6 + 168, 98, 20, "Done"));
