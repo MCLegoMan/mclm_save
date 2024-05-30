@@ -10,7 +10,7 @@ plugins {
 base {
 	archivesName = project.archives_base_name
 }
-version = project.mod_version + "+" + project.minecraft_version
+version = project.mod_version + "+" + project.actual_minecraft_version
 group = project.maven_group
 
 loom {
@@ -106,11 +106,11 @@ if (rootProject.file(".env").exists()) {
 		token rootProject.file(".env").text.readLines().get(1).replace("GITHUB=", "").replace("\"", "")
 		owner "MCLegoMan"
 		repo "${project.archives_base_name}"
-		tagName "${project.mod_version}-${project.minecraft_version.replace("/", "-")}"
-		targetCommitish "${project.minecraft_version.replace("/", "-")}"
-		releaseName "[${project.minecraft_version}] ${project.mod_name} ${project.mod_version}"
+		tagName "${project.mod_version}-${project.actual_minecraft_version.replace("/", "-")}"
+		targetCommitish "${project.actual_minecraft_version.replace("/", "-")}"
+		releaseName "[${project.actual_minecraft_version}] ${project.mod_name} ${project.mod_version}"
 		generateReleaseNotes false
-		body String.valueOf(((!project.development) ? rootProject.file("changelog/header_release.md").text : rootProject.file("changelog/header_development.md").text) + "\n## ${project.mod_name} ${project.mod_version} for ${project.minecraft_version}\n\n" + rootProject.file("changelog/body.md").text + "\n\n" + ((!project.development) ? rootProject.file("changelog/footer_release.md").text : rootProject.file("changelog/footer_development.md").text)).replace("#[ornithemc_version]", project.ornithemc_version).replace("#[mod_filename]", "${archives_base_name}-${version}.jar")
+		body String.valueOf(((!project.development) ? rootProject.file("changelog/header_release.md").text : rootProject.file("changelog/header_development.md").text) + "\n## ${project.mod_name} ${project.mod_version} for ${project.actual_minecraft_version}\n\n" + rootProject.file("changelog/body.md").text + "\n\n" + ((!project.development) ? rootProject.file("changelog/footer_release.md").text : rootProject.file("changelog/footer_development.md").text)).replace("#[minecraft_version]", project.minecraft_version).replace("#[mod_filename]", "${archives_base_name}-${version}.jar")
 		draft false
 		if (project.development) prerelease true
 		else prerelease false
@@ -124,13 +124,13 @@ if (rootProject.file(".env").exists()) {
 	modrinth {
 		token = rootProject.file(".env").text.readLines().get(0).replace("MODRINTH=", "").replace("\"", "")
 		projectId = "${project.modrinth_id}"
-		versionName = "[${project.minecraft_version}] ${project.mod_name} ${project.mod_version}"
-		versionNumber = "${project.mod_version}${project.minecraft_version}"
+		versionName = "[${project.actual_minecraft_version}] ${project.mod_name} ${project.mod_version}"
+		versionNumber = "${project.mod_version}${project.actual_minecraft_version}"
 		versionType = "release"
 		uploadFile = tasks.remapJar
 		gameVersions = List.of(project.modrinth_version.split(", "))
 		loaders = ["quilt"]
-		changelog = String.valueOf(((!project.development) ? rootProject.file("changelog/header_release.md").text : rootProject.file("changelog/header_development.md").text) + "\n## ${project.mod_name} ${project.mod_version} for ${project.minecraft_version}\n\n" + rootProject.file("changelog/body.md").text + "\n\n" + ((!project.development) ? rootProject.file("changelog/footer_release.md").text : rootProject.file("changelog/footer_development.md").text)).replace("#[ornithemc_version]", project.ornithemc_version).replace("#[mod_filename]", "${archives_base_name}-${version}.jar")
+		changelog = String.valueOf(((!project.development) ? rootProject.file("changelog/header_release.md").text : rootProject.file("changelog/header_development.md").text) + "\n## ${project.mod_name} ${project.mod_version} for ${project.actual_minecraft_version}\n\n" + rootProject.file("changelog/body.md").text + "\n\n" + ((!project.development) ? rootProject.file("changelog/footer_release.md").text : rootProject.file("changelog/footer_development.md").text)).replace("#[minecraft_version]", project.minecraft_version).replace("#[mod_filename]", "${archives_base_name}-${version}.jar")
 	}
 	tasks.register("uploadVersion") {
 		group = project.archives_base_name.toLowerCase()
