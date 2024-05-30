@@ -19,12 +19,12 @@ public class ConfigScreen extends Screen {
 		this.parent = screen;
 	}
 	public final void init() {
-		this.buttons.add(new ButtonWidget(0, this.width / 2 - 150, this.height / 6, 300, 20, "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value()));
-		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 24, 300, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
-		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value()));
+		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6, 300, 20, "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value()));
+		this.buttons.add(new ButtonWidget(0, this.width / 2 - 150, this.height / 6 + 24, 300, 20, "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value()));
+		this.buttons.add(new ButtonWidget(4, this.width / 2 - 150, this.height / 6 + 48, 300, 20, "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value()));
 		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 72, 300, 20, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
-		this.buttons.add(new ButtonWidget(4, this.width / 2 - 150, this.height / 6 + 96, 300, 20, "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value()));
-		this.buttons.add(new ButtonWidget(9, this.width / 2 - 150, this.height / 6 + 120, 300, 20, "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value()));
+		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 94, 148, 20, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
+		this.buttons.add(new ButtonWidget(9, this.width / 2 + 2, this.height / 6 + 94, 148, 20, "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value()));
 		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 144, 200, 20, "Credits and Attribution"));
 		this.buttons.add(new ButtonWidget(6, this.width / 2 - 100, this.height / 6 + 168, 98, 20, "Reset to Default"));
 		this.buttons.add(new ButtonWidget(7, this.width / 2 + 2, this.height / 6 + 168, 98, 20, "Done"));
@@ -34,15 +34,18 @@ public class ConfigScreen extends Screen {
 		if (button.active) {
 			if (button.id == 0) {
 				SaveConfig.instance.skipSaveLoadScreen.setValue(!SaveConfig.instance.skipSaveLoadScreen.value());
-				button.message = "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value();
+				buttons.clear();
+				init();
 			}
 			if (button.id == 1) {
 				SaveConfig.instance.forceAprilFools.setValue(!SaveConfig.instance.forceAprilFools.value());
-				button.message = "Force April Fools: " + SaveConfig.instance.forceAprilFools.value();
+				buttons.clear();
+				init();
 			}
 			if (button.id == 2) {
 				SaveConfig.instance.convertClassicPlayer.setValue(!SaveConfig.instance.convertClassicPlayer.value());
-				button.message = "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value();
+				buttons.clear();
+				init();
 			}
 			if (button.id == 3) {
 				Theme theme = SaveConfig.instance.dialogTheme.value();
@@ -71,15 +74,18 @@ public class ConfigScreen extends Screen {
 						SaveConfig.instance.dialogTheme.setValue(Theme.system);
 					}
 				}
-				button.message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
+				buttons.clear();
+				init();
 			}
 			if (button.id == 4) {
 				SaveConfig.instance.saveWorldOnExit.setValue(!SaveConfig.instance.saveWorldOnExit.value());
-				button.message = "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value();
+				buttons.clear();
+				init();
 			}
 			if (button.id == 9) {
 				SaveConfig.instance.blockPosFix.setValue(!SaveConfig.instance.blockPosFix.value());
-				button.message = "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value();
+				buttons.clear();
+				init();
 			}
 			if (button.id == 5) {
 				ClientData.minecraft.m_6408915(new CreditsScreen(new ConfigScreen(this.parent)));
@@ -87,13 +93,33 @@ public class ConfigScreen extends Screen {
 			if (button.id == 6) {
 				SaveConfig.instance.skipSaveLoadScreen.setValue(SaveConfig.instance.skipSaveLoadScreen.getDefaultValue());
 				SaveConfig.instance.forceAprilFools.setValue(SaveConfig.instance.forceAprilFools.getDefaultValue());
-				SaveConfig.instance.convertClassicPlayer.setValue(SaveConfig.instance.convertClassicPlayer.getDefaultValue());
 				SaveConfig.instance.dialogTheme.setValue(SaveConfig.instance.dialogTheme.getDefaultValue());
 				SaveConfig.instance.dialogDir.setValue(SaveConfig.instance.dialogDir.getDefaultValue());
-				((ButtonWidget)buttons.get(0)).message = "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value();
-				((ButtonWidget)buttons.get(1)).message = "Force April Fools: " + SaveConfig.instance.forceAprilFools.value();
-				((ButtonWidget)buttons.get(2)).message = "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value();
-				((ButtonWidget)buttons.get(3)).message = "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName();
+				SaveConfig.instance.loadDialogFilter.setValue(SaveConfig.instance.loadDialogFilter.getDefaultValue());
+				SaveConfig.instance.saveDialogFilter.setValue(SaveConfig.instance.saveDialogFilter.getDefaultValue());
+				SaveConfig.instance.convertClassicPlayer.setValue(SaveConfig.instance.convertClassicPlayer.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultName.setValue(SaveConfig.instance.convertClassicDefaultName.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultCreator.setValue(SaveConfig.instance.convertClassicDefaultCreator.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultCloudColor.setValue(SaveConfig.instance.convertClassicDefaultCloudColor.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultCloudHeight.setValue(SaveConfig.instance.convertClassicDefaultCloudHeight.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultFogColor.setValue(SaveConfig.instance.convertClassicDefaultFogColor.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultSkyBrightness.setValue(SaveConfig.instance.convertClassicDefaultSkyBrightness.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultSkyColor.setValue(SaveConfig.instance.convertClassicDefaultSkyColor.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultSurroundingGroundHeight.setValue(SaveConfig.instance.convertClassicDefaultSurroundingGroundHeight.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultSurroundingGroundType.setValue(SaveConfig.instance.convertClassicDefaultSurroundingGroundType.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultSurroundingWaterHeight.setValue(SaveConfig.instance.convertClassicDefaultSurroundingWaterHeight.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultSurroundingWaterType.setValue(SaveConfig.instance.convertClassicDefaultSurroundingWaterType.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultSpawnX.setValue(SaveConfig.instance.convertClassicDefaultSpawnX.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultSpawnY.setValue(SaveConfig.instance.convertClassicDefaultSpawnY.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultSpawnZ.setValue(SaveConfig.instance.convertClassicDefaultSpawnZ.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultHeight.setValue(SaveConfig.instance.convertClassicDefaultHeight.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultLength.setValue(SaveConfig.instance.convertClassicDefaultLength.getDefaultValue());
+				SaveConfig.instance.convertClassicDefaultWidth.setValue(SaveConfig.instance.convertClassicDefaultWidth.getDefaultValue());
+				SaveConfig.instance.saveWorldOnExit.setValue(SaveConfig.instance.saveWorldOnExit.getDefaultValue());
+				SaveConfig.instance.blockPosFix.setValue(SaveConfig.instance.blockPosFix.getDefaultValue());
+				SaveConfig.instance.debug.setValue(SaveConfig.instance.debug.getDefaultValue());
+				buttons.clear();
+				init();
 			}
 			if (button.id == 7) {
 				SaveConfig.instance.save();
