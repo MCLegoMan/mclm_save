@@ -1,41 +1,19 @@
-# ![](./assets/logo.png)
-
-## Save 1.0.0-rc.1 for Minecraft in-20100104  
-*Please note: OrnitheMC has in-20100104 listed as in-20100105.*  
-
-**Due to differences in how 104 saves block items, blocks will only be saved if you enable the save block items config option. Worlds saved with this enabled, will need to be run through Save 1.0.1 or newer for 110 to be compatible with vanilla versions.**  
-
-### Changes  
-- Ported 1.0.0-release.1+in-20100110 to in-20100104.  
-  - The following values will not be loaded, and will save default values:  
-    - `CloudHeight`  
-    - `SkyBrightness`  
-    - `SurroundingGroundHeight`  
-    - `SurroundingWaterType`  
-    - `Entity/Fire`  
-- Dead entities are no longer saved.  
-- **Updated Update Position.**  
-  - This fix will now only check the y level for the first air block.
-  - There will likely still be issues relating to particles/tnt.
-- Updated Converter.
-  - If the world height is lower than the surrounding heights, the surrounding heights will be set to lower than the world height.
-- Added Save Block Items Config Option.  
-  - Disabled by default, use the config screen to enable.  
-  - When enabled, block items will be saved. However, you will need to save the world in 110 using Save 1.0.1 or higher to be compatible with vanilla.  
-
 ### How to Install
 1. Goto [OrnitheMC](https://ornithemc.net/)'s website and download the latest installer.
-2. Select the **Show snapshots** checkbox. (This may take a while to reload)
-3. Select **in-20100110** as your Minecraft version.
+2. Select the **Show snapshots** checkbox. (This may take awhile to reload)
+3. Select **#[minecraft_version]** as your Minecraft version.
 4. Select your launcher type. You can either select the Official Minecraft Launcher or MultiMC/Prism.
 5. Select **Quilt** as your Loader type. (This is important, this mod won't work on Fabric!)
 6. Press Install and wait for your instance to be generated.
-7. Add the `mclm_save-1.0.0-rc.1+in-20100110.jar` file to the instance's mods folder.
+7. Add the `#[mod_filename]` file to the instance's mods folder.
 8. Launch and Enjoy!
+
+It's recommended to use `-Djava.util.Arrays.useLegacyMergeSort=true` in your java arguments.  
+To fix sounds, follow this [tutorial](https://mclegoman.com/Tutorials/Indev_Sound_Fix).
 
 ### Issues
 Please help us improve by submitting [bug reports](https://github.com/MCLegoMan/mclm_save/issues) if you encounter any issues.  
-_This mod has been tested on Windows 10 and 11 (x64 native), and Linux (x64 virtual machine)._  
+_This mod has been tested on Windows 10 and 11 (x64 native), and Linux (x64 virtual machine)._
 
 ### Attributions
 - [ClassicExplorer](https://github.com/bluecrab2/ClassicExplorer).

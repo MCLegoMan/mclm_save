@@ -21,7 +21,7 @@ import java.io.File;
 
 public class Data {
 	public static String mcVersion = "in-20100104";
-	public static Version version = new Version("Save", "mclm_save", 1, 0, 1, Helper.ReleaseType.RELEASE_CANDIDATE, 1);
+	public static Version version = new Version("Save", "mclm_save", 1, 0, 1, Helper.ReleaseType.RELEASE, 1);
 	public static void exit(int status) {
 		version.sendToLog(Helper.LogType.INFO, "Halting with status code: " + status + "!");
 		if (SaveConfig.instance.saveWorldOnExit.value()) {
