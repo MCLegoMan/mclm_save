@@ -9,6 +9,7 @@ package com.mclegoman.mclm_save.client.gui;
 
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.common.data.Data;
+import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.gui.screen.Screen;
@@ -88,9 +89,9 @@ public final class InfoScreen extends Screen {
 		}
 		if (this.canBeClosedMessage != null && !this.canBeClosedMessage.equals("")) drawCenteredString(this.textRenderer, this.canBeClosedMessage, this.width / 2, this.height - 20, 16777215);
 		if (this.extraInfoMessage != null && !this.extraInfoMessage.equals("")) drawCenteredString(this.textRenderer, this.extraInfoMessage, this.width / 2, this.height - 31, 16777215);
-		if (Data.version.isDevelopmentBuild()) {
-			textRenderer.drawWithShadow(Data.version.getName() + " " + Data.version.getFriendlyString(), 2, this.height - 23, 16777215);
-			textRenderer.drawWithShadow("Development Build", 2, this.height - 12, 0xFFAA00);
+		if (Data.version.isDevelopmentBuild() || SaveConfig.instance.debug.value()) {
+			textRenderer.drawWithShadow(Data.version.getName() + " " + Data.version.getFriendlyString() + " (" + Data.mcVersion + ")", 2, this.height - (Data.version.isDevelopmentBuild() ? 23 : 12), 16777215);
+			if (Data.version.isDevelopmentBuild()) textRenderer.drawWithShadow("Development Build", 2, this.height - 12, 0xFFAA00);
 		}
 		super.render(i, j);
 	}
