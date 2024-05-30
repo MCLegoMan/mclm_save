@@ -1,7 +1,7 @@
 ### How to Install
 1. Goto [OrnitheMC](https://ornithemc.net/)'s website and download the latest installer.
 2. Select the **Show snapshots** checkbox. (This may take awhile to reload)
-3. Select **#[ornithemc_version]** as your Minecraft version.
+3. Select **#[minecraft_version]** as your Minecraft version.
 4. Select your launcher type. You can either select the Official Minecraft Launcher or MultiMC/Prism.
 5. Select **Quilt** as your Loader type. (This is important, this mod won't work on Fabric!)
 6. Press Install and wait for your instance to be generated.
