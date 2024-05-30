@@ -36,4 +36,7 @@ public class Accessors {
 			MinecraftClient.world = world;
 		}
 	}
+	public static class World {
+		public static byte[] f_4249554;
+	}
 }
