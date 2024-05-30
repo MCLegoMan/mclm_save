@@ -4,25 +4,26 @@
 	"package": "com.mclegoman.mclm_save.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"client": [
+		"client.EntityMixin",
 		"client.GameGuiMixin",
 		"client.GameMenuScreenMixin",
+		"client.GameRendererMixin",
 		"client.InventoryMenuScreenMixin",
 		"client.LoadScreenMixin",
 		"client.MinecraftClientMixin",
 		"client.OptionsScreenMixin",
-		"client.ResourcesMixin",
 		"client.SaveScreenMixin",
-		"client.WorldMixin",
 		"client.WorldRendererMixin",
 		"client.accessors.EntityAccessor",
 		"client.accessors.PlayerEntityAccessor",
 		"client.accessors.ScreenAccessor",
 		"fixes.exit.MinecraftAppletMixin",
 		"fixes.resize.GameGuiMixin",
-		"fixes.resize.MinecraftClientMixin",
-		"client.EntityMixin"
+		"fixes.resize.MinecraftClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
-	}
+	},
+	"mixins": [
+	]
 }

@@ -21,6 +21,7 @@ loom {
 			sourceSet("main")
 		}
 	}
+	accessWidenerPath = file("src/main/resources/mclm_save.accesswidener")
 }
 
 ploceus {
@@ -54,7 +55,7 @@ dependencies {
 	include(implementation "com.formdev:flatlaf:3.4.1")
 
 	// Development Environment Only
-	modImplementation "maven.modrinth:mclm_debug:1.1.0-release.1+in-20100110"
+	//modImplementation "maven.modrinth:mclm_debug:1.1.0-release.1+in-20100110"
 }
 
 project.sourceSets {

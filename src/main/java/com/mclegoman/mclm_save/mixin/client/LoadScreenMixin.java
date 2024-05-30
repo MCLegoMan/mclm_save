@@ -27,8 +27,6 @@ public abstract class LoadScreenMixin extends Screen {
 	private boolean f_6250022;
 	@Shadow
 	private boolean f_1196307;
-	@Shadow
-	private boolean f_3904739;
 	@Inject(method = "run", at = @At(value = "HEAD"), cancellable = true)
 	private void save$overrideLevelList(CallbackInfo ci) {
 		this.m_1871619(new String[]{"-","-","-","-","-"});
@@ -44,8 +42,8 @@ public abstract class LoadScreenMixin extends Screen {
 	private void save$useLoadFile(ButtonWidget button, CallbackInfo ci) {
 		if (button.active) {
 			if (this.f_1196307 || this.f_6250022 && button.id == 5) {
-				this.f_3904739 = true;
-				LevelFile.load(!(ClientData.minecraft.f_0723335 instanceof C_0388903));
+				//this.f_3904739 = true;
+				//LevelFile.load(!(ClientData.minecraft.f_0723335 instanceof C_0388903));
 			}
 		}
 	}

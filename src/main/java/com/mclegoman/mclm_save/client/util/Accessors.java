@@ -26,10 +26,6 @@ public class Accessors {
 	public static ScreenAccessor getScreen(Screen screen) {
 		return (ScreenAccessor)screen;
 	}
-	public static class World {
-		public static byte[] f_4249554;
-		public static byte[] f_3132715;
-	}
 	public static class MinecraftClient {
 		public static Canvas canvas;
 		public static boolean shouldLoad;

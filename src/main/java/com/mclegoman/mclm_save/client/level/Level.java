@@ -20,7 +20,6 @@ import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.unmapped.C_2411117;
 import net.minecraft.world.World;
 
 import java.io.*;
@@ -28,20 +27,22 @@ import java.time.Instant;
 import java.util.zip.GZIPOutputStream;
 
 public abstract class Level {
-	private final C_2411117 f_1154694;
-
-	public Level(C_2411117 c_2411117) {
-		this.f_1154694 = c_2411117;
-	}
+//	private final C_2411117 f_1154694;
+//
+//	public Level(C_2411117 c_2411117) {
+//		this.f_1154694 = c_2411117;
+//	}
 
 	public final World load(InputStream inputStream) throws IOException {
-		if (this.f_1154694 != null) {
-			this.f_1154694.m_0983733("Loading level");
-		}
-
-		if (this.f_1154694 != null) {
-			this.f_1154694.m_1154571("Reading..");
-		}
+		Data.version.sendToLog(Helper.LogType.INFO, "Loading level");
+		Data.version.sendToLog(Helper.LogType.INFO, "Reading...");
+//		if (this.f_1154694 != null) {
+//			this.f_1154694.m_0983733("Loading level");
+//		}
+//
+//		if (this.f_1154694 != null) {
+//			this.f_1154694.m_1154571("Reading..");
+//		}
 
 		TagCompound inputStream1 = TagCompoundStream.toTagCompound(inputStream);
 		TagCompound map = inputStream1.getNbt("Map");
@@ -51,9 +52,10 @@ public abstract class Level {
 		short length = map.getShort("Length");
 		short height = map.getShort("Height");
 		World world = new World();
-		if (this.f_1154694 != null) {
-			this.f_1154694.m_1154571("Preparing level..");
-		}
+		Data.version.sendToLog(Helper.LogType.INFO, "Preparing level..");
+//		if (this.f_1154694 != null) {
+//			this.f_1154694.m_1154571("Preparing level..");
+//		}
 
 		TagList var10 = map.getList("Spawn");
 		world.f_3926541 = ((ShortTag)var10.getNbt(0)).tag;
@@ -69,9 +71,10 @@ public abstract class Level {
 		//world.f_3241378 = environment.getByte("SurroundingWaterType");
 		byte[] blocks = map.m_5601145("Blocks");
 		world.m_2817546(width, height, length, blocks);
-		if (this.f_1154694 != null) {
-			this.f_1154694.m_1154571("Preparing entities..");
-		}
+		Data.version.sendToLog(Helper.LogType.INFO, "Preparing entities..");
+//		if (this.f_1154694 != null) {
+//			this.f_1154694.m_1154571("Preparing entities..");
+//		}
 		for(int var13 = 0; var13 < entities.index(); ++var13) {
 			String var16 = (map = (TagCompound)entities.getNbt(var13)).getString("id");
 			Entity var19;
@@ -89,11 +92,11 @@ public abstract class Level {
 
 	public final void save(World world, File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);
-		TagCompound level = LevelFile.createLevel("Player", Instant.now().getEpochSecond(), "A Nice World", world.f_1709243, (short) 66, world.f_2946178, (byte) 100, world.f_3766825, (short) 23, (byte) Block.GRASS.id, (short) world.f_8873427, (byte) 8, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, Accessors.World.f_4249554);
+		TagCompound level = LevelFile.createLevel("Player", Instant.now().getEpochSecond(), "A Nice World", world.f_1709243, (short) 66, world.f_2946178, (byte) 100, world.f_3766825, (short) 23, (byte) Block.GRASS.id, (short) world.f_8873427, (byte) 8, (short) world.f_3926541, (short) world.f_2923303, (short) world.f_8500813, (short) world.f_4184003, (short) world.f_8212213, (short) world.f_3061106, world.f_4249554);
 		TagList entities = new TagList();
 		for (Object entity : world.f_7148360.f_6899876) {
 			Entity currentEntity = (Entity)entity;
-			currentEntity.m_2914294(currentEntity);
+			currentEntity.setPosition((int)currentEntity.x, (int)currentEntity.y, (int)currentEntity.z);
 			TagCompound entityData = saveEntityData(currentEntity);
 			if (!entityData.isEmpty() && ClientData.minecraft.f_6058446.deathTime == 0) entities.addNbt(entityData);
 		}
@@ -123,7 +126,8 @@ public abstract class Level {
 		Accessors.getEntity(entity).setFallDistance(nbtCompound.m_0000382("FallDistance"));
 		//entity.onFireTimer = nbtCompound.getShort("Fire");
 		if (entity instanceof LivingEntity) ((LivingEntity) entity).f_0554371 = nbtCompound.getInt("Air");
-		entity.refreshPositionAndAngles(entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
+		//entity.refreshPositionAndAngles(entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
+		entity.setPosition(entity.x, entity.y, entity.z);
 		if (entity instanceof PlayerEntity) {
 			TagList inventory = nbtCompound.getList("Inventory");
 			PlayerInventory playerInventory = new PlayerInventory();
@@ -132,7 +136,11 @@ public abstract class Level {
 				int count = index.getByte("Count");
 				int id = index.getShort("id");
 				int slot = index.getByte("Slot");
-				if (id != -1) setStack(playerInventory.inventorySlots, slot, new ItemStack(id, count));
+				if (id != -1) {
+					ItemStack stack = new ItemStack(id);
+					stack.size = count;
+					setStack(playerInventory.inventorySlots, slot, stack);
+				}
 				// 104 Block Saving Converter - We don't check the config here as the config is only for saving!
 				int blockId = index.getShort("blockId");
 				if (blockId != -1 && Block.BY_ID[blockId] != null) setStack(playerInventory.inventorySlots, slot, new ItemStack(Block.BY_ID[blockId], count));
