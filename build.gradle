@@ -1,0 +1,141 @@
+plugins {
+	id 'org.quiltmc.loom' version '1.6.5'
+	id 'ploceus' version '1.6-SNAPSHOT'
+	id "com.github.breadmoirai.github-release" version "2.4.1"
+	id "com.modrinth.minotaur" version "2.+"
+	id 'java'
+	id 'maven-publish'
+}
+
+base {
+	archivesName = project.archives_base_name
+}
+version = project.mod_version + "+" + project.actual_minecraft_version
+group = project.maven_group
+
+loom {
+	customMinecraftManifest.set("https://skyrising.github.io/mc-versions/version/manifest/${minecraft_version}.json")
+	clientOnlyMinecraftJar()
+	mods {
+		"mclm_save" {
+			sourceSet("main")
+		}
+	}
+}
+
+ploceus {
+	clientOnlyMappings()
+}
+
+repositories {
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
+	mavenCentral()
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.layered {
+		mappings "net.ornithemc:feather:${project.minecraft_version}${project.mappings_type}+build.${project.feather_build}"
+		mappings "net.ornithemc:calamus-intermediary:${project.minecraft_version}${project.mappings_type}"
+	}
+	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
+
+	// Save/Load Dialog Themes
+	include(implementation "com.formdev:flatlaf:3.4.1")
+
+	// Development Environment Only
+	//modImplementation "maven.modrinth:mclm_debug:1.1.0-release.1+in-20100110"
+}
+
+project.sourceSets {
+	main {
+		java {
+			srcDirs += project.rootProject.sourceSets.main.java.srcDirs
+		}
+		resources {
+			srcDirs += project.rootProject.sourceSets.main.resources.srcDirs
+		}
+	}
+}
+
+processResources {
+	inputs.properties 'version': version, 'group': project.group
+
+	filesMatching('quilt.mod.json') {
+		expand 'version': version, 'group': project.group
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = 'UTF-8'
+	it.options.release = 8
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
+	withSourcesJar()
+}
+jar {
+	from('LICENSE') {
+		rename { "${it}_${project.archivesBaseName}"}
+	}
+}
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from project.components.java
+		}
+	}
+	repositories {
+	}
+}
+
+if (rootProject.file(".env").exists()) {
+	githubRelease {
+		token rootProject.file(".env").text.readLines().get(1).replace("GITHUB=", "").replace("\"", "")
+		owner "MCLegoMan"
+		repo "${project.archives_base_name}"
+		tagName "${project.mod_version}+${project.actual_minecraft_version.replace("/", "-")}"
+		targetCommitish "${project.actual_minecraft_version.replace("/", "-")}"
+		releaseName "[${project.actual_minecraft_version}] ${project.mod_name} ${project.truncated_mod_version}"
+		generateReleaseNotes false
+		body String.valueOf(((!project.development) ? rootProject.file("changelog/header_release.md").text : rootProject.file("changelog/header_development.md").text) + "\n## ${project.mod_name} ${project.truncated_mod_version} for ${project.actual_minecraft_version}\n\n" + rootProject.file("changelog/body.md").text + "\n\n" + ((!project.development) ? rootProject.file("changelog/footer_release.md").text : rootProject.file("changelog/footer_development.md").text)).replace("#[minecraft_version]", project.minecraft_version).replace("#[mod_filename]", "${archives_base_name}-${version}.jar")
+		draft false
+		if (project.development) prerelease true
+		else prerelease false
+		releaseAssets tasks.remapJar
+		allowUploadToExisting.set false
+		overwrite false
+		dryRun false
+		apiEndpoint "https://api.github.com"
+		client
+	}
+	modrinth {
+		token = rootProject.file(".env").text.readLines().get(0).replace("MODRINTH=", "").replace("\"", "")
+		projectId = "${project.modrinth_id}"
+		versionName = "[${project.actual_minecraft_version}] ${project.mod_name} ${project.truncated_mod_version}"
+		versionNumber = "${project.mod_version}+${project.actual_minecraft_version}"
+		versionType = "release"
+		uploadFile = tasks.remapJar
+		gameVersions = List.of(project.modrinth_version.split(", "))
+		loaders = ["quilt"]
+		changelog = String.valueOf(((!project.development) ? rootProject.file("changelog/header_release.md").text : rootProject.file("changelog/header_development.md").text) + "\n## ${project.mod_name} ${project.truncated_mod_version} for ${project.actual_minecraft_version}\n\n" + rootProject.file("changelog/body.md").text + "\n\n" + ((!project.development) ? rootProject.file("changelog/footer_release.md").text : rootProject.file("changelog/footer_development.md").text)).replace("#[minecraft_version]", project.minecraft_version).replace("#[mod_filename]", "${archives_base_name}-${version}.jar")
+	}
+	tasks.register("uploadVersion") {
+		group = project.archives_base_name.toLowerCase()
+		description = 'Upload project to both GitHub and Modrinth.'
+		dependsOn(tasks.githubRelease)
+		if (!project.development) dependsOn(tasks.modrinth)
+	}
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "quilt_loader": {
+    "group": "com.mclegoman",
+    "id": "mclm_save",
+    "version": "${version}",
+    "metadata": {
+      "name": "Save",
+      "description": "Adds saving to versions of Minecraft that don't have it.",
+      "contributors": {
+        "Phantazap": "Owner",
+        "MCLegoMan": "Lead Developer"
+      },
+      "license": [
+        "LGPL-3.0-or-later"
+      ],
+      "contact": {
+        "github": "https://github.com/MCLegoMan",
+        "email": "daniel@mclegoman.com"
+      },
+      "icon": "assets/save/icon.png"
+    },
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "depends": [
+      {
+        "id": "quilt_loader",
+        "versions": "*"
+      },
+      {
+        "id": "minecraft",
+        "versions": "0.31"
+      }
+    ]
+  },
+  "mixin": [
+    "mclm_save.mixins.json"
+  ]
+}
