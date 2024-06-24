@@ -49,11 +49,6 @@ public class CreditsScreen extends Screen {
 		this.credits.add(new Couple("Author: JFormDesigner", 0xAAAAAA));
 		this.credits.add(new Couple("License: Apache-2.0", 0xAAAAAA));
 		this.credits.add(new Couple("", 0xFFFFFF));
-		this.credits.add(new Couple("material-ui-swing", 0xFFFFFF));
-		this.credits.add(new Couple("Material dialog theme.", 0xAAAAAA));
-		this.credits.add(new Couple("Author: vincenzopalazzo", 0xAAAAAA));
-		this.credits.add(new Couple("License: MIT", 0xAAAAAA));
-		this.credits.add(new Couple("", 0xFFFFFF));
 		this.credits.add(new Couple("Feather Mappings", 0xFFFFFF));
 		this.credits.add(new Couple("Minecraft mappings for legacy versions.", 0xAAAAAA));
 		this.credits.add(new Couple("Author: OrnitheMC", 0xAAAAAA));
