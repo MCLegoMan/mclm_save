@@ -89,8 +89,8 @@ public final class InfoScreen extends Screen {
 			drawCenteredString(this.textRenderer, string, this.width / 2, y, 16777215);
 			y += 11;
 		}
-		if (this.canBeClosedMessage != null && !this.canBeClosedMessage.equals("")) drawCenteredString(this.textRenderer, this.canBeClosedMessage, this.width / 2, this.height - 20, 16777215);
-		if (this.extraInfoMessage != null && !this.extraInfoMessage.equals("")) drawCenteredString(this.textRenderer, this.extraInfoMessage, this.width / 2, this.height - 31, 16777215);
+		if (this.canBeClosedMessage != null && !this.canBeClosedMessage.isEmpty()) drawCenteredString(this.textRenderer, this.canBeClosedMessage, this.width / 2, this.height - 20, 16777215);
+		if (this.extraInfoMessage != null && !this.extraInfoMessage.isEmpty()) drawCenteredString(this.textRenderer, this.extraInfoMessage, this.width / 2, this.height - 31, 16777215);
 		if (Data.version.isDevelopmentBuild() || SaveConfig.instance.debug.value()) {
 			textRenderer.drawWithShadow(Data.version.getName() + " " + Data.version.getFriendlyString() + " (" + Data.mcVersion + ")", 2, this.height - (Data.version.isDevelopmentBuild() ? 23 : 12), 16777215);
 			if (Data.version.isDevelopmentBuild()) textRenderer.drawWithShadow("Development Build", 2, this.height - 12, 0xFFAA00);
@@ -98,7 +98,7 @@ public final class InfoScreen extends Screen {
 		super.render(i, j);
 	}
 	public void keyPressed(char chr, int key) {
-		if (this.canBeClosedMessage != null && !this.canBeClosedMessage.equals("")) {
+		if (this.canBeClosedMessage != null && !this.canBeClosedMessage.isEmpty()) {
 			if (key == 1) {
 				ClientData.minecraft.m_6408915(null);
 				ClientData.minecraft.m_5690108();
