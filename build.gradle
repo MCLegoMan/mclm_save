@@ -140,3 +140,9 @@ if (rootProject.file(".env").exists()) {
 		if (!project.development) dependsOn(tasks.modrinth)
 	}
 }
+tasks.register("cleanBuild") {
+	group = project.archives_base_name.toLowerCase()
+	description = 'Clean build dir, and build a new version.'
+	dependsOn(tasks.clean)
+	dependsOn(tasks.build)
+}
