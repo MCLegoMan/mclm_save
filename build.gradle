@@ -10,7 +10,8 @@ plugins {
 base {
 	archivesName = project.archives_base_name
 }
-version = project.mod_version + "+" + project.actual_minecraft_version
+version = "${project.truncated_mod_version}${(project.dirty_build ? "-dirty.${new Date().format("yyyyMMddHHmmss")}" : "")}+${project.actual_minecraft_version}"
+String full_version = "${project.mod_version}${(project.dirty_build ? "-dirty.${new Date().format("yyyyMMddHHmmss")}" : "")}+${project.actual_minecraft_version}"
 group = project.maven_group
 
 loom {
@@ -69,10 +70,10 @@ project.sourceSets {
 }
 
 processResources {
-	inputs.properties 'version': version, 'group': project.group
+	inputs.properties 'version': full_version, 'group': project.group
 
 	filesMatching('quilt.mod.json') {
-		expand 'version': version, 'group': project.group
+		expand 'version': full_version, 'group': project.group
 	}
 }
 
