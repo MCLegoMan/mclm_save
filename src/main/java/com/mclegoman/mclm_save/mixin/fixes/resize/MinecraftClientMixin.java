@@ -27,7 +27,7 @@ public abstract class MinecraftClientMixin {
 	@Shadow private Canvas f_0769488;
 	@Shadow public int f_0545414;
 	@Shadow public int f_5990000;
-	@Shadow public Screen f_0723335;
+	@Shadow private Screen f_0723335;
 	@Shadow public abstract void m_6408915(Screen screen);
 	@Shadow public abstract void m_5690108();
 
@@ -47,7 +47,7 @@ public abstract class MinecraftClientMixin {
 				if (refreshScreen) {
 					if (this.f_0723335 != null) {
 						Screen screen = this.f_0723335;
-						Accessors.getScreen(screen).setButtons(new ArrayList());
+						Accessors.getScreen(screen).setButtons(new ArrayList<>());
 						this.m_5690108();
 						this.m_6408915(screen);
 					}
