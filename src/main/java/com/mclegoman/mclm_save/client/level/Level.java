@@ -134,9 +134,13 @@ public abstract class Level {
 			for(int var13 = 0; var13 < inventory.index(); ++var13) {
 				TagCompound index = (TagCompound)inventory.getNbt(var13);
 				int slot = index.getByte("Slot");
-				// 104 Block Saving Converter - We don't check the config here as the config is only for saving!
-				int blockId = index.getShort("blockId");
-				if (blockId != -1 && Block.BY_ID[blockId] != null) setStack(playerInventory.inventorySlots, slot, blockId);
+                int itemId = index.getShort("itemId");
+                if (itemId != -1 && Block.BY_ID[itemId] != null) setStack(playerInventory.inventorySlots, slot, itemId);
+				else {
+                    // 104 Block Saving Converter - We don't check the config here as the config is only for saving!
+                    int blockId = index.getShort("blockId");
+                    if (blockId != -1 && Block.BY_ID[blockId] != null) setStack(playerInventory.inventorySlots, slot, blockId);
+                }
 			}
 			((PlayerEntity)entity).inventory = playerInventory;
 			Accessors.getPlayerEntity((PlayerEntity)entity).setPlayerScore(nbtCompound.getInt("Score"));
@@ -166,7 +170,7 @@ public abstract class Level {
 			for (int slot = 0; slot < ((PlayerEntity)entity).inventory.inventorySlots.length; slot++) {
 				TagCompound inventorySlot = new TagCompound();
 				inventorySlot.addNbt("Count", new ByteTag((byte)1));
-				inventorySlot.addNbt("itemId", new ShortTag((short)-1));
+				inventorySlot.addNbt("itemId", new ShortTag(SaveConfig.instance.saveBlockItems.value() ? (short)-1 : (short)((PlayerEntity)entity).inventory.inventorySlots[slot]));
 				inventorySlot.addNbt("Slot", new ByteTag((byte)slot));
 				if (SaveConfig.instance.saveBlockItems.value()) inventorySlot.addNbt("blockId", new ShortTag((short) ((PlayerEntity)entity).inventory.inventorySlots[slot]));
 				inventory.addNbt(inventorySlot);
