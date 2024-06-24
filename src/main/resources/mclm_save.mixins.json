@@ -15,14 +15,12 @@
     "client.accessors.PlayerEntityAccessor",
     "client.accessors.ScreenAccessor",
     "fixes.exit.MinecraftAppletMixin",
-    "fixes.resize.MinecraftClientMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "mixins": [
+    "fixes.resize.MinecraftClientMixin",
     "client.GameGuiMixin",
     "client.WorldMixin",
     "fixes.resize.GameGuiMixin"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

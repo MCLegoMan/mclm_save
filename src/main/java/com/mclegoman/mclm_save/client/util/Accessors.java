@@ -28,6 +28,7 @@ public class Accessors {
 	}
 	public static class MinecraftClient {
 		public static Canvas canvas;
+		public static Screen screen;
 		public static boolean shouldLoad;
 		public static boolean shouldResize;
 		public static net.minecraft.world.World world;

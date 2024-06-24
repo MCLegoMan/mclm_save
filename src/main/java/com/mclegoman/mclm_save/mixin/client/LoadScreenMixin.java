@@ -7,8 +7,8 @@
 
 package com.mclegoman.mclm_save.mixin.client;
 
-import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.level.LevelFile;
+import com.mclegoman.mclm_save.client.util.Accessors;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.unmapped.C_0388903;
@@ -25,8 +25,6 @@ public abstract class LoadScreenMixin extends Screen {
 	protected abstract void m_1871619(String[] strings);
 	@Shadow
 	private boolean f_6250022;
-	@Shadow
-	private boolean f_1196307;
 	@Inject(method = "run", at = @At(value = "HEAD"), cancellable = true)
 	private void save$overrideLevelList(CallbackInfo ci) {
 		this.m_1871619(new String[]{"-","-","-","-","-"});
@@ -40,11 +38,6 @@ public abstract class LoadScreenMixin extends Screen {
 	}
 	@Inject(method = "buttonClicked", at = @At(value = "RETURN"))
 	private void save$useLoadFile(ButtonWidget button, CallbackInfo ci) {
-		if (button.active) {
-			if (this.f_1196307 || this.f_6250022 && button.id == 5) {
-				//this.f_3904739 = true;
-				//LevelFile.load(!(ClientData.minecraft.f_0723335 instanceof C_0388903));
-			}
-		}
+		if (button.active && button.id == 5) LevelFile.load(!(Accessors.MinecraftClient.screen instanceof C_0388903));
 	}
 }
