@@ -28,7 +28,7 @@ public abstract class EntityMixin {
 	@Shadow private float width;
 	@Shadow public float height;
 	@Shadow public Box shape;
-	@Shadow protected World world;
+	@Shadow public World world;
 	@Inject(method = "setPosition", at = @At(value = "HEAD"), cancellable = true)
 	private void save$checkCoords(float x, float g, float z, CallbackInfo ci) {
 		try {
