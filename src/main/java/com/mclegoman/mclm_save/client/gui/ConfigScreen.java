@@ -26,7 +26,7 @@ public class ConfigScreen extends Screen {
 		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 96, 300, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
 		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 120, 148, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
 		this.buttons.add(new ButtonWidget(9, this.width / 2 + 2, this.height / 6 + 120, 148, "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value()));
-		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 1440, "Credits and Attribution"));
+		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 144, "Credits and Attribution"));
 		this.buttons.add(new ButtonWidget(6, this.width / 2 - 100, this.height / 6 + 168, 98, "Reset to Default"));
 		this.buttons.add(new ButtonWidget(7, this.width / 2 + 2, this.height / 6 + 168, 98, "Done"));
 	}
