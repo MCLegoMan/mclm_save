@@ -137,6 +137,10 @@ public abstract class Level {
                 int itemId = index.getShort("itemId");
                 if (itemId != -1 && Block.BY_ID[itemId] != null) setStack(playerInventory.inventorySlots, slot, itemId);
 				else {
+                    // Load worlds that were converted incorrectly in older versions of save.
+                    // Older versions accidentally saved items as `id` instead of `itemId`.
+                    int id = index.getShort("id");
+                    if (id != -1 && Block.BY_ID[id] != null) setStack(playerInventory.inventorySlots, slot, id);
                     // 104 Block Saving Converter - We don't check the config here as the config is only for saving!
                     int blockId = index.getShort("blockId");
                     if (blockId != -1 && Block.BY_ID[blockId] != null) setStack(playerInventory.inventorySlots, slot, blockId);

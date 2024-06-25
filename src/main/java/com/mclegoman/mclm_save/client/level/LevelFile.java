@@ -223,7 +223,7 @@ public final class LevelFile {
 																short id = ((Integer)field2.getField()).shortValue();
 																if (id >= 0) {
 																	TagCompound itemData = (TagCompound) inventory.getNbt(index);
-																	itemData.addNbt("id", new ShortTag(id));
+																	itemData.addNbt("itemId", new ShortTag(id));
 																	itemData.addNbt("Slot", new ByteTag(((Integer)slot).byteValue()));
 																	index++;
 																}
