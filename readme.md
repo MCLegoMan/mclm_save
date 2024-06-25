@@ -1,11 +1,13 @@
 # ![](./assets/logo.png)  
 Save allows the player to save, load, and convert worlds in older versions that didn't have saving.  
 
+If you want to run this version in survival mode, also install [Survival](https://github.com/MCLegoMan/mclm_survival).
+
 ## Dependencies  
 - [Quilt Loader](https://quiltmc.org/).  
   - You will need to use [OrnitheMC](https://ornithemc.net/) to use Quilt with Minecraft in-20100110.  
 - [Java 8](https://adoptium.net/temurin/releases/?version=8). (Built using Eclipse Temurin 8.0.412+8)  
-- [Minecraft Indev 0.31 in-20100104](https://minecraft.wiki/w/Java_Edition_Indev_0.31_20100104).  
+- [Minecraft Indev 0.31 in-20091223](https://minecraft.wiki/w/Java_Edition_Indev_0.31_20091223-2).  
 
 ## Attributions  
 - [ClassicExplorer](https://github.com/bluecrab2/ClassicExplorer).  
