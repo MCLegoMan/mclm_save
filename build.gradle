@@ -29,16 +29,15 @@ ploceus {
 }
 
 repositories {
-	maven { url "https://maven.mclegoman.com/releases" }
 	exclusiveContent {
 		forRepository {
 			maven {
-				name = "Modrinth"
-				url = "https://api.modrinth.com/maven"
+				name = "MCLegoMan"
+				url = "https://maven.mclegoman.com/releases"
 			}
 		}
 		filter {
-			includeGroup "maven.modrinth"
+			includeGroup "com.mclegoman"
 		}
 	}
 	mavenCentral()
@@ -59,7 +58,7 @@ dependencies {
 	include(implementation "com.formdev:flatlaf:3.4.1")
 
 	// Development Environment Only
-	//modImplementation "maven.modrinth:mclm_debug:1.1.0-release.1+in-20100110"
+	//modImplementation "com.mclegoman:mclm_debug:1.1.0-release.1+in-20100110"
 }
 
 project.sourceSets {
