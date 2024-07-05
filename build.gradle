@@ -29,6 +29,7 @@ ploceus {
 }
 
 repositories {
+	maven { url "https://maven.mclegoman.com/releases" }
 	exclusiveContent {
 		forRepository {
 			maven {
@@ -50,6 +51,9 @@ dependencies {
 		mappings "net.ornithemc:calamus-intermediary:${project.minecraft_version}${project.mappings_type}"
 	}
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
+
+	// Survival Mode (Comment this line out if you want creative)
+	modImplementation "com.mclegoman:mclm_survival:1.0.0+in-20091223"
 
 	// Save/Load Dialog Themes
 	include(implementation "com.formdev:flatlaf:3.4.1")
