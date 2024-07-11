@@ -190,4 +190,8 @@ public abstract class Level {
 			inventory.f_7338809[slot] = count;
 		}
 	}
+	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index, boolean isBlock) {
+		int id = index.getShort(type);
+		if (id != -1 && Block.BY_ID[id] != null) setStack(playerInventory, slot, id, count);
+	}
 }
