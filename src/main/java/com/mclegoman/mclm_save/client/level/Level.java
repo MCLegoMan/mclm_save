@@ -11,6 +11,7 @@ import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.tag.*;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.data.Data;
+import com.mclegoman.mclm_save.common.util.Couple;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.block.Block;
@@ -131,19 +132,14 @@ public abstract class Level {
 		if (entity instanceof PlayerEntity) {
 			TagList inventory = nbtCompound.getList("Inventory");
 			PlayerInventory playerInventory = new PlayerInventory();
-			for(int var13 = 0; var13 < inventory.index(); ++var13) {
-				TagCompound index = (TagCompound)inventory.getNbt(var13);
+			for(int item = 0; item < inventory.index(); ++item) {
+				TagCompound index = (TagCompound)inventory.getNbt(item);
 				int count = index.getByte("Count");
-				int id = index.getShort("id");
 				int slot = index.getByte("Slot");
-				if (id != -1) {
-					ItemStack stack = new ItemStack(id);
-					stack.size = count;
-					setStack(playerInventory.inventorySlots, slot, stack);
-				}
-				// 104 Block Saving Converter - We don't check the config here as the config is only for saving!
-				int blockId = index.getShort("blockId");
-				if (blockId != -1 && Block.BY_ID[blockId] != null) setStack(playerInventory.inventorySlots, slot, new ItemStack(Block.BY_ID[blockId], count));
+				// We check for `itemId` as an older version of mclm_save accidentally saved items as `itemId`.
+				// We check for `blockId` without the config option as it's only needed on save.
+				Couple[] idTypes = new Couple[]{new Couple("id", false), new Couple("itemId", false), new Couple("blockId", true)};
+				for (Couple type : idTypes) prepStack((String)type.getFirst(), playerInventory, count, slot, index, (boolean)type.getSecond());
 			}
 			((PlayerEntity)entity).inventory = playerInventory;
 			Accessors.getPlayerEntity((PlayerEntity)entity).setPlayerScore(nbtCompound.getInt("Score"));
@@ -193,5 +189,17 @@ public abstract class Level {
 	}
 	public final void setStack(ItemStack[] inventorySlots, int slot, ItemStack stack) {
 		if (stack != null && (stack.itemId != -1 || stack.f_9064670 != -1)) inventorySlots[slot] = stack;
+	}
+	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index, boolean isBlock) {
+		int id = index.getShort(type);
+		if (id != -1) {
+			if (!isBlock) {
+				ItemStack stack = new ItemStack(id);
+				stack.size = count;
+				setStack(playerInventory.inventorySlots, slot, stack);
+			} else {
+				if (Block.BY_ID[id] != null) setStack(playerInventory.inventorySlots, slot, new ItemStack(Block.BY_ID[id], count));
+			}
+		}
 	}
 }
