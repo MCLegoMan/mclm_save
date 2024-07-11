@@ -15,13 +15,15 @@ import com.mclegoman.releasetypeutils.common.version.Version;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.openal.AL;
+import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
 
 import java.io.File;
 
 public class Data {
-	public static String mcVersion = "in-20091231-2";
+	public static String mcVersion = "in-20091231";
 	public static Version version = new Version("Save", "mclm_save", 1, 0, 1, Helper.ReleaseType.RELEASE_CANDIDATE, 1);
+	public static ModContainer modContainer;
 	public static void exit(int status) {
 		version.sendToLog(Helper.LogType.INFO, "Halting with status code: " + status + "!");
 		if (SaveConfig.instance.saveWorldOnExit.value()) {
