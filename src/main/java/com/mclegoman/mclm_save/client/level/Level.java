@@ -135,17 +135,13 @@ public abstract class Level {
 				TagCompound index = (TagCompound)inventory.getNbt(var13);
 				int count = index.getByte("Count");
 				int slot = index.getByte("Slot");
-                int id = index.getShort("id");
-                if (id != -1 && Block.BY_ID[id] != null) setStack(playerInventory, slot, id, count);
-				else {
-                    // Load items that were saved incorrectly in older versions of save.
-                    // some versions of save accidentally saved items as `itemId` instead of `id`.
-                    int itemId = index.getShort("itemId");
-                    if (itemId != -1 && Block.BY_ID[itemId] != null) setStack(playerInventory, slot, itemId, count);
-                    // 104 Block Saving Converter - We don't check the config here as the config is only for saving!
-                    int blockId = index.getShort("blockId");
-                    if (blockId != -1 && Block.BY_ID[blockId] != null) setStack(playerInventory, slot, blockId, count);
-                }
+				// We check for `itemId` as an older version of mclm_save accidentally saved items as `itemId`.
+				// We check for `blockId` without the config option as it's only needed on save.
+				String[] idTypes = new String[]{"id", "itemId", "blockId"};
+				for (String type : idTypes) {
+					int id = index.getShort(type);
+					if (id != -1 && Block.BY_ID[id] != null) setStack(playerInventory, slot, id, count);
+				}
 			}
 			((PlayerEntity)entity).inventory = playerInventory;
 			Accessors.getPlayerEntity((PlayerEntity)entity).setPlayerScore(nbtCompound.getInt("Score"));
