@@ -15,6 +15,7 @@ import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.common.util.Couple;
 import com.mclegoman.mclm_save.config.SaveConfig;
+import com.mclegoman.releasetypeutils.common.util.Translation;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 import me.bluecrab2.classicexplorer.fields.*;
 import me.bluecrab2.classicexplorer.fields.Class;
@@ -327,6 +328,20 @@ public final class LevelFile {
 		Map.addNbt("Width", new ShortTag(width));
 		if (blocks != null) Map.addNbt("Blocks", new ByteArrayTag(blocks));
 		Level.addNbt("Map", Map);
+		TagCompound mclm_save = new TagCompound();
+		// We add a custom section for mclm_save data.
+		mclm_save.addNbt("GameVersion", new StringTag(Data.mcVersion));
+		TagCompound ModVersion = new TagCompound();
+		ModVersion.addNbt("name", new StringTag(Data.version.getName()));
+		ModVersion.addNbt("id", new StringTag(Data.version.getID()));
+		ModVersion.addNbt("major", new IntTag(Data.version.getMajor()));
+		ModVersion.addNbt("minor", new IntTag(Data.version.getMinor()));
+		ModVersion.addNbt("patch", new IntTag(Data.version.getPatch()));
+		ModVersion.addNbt("type", new StringTag(Translation.releaseTypeString(Data.version.getType(), Translation.ReleaseTypeTranslationType.CODE)));
+		ModVersion.addNbt("build", new IntTag(Data.version.getBuild()));
+		if (Data.modContainer != null) ModVersion.addNbt("dirty", new StringTag(Data.modContainer.metadata().version().raw().contains("dirty") ? "true" : "false"));
+		mclm_save.addNbt("ModVersion", ModVersion);
+		Level.addNbt("mclm_save", mclm_save);
 		return Level;
 	}
 	public enum LoadOutputType {

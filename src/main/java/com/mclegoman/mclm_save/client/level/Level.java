@@ -173,12 +173,14 @@ public abstract class Level {
 			nbtCompound.addNbt("id", new StringTag("LocalPlayer"));
 			TagList inventory = new TagList();
 			for (int slot = 0; slot < ((PlayerEntity)entity).inventory.inventorySlots.length; slot++) {
-				TagCompound inventorySlot = new TagCompound();
-				inventorySlot.addNbt("Count", new ByteTag((byte)((PlayerEntity)entity).inventory.f_7338809[slot]));
-				inventorySlot.addNbt("id", new ShortTag(SaveConfig.instance.saveBlockItems.value() ? (short)-1 : (short)((PlayerEntity)entity).inventory.inventorySlots[slot]));
-				inventorySlot.addNbt("Slot", new ByteTag((byte)slot));
-				if (SaveConfig.instance.saveBlockItems.value()) inventorySlot.addNbt("blockId", new ShortTag((short) ((PlayerEntity)entity).inventory.inventorySlots[slot]));
-				inventory.addNbt(inventorySlot);
+				if (((PlayerEntity)entity).inventory.inventorySlots[slot] != -1) {
+					TagCompound inventorySlot = new TagCompound();
+					inventorySlot.addNbt("Count", new ByteTag((byte)((PlayerEntity)entity).inventory.f_7338809[slot]));
+					inventorySlot.addNbt("id", new ShortTag(SaveConfig.instance.saveBlockItems.value() ? (short)-1 : (short)((PlayerEntity)entity).inventory.inventorySlots[slot]));
+					inventorySlot.addNbt("Slot", new ByteTag((byte)slot));
+					if (SaveConfig.instance.saveBlockItems.value()) inventorySlot.addNbt("blockId", new ShortTag((short) ((PlayerEntity)entity).inventory.inventorySlots[slot]));
+					inventory.addNbt(inventorySlot);
+				}
 			}
 			nbtCompound.addNbt("Inventory", inventory);
 			nbtCompound.addNbt("Score", new IntTag(Accessors.getPlayerEntity((PlayerEntity)entity).getPlayerScore()));

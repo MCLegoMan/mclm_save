@@ -2,6 +2,6 @@
 *OrnitheMC lists this version as in-20091223-1459.*  
 
 ## Changes  
-- Saving a world should now save items as `id` instead of `itemId`.  
-  - Last release only fixed loading, but still worked as we check for both.  
-- Item count is now saved and loaded.  
+- Save files will now store the game and mod version data.  
+  - This allows future versions of mclm_save to see what last saved the world.  
+- Items will only save if they actually exist.  
