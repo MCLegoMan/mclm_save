@@ -11,6 +11,7 @@ import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.tag.*;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.data.Data;
+import com.mclegoman.mclm_save.common.util.Couple;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.block.Block;
@@ -131,17 +132,14 @@ public abstract class Level {
 		if (entity instanceof PlayerEntity) {
 			TagList inventory = nbtCompound.getList("Inventory");
 			PlayerInventory playerInventory = new PlayerInventory();
-			for(int var13 = 0; var13 < inventory.index(); ++var13) {
-				TagCompound index = (TagCompound)inventory.getNbt(var13);
+			for(int item = 0; item < inventory.index(); ++item) {
+				TagCompound index = (TagCompound)inventory.getNbt(item);
 				int count = index.getByte("Count");
 				int slot = index.getByte("Slot");
 				// We check for `itemId` as an older version of mclm_save accidentally saved items as `itemId`.
 				// We check for `blockId` without the config option as it's only needed on save.
-				String[] idTypes = new String[]{"id", "itemId", "blockId"};
-				for (String type : idTypes) {
-					int id = index.getShort(type);
-					if (id != -1 && Block.BY_ID[id] != null) setStack(playerInventory, slot, id, count);
-				}
+				Couple[] idTypes = new Couple[]{new Couple("id", false), new Couple("itemId", false), new Couple("blockId", true)};
+				for (Couple type : idTypes) prepStack((String)type.getFirst(), playerInventory, count, slot, index, (boolean)type.getSecond());
 			}
 			((PlayerEntity)entity).inventory = playerInventory;
 			Accessors.getPlayerEntity((PlayerEntity)entity).setPlayerScore(nbtCompound.getInt("Score"));
