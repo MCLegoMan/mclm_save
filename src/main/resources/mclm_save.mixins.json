@@ -17,13 +17,12 @@
 		"client.accessors.EntityAccessor",
 		"client.accessors.PlayerEntityAccessor",
 		"client.accessors.ScreenAccessor",
+		"client.DeathScreenMixin",
 		"fixes.exit.MinecraftAppletMixin",
 		"fixes.resize.GameGuiMixin",
 		"fixes.resize.MinecraftClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
-	},
-	"mixins": [
-	]
+	}
 }

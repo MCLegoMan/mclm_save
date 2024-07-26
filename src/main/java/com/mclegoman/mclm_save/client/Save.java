@@ -33,11 +33,5 @@ public class Save {
 				LevelFile.loadWorld((boolean)loadData.getSecond());
 			}
 		}
-		if (Accessors.MinecraftClient.screen instanceof DeathScreen) {
-			if (ClientData.minecraft.f_6058446.health > 0) {
-				ClientData.minecraft.f_6058446.deathTime = 0;
-				ClientData.minecraft.m_6408915(null);
-			}
-		}
 	}
 }
