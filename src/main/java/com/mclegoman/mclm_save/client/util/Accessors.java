@@ -27,6 +27,7 @@ public class Accessors {
 		return (ScreenAccessor)screen;
 	}
 	public static class MinecraftClient {
+		public static Screen screen;
 		public static Canvas canvas;
 		public static boolean shouldLoad;
 		public static boolean shouldResize;
