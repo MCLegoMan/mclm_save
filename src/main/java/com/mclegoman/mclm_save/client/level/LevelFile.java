@@ -71,7 +71,8 @@ public final class LevelFile {
 						} catch (Exception error) {
 							ClientData.minecraft.m_6408915(new InfoScreen("Error: Failed to save world!", error.getLocalizedMessage(), InfoScreen.Type.ERROR, true));
 						} finally {
-							ClientData.minecraft.m_6408915(null);
+							if (SaveConfig.instance.saveBlockItems.value()) ClientData.minecraft.m_6408915(new InfoScreen("Saving World", "For vanilla compatibility, you will first need to load and save this world using Save for in-20100110.", InfoScreen.Type.DIRT, true));
+							else ClientData.minecraft.m_6408915(null);
 						}
 					}
 				}
