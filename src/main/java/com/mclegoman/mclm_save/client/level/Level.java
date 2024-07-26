@@ -191,7 +191,9 @@ public abstract class Level {
 		}
 	}
 	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index, boolean isBlock) {
-		int id = index.getShort(type);
-		if (id != -1 && Block.BY_ID[id] != null) setStack(playerInventory, slot, id, count);
+		if (index.getElements().containsKey(type)) {
+			int id = index.getShort(type);
+			if (id != -1 && Block.BY_ID[id] != null) setStack(playerInventory, slot, id, count);
+		}
 	}
 }
