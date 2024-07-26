@@ -204,4 +204,8 @@ public abstract class Level {
 			}
 		}
 	}
+	// 110 doesn't have the isBlock tag, to allow for compatibility we assume false if not given in 104 and lower.
+	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index) {
+		prepStack(type, playerInventory, count, slot, index, false);
+	}
 }
