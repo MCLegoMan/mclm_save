@@ -190,14 +190,14 @@ public abstract class Level {
 			inventory.f_7338809[slot] = count;
 		}
 	}
-	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index, boolean isBlock) {
+	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index) {
 		if (index.getElements().containsKey(type)) {
 			int id = index.getShort(type);
 			if (id != -1 && Block.BY_ID[id] != null) setStack(playerInventory, slot, id, count);
 		}
 	}
-	// 110 doesn't have the isBlock tag, to allow for compatibility we assume false if not given in 104 and lower.
-	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index) {
-		prepStack(type, playerInventory, count, slot, index, false);
+	// 1231 and 104 require isBlock boolean for compatibility we add a function here that passes this to the main function.
+	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index, boolean isBlock) {
+		prepStack(type, playerInventory, count, slot, index);
 	}
 }
