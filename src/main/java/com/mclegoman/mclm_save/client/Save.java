@@ -7,12 +7,9 @@
 
 package com.mclegoman.mclm_save.client;
 
-import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.level.LevelFile;
-import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.common.util.Couple;
-import net.minecraft.client.gui.screen.DeathScreen;
 import org.quiltmc.loader.api.ModContainer;
 
 public class Save {
@@ -31,12 +28,6 @@ public class Save {
 			if ((boolean) loadData.getFirst()) {
 				LevelFile.shouldLoad = new Couple(false, true);
 				LevelFile.loadWorld((boolean)loadData.getSecond());
-			}
-		}
-		if (Accessors.MinecraftClient.screen instanceof DeathScreen) {
-			if (ClientData.minecraft.f_6058446.health > 0) {
-				ClientData.minecraft.f_6058446.deathTime = 0;
-				ClientData.minecraft.m_6408915(null);
 			}
 		}
 	}

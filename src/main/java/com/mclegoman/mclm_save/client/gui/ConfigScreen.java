@@ -21,11 +21,10 @@ public class ConfigScreen extends Screen {
 	public final void init() {
 		this.buttons.add(new ButtonWidget(8, this.width / 2 - 150, this.height / 6, 300, "Save Block Items: " + SaveConfig.instance.saveBlockItems.value()));
 		this.buttons.add(new ButtonWidget(2, this.width / 2 - 150, this.height / 6 + 24, 300, "Convert Classic Player: " + SaveConfig.instance.convertClassicPlayer.value()));
-		this.buttons.add(new ButtonWidget(0, this.width / 2 - 150, this.height / 6 + 48, 300, "Skip Save/Load Screen: " + SaveConfig.instance.skipSaveLoadScreen.value()));
-		this.buttons.add(new ButtonWidget(4, this.width / 2 - 150, this.height / 6 + 72, 300, "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value()));
-		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 96, 300, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
-		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 120, 148, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
-		this.buttons.add(new ButtonWidget(9, this.width / 2 + 2, this.height / 6 + 120, 148, "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value()));
+		this.buttons.add(new ButtonWidget(4, this.width / 2 - 150, this.height / 6 + 48, 300, "Save World on Exit: " + SaveConfig.instance.saveWorldOnExit.value()));
+		this.buttons.add(new ButtonWidget(3, this.width / 2 - 150, this.height / 6 + 72, 300, "Dialog Theme: " + SaveConfig.instance.dialogTheme.value().getName()));
+		this.buttons.add(new ButtonWidget(1, this.width / 2 - 150, this.height / 6 + 96, 148, "Force April Fools: " + SaveConfig.instance.forceAprilFools.value()));
+		this.buttons.add(new ButtonWidget(9, this.width / 2 + 2, this.height / 6 + 96, 148, "Entity In-Block Fix: " + SaveConfig.instance.blockPosFix.value()));
 		this.buttons.add(new ButtonWidget(5, this.width / 2 - 100, this.height / 6 + 144, "Credits and Attribution"));
 		this.buttons.add(new ButtonWidget(6, this.width / 2 - 100, this.height / 6 + 168, 98, "Reset to Default"));
 		this.buttons.add(new ButtonWidget(7, this.width / 2 + 2, this.height / 6 + 168, 98, "Done"));
@@ -33,11 +32,6 @@ public class ConfigScreen extends Screen {
 
 	protected void buttonClicked(net.minecraft.client.gui.widget.ButtonWidget button) {
 		if (button.active) {
-			if (button.id == 0) {
-				SaveConfig.instance.skipSaveLoadScreen.setValue(!SaveConfig.instance.skipSaveLoadScreen.value());
-				buttons.clear();
-				init();
-			}
 			if (button.id == 1) {
 				SaveConfig.instance.forceAprilFools.setValue(!SaveConfig.instance.forceAprilFools.value());
 				buttons.clear();
@@ -97,7 +91,6 @@ public class ConfigScreen extends Screen {
 				ClientData.minecraft.m_6408915(new CreditsScreen(new ConfigScreen(this.parent)));
 			}
 			if (button.id == 6) {
-				SaveConfig.instance.skipSaveLoadScreen.setValue(SaveConfig.instance.skipSaveLoadScreen.getDefaultValue());
 				SaveConfig.instance.forceAprilFools.setValue(SaveConfig.instance.forceAprilFools.getDefaultValue());
 				SaveConfig.instance.dialogTheme.setValue(SaveConfig.instance.dialogTheme.getDefaultValue());
 				SaveConfig.instance.dialogDir.setValue(SaveConfig.instance.dialogDir.getDefaultValue());
