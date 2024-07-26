@@ -34,8 +34,5 @@
   },
   "mixin": [
     "mclm_save.mixins.json"
-  ],
-  "access_widener": [
-    "mclm_save.accesswidener"
   ]
 }
