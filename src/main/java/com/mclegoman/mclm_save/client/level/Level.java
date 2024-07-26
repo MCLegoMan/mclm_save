@@ -196,4 +196,8 @@ public abstract class Level {
 			if (id != -1 && Block.BY_ID[id] != null) setStack(playerInventory, slot, id, count);
 		}
 	}
+	// 110 doesn't have the isBlock tag, to allow for compatibility we assume false if not given in 104 and lower.
+	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index) {
+		prepStack(type, playerInventory, count, slot, index, false);
+	}
 }
