@@ -191,14 +191,16 @@ public abstract class Level {
 		if (stack != null && (stack.itemId != -1 || stack.f_9064670 != -1)) inventorySlots[slot] = stack;
 	}
 	public final void prepStack(String type, PlayerInventory playerInventory, int count, int slot, TagCompound index, boolean isBlock) {
-		int id = index.getShort(type);
-		if (id != -1) {
-			if (!isBlock) {
-				ItemStack stack = new ItemStack(id);
-				stack.size = count;
-				setStack(playerInventory.inventorySlots, slot, stack);
-			} else {
-				if (Block.BY_ID[id] != null) setStack(playerInventory.inventorySlots, slot, new ItemStack(Block.BY_ID[id], count));
+		if (index.getElements().containsKey(type)) {
+			int id = index.getShort(type);
+			if (id != -1) {
+				if (!isBlock) {
+					ItemStack stack = new ItemStack(id);
+					stack.size = count;
+					setStack(playerInventory.inventorySlots, slot, stack);
+				} else {
+					if (Block.BY_ID[id] != null) setStack(playerInventory.inventorySlots, slot, new ItemStack(Block.BY_ID[id], count));
+				}
 			}
 		}
 	}

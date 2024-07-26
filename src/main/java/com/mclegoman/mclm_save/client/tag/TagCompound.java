@@ -16,6 +16,10 @@ import java.util.Map;
 public final class TagCompound extends Tag {
 	private final Map<String, Object> elements = new HashMap<>();
 
+	public Map<String, Object> getElements() {
+		return this.elements;
+	}
+
 	public TagCompound() {
 	}
 
