@@ -195,7 +195,7 @@ public abstract class Level {
 			int id = index.getShort(type);
 			if (id != -1) {
 				if (!isBlock) {
-					ItemStack stack = new ItemStack(id);
+					ItemStack stack = new ItemStack(id, count);
 					stack.size = count;
 					setStack(playerInventory.inventorySlots, slot, stack);
 				} else {

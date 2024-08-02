@@ -12,6 +12,6 @@ public class ButtonWidget extends net.minecraft.client.gui.widget.ButtonWidget {
 		super(id, x, y, message);
 	}
 	public ButtonWidget(int id, int x, int y, int width, String message) {
-		super(id, x, y, width, message);
+		super(id, x, y, width, 20, message);
 	}
 }
