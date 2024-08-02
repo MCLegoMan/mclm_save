@@ -10,7 +10,8 @@ plugins {
 base {
 	archivesName = project.archives_base_name
 }
-version = project.mod_version + "+" + project.actual_minecraft_version
+version = "${project.truncated_mod_version}${(project.dirty_build == "true" ? "-dirty.${new Date().format("yyyyMMddHHmmss")}" : "")}+${project.actual_minecraft_version}"
+String full_version = "${project.mod_version}${(project.dirty_build == "true" ? "-dirty.${new Date().format("yyyyMMddHHmmss")}" : "")}+${project.actual_minecraft_version}"
 group = project.maven_group
 
 loom {
@@ -31,12 +32,12 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				name = "Modrinth"
-				url = "https://api.modrinth.com/maven"
+				name = "MCLegoMan"
+				url = "https://maven.mclegoman.com/releases"
 			}
 		}
 		filter {
-			includeGroup "maven.modrinth"
+			includeGroup "com.mclegoman"
 		}
 	}
 	mavenCentral()
@@ -50,11 +51,14 @@ dependencies {
 	}
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
 
+	// Survival Mode (Comment this line out if you want creative)
+	modImplementation "com.mclegoman:mclm_survival:1.0.0+in-20091223"
+
 	// Save/Load Dialog Themes
 	include(implementation "com.formdev:flatlaf:3.4.1")
 
 	// Development Environment Only
-	modImplementation "maven.modrinth:mclm_debug:1.1.0-release.1+in-20100110"
+	//modImplementation "com.mclegoman:mclm_debug:1.1.0-release.1+in-20100110"
 }
 
 project.sourceSets {
@@ -69,10 +73,10 @@ project.sourceSets {
 }
 
 processResources {
-	inputs.properties 'version': version, 'group': project.group
+	inputs.properties 'version': full_version, 'group': project.group
 
 	filesMatching('quilt.mod.json') {
-		expand 'version': version, 'group': project.group
+		expand 'version': full_version, 'group': project.group
 	}
 }
 
@@ -106,7 +110,7 @@ if (rootProject.file(".env").exists()) {
 		token rootProject.file(".env").text.readLines().get(1).replace("GITHUB=", "").replace("\"", "")
 		owner "MCLegoMan"
 		repo "${project.archives_base_name}"
-		tagName "${project.mod_version}-${project.actual_minecraft_version.replace("/", "-")}"
+		tagName "${project.mod_version}+${project.actual_minecraft_version.replace("/", "-")}"
 		targetCommitish "${project.actual_minecraft_version.replace("/", "-")}"
 		releaseName "[${project.actual_minecraft_version}] ${project.mod_name} ${project.truncated_mod_version}"
 		generateReleaseNotes false
@@ -125,7 +129,7 @@ if (rootProject.file(".env").exists()) {
 		token = rootProject.file(".env").text.readLines().get(0).replace("MODRINTH=", "").replace("\"", "")
 		projectId = "${project.modrinth_id}"
 		versionName = "[${project.actual_minecraft_version}] ${project.mod_name} ${project.truncated_mod_version}"
-		versionNumber = "${project.mod_version}${project.actual_minecraft_version}"
+		versionNumber = "${project.mod_version}+${project.actual_minecraft_version}"
 		versionType = "release"
 		uploadFile = tasks.remapJar
 		gameVersions = List.of(project.modrinth_version.split(", "))
@@ -138,4 +142,9 @@ if (rootProject.file(".env").exists()) {
 		dependsOn(tasks.githubRelease)
 		if (!project.development) dependsOn(tasks.modrinth)
 	}
+}
+tasks.register("cleanBuild") {
+	group = project.archives_base_name.toLowerCase()
+	description = 'Clean build dir, and build a new version.'
+	dependsOn(tasks.clean).finalizedBy(tasks.build)
 }
