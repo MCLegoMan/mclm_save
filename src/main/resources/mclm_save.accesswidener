@@ -16,3 +16,4 @@ accessible field net/minecraft/block/entity/ChestBlockEntity inventory [Lnet/min
 accessible field net/minecraft/block/entity/FurnaceBlockEntity fuelTime I
 accessible field net/minecraft/block/entity/FurnaceBlockEntity cookTime I
 accessible field net/minecraft/block/entity/FurnaceBlockEntity inventory [Lnet/minecraft/item/ItemStack;
+accessible field net/minecraft/world/chunk/ChunkCache generator Lnet/minecraft/world/chunk/ChunkSource;

@@ -4,7 +4,6 @@
 	"package": "com.mclegoman.mclm_save.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"client": [
-		"client.ChunkCacheMixin",
 		"client.GameGuiMixin",
 		"client.GameMenuScreenMixin",
 		"client.GameRendererMixin",
@@ -20,5 +19,8 @@
 	],
 	"injectors": {
 		"defaultRequire": 1
-	}
+	},
+	"mixins": [
+		"client.WorldMixin"
+	]
 }

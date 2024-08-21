@@ -26,7 +26,7 @@ public class SaveWorldThread extends Thread {
 		levelData.putInt("SpawnY", (int) world.spawnpointY);
 		levelData.putInt("SpawnZ", (int) world.spawnpointZ);
 		levelData.putLong("Time", world.ticks);
-		//var3.putLong("SizeOnDisk", world.sizeOnDisk);
+		levelData.putLong("SizeOnDisk", SaveMinecraft.currentWorld.sizeOnDisk);
 		levelData.putLong("LastPlayed", System.currentTimeMillis());
 		NbtCompound playerData;
 		if (world.m_0519267() != null && !world.m_0519267().removed) {
@@ -59,6 +59,6 @@ public class SaveWorldThread extends Thread {
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, "An error occurred whilst trying to save world: " + error.getLocalizedMessage());
 		}
-		((SaveChunkSource)world.chunkSource).mclm_save$save(true);
+		((SaveChunkCache)world.chunkSource).save(false);
 	}
 }
