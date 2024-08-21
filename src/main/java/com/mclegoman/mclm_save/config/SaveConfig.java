@@ -72,4 +72,6 @@ public class SaveConfig extends ReflectiveConfig {
 	public final TrackedValue<Boolean> debug = this.value(false);
 	@Comment("Enables error catching logs.")
 	public final TrackedValue<Boolean> logErrorCatching = this.value(false);
+	@Comment("Sets how often the game is automatically saved in ticks. (20 ticks = 1 second).")
+	public final TrackedValue<Long> autoSaveTicks = this.value(1200L);
 }

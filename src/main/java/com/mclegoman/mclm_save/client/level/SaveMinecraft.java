@@ -4,6 +4,7 @@ import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.nbt.NbtCompound;
 import com.mclegoman.mclm_save.client.nbt.NbtList;
 import com.mclegoman.mclm_save.common.data.Data;
+import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -22,7 +23,7 @@ public class SaveMinecraft {
 		try {
 			if (currentWorld.getWorld() != null) {
 				++ticks;
-				if (ticks % 1200L == 0L) currentWorld.save();
+				if (ticks % SaveConfig.instance.autoSaveTicks.value() == 0L) currentWorld.save();
 			}
 		} catch (Exception error) {
 			Data.version.sendToLog(Helper.LogType.WARN, "An error occurred whilst trying to autosave: " + error.getLocalizedMessage());
