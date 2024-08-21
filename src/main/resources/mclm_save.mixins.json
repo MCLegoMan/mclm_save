@@ -6,23 +6,28 @@
 	"client": [
 		"client.GameGuiMixin",
 		"client.GameMenuScreenMixin",
-		"client.InventoryMenuScreenMixin",
-		"client.LoadScreenMixin",
 		"client.MinecraftClientMixin",
 		"client.OptionsScreenMixin",
 		"client.ResourcesMixin",
-		"client.SaveScreenMixin",
-		"client.WorldMixin",
-		"client.WorldRendererMixin",
 		"client.accessors.EntityAccessor",
 		"client.accessors.PlayerEntityAccessor",
 		"client.accessors.ScreenAccessor",
 		"fixes.exit.MinecraftAppletMixin",
-		"fixes.resize.GameGuiMixin",
 		"fixes.resize.MinecraftClientMixin",
-		"client.EntityMixin"
+		"fixes.world_render.RenderChunkMixin",
+		"fixes.world_render.WorldMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
-	}
+	},
+	"mixins": [
+		"client.ChunkCacheMixin",
+		"client.EntityMixin",
+		"client.InputPlayerEntityMixin",
+		"client.LivingEntityMixin",
+		"client.LoadScreenMixin",
+		"client.PlayerEntityMixin",
+		"fixes.world_render.GameRendererMixin",
+		"fixes.world_render.WorldRendererMixin"
+	]
 }

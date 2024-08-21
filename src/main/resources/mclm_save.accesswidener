@@ -1,0 +1,13 @@
+accessWidener v2 named
+accessible field net/minecraft/world/World chunkSource Lnet/minecraft/world/chunk/ChunkSource;
+accessible class net/minecraft/world/chunk/ChunkNibbleStorage
+accessible field net/minecraft/world/World ticks I
+accessible field net/minecraft/world/chunk/ChunkNibbleStorage data [B
+accessible field net/minecraft/world/chunk/WorldChunk chunkX I
+accessible field net/minecraft/world/chunk/WorldChunk chunkZ I
+accessible field net/minecraft/world/chunk/WorldChunk blockIds [B
+accessible field net/minecraft/world/chunk/WorldChunk blockMetadata Lnet/minecraft/world/chunk/ChunkNibbleStorage;
+accessible field net/minecraft/world/chunk/WorldChunk skyLight Lnet/minecraft/world/chunk/ChunkNibbleStorage;
+accessible field net/minecraft/world/chunk/WorldChunk blockLight Lnet/minecraft/world/chunk/ChunkNibbleStorage;
+accessible field net/minecraft/world/chunk/WorldChunk heightMap [B
+accessible field net/minecraft/world/chunk/WorldChunk blockEntities Ljava/util/Map;

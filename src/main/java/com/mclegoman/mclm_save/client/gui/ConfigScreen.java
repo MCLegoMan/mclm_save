@@ -127,10 +127,10 @@ public class ConfigScreen extends Screen {
 			}
 		}
 	}
-	public final void render(int i, int j) {
-		fillGradient(0, 0, this.width, this.height, 1610941696, -1607454624);
+	public final void render(int i, int j, float f) {
+		this.drawBackgroundTexture();
 		drawCenteredString(this.textRenderer, "Save Config", this.width / 2, 20, 16777215);
-		super.render(i, j);
+		super.render(i, j, f);
 	}
 	public void keyPressed(char chr, int key) {
 		if (key == 1) {

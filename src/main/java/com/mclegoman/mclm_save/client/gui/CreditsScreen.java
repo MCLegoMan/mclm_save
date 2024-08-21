@@ -9,8 +9,10 @@ package com.mclegoman.mclm_save.client.gui;
 
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.common.util.Couple;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +51,6 @@ public class CreditsScreen extends Screen {
 		this.credits.add(new Couple("Author: JFormDesigner", 0xAAAAAA));
 		this.credits.add(new Couple("License: Apache-2.0", 0xAAAAAA));
 		this.credits.add(new Couple("", 0xFFFFFF));
-		this.credits.add(new Couple("material-ui-swing", 0xFFFFFF));
-		this.credits.add(new Couple("Material dialog theme.", 0xAAAAAA));
-		this.credits.add(new Couple("Author: vincenzopalazzo", 0xAAAAAA));
-		this.credits.add(new Couple("License: MIT", 0xAAAAAA));
-		this.credits.add(new Couple("", 0xFFFFFF));
 		this.credits.add(new Couple("Feather Mappings", 0xFFFFFF));
 		this.credits.add(new Couple("Minecraft mappings for legacy versions.", 0xAAAAAA));
 		this.credits.add(new Couple("Author: OrnitheMC", 0xAAAAAA));
@@ -74,10 +71,24 @@ public class CreditsScreen extends Screen {
 		this.credits.add(new Couple("bluecrab2", 0xFFFFFF));
 		this.credits.add(new Couple("Thank you for allowing us to include ClassicExplorer in mclm_save!", 0xAAAAAA));
 	}
-	public final void render(int i, int j) {
-		fillGradient(0, 0, this.width, this.height, 1610941696, -1607454624);
+	public final void render(int i, int j, float f) {
+		if (ClientData.minecraft.f_5854988 != null) fillGradient(0, 0, this.width, this.height, 1610941696, -1607454624);
+		else {
+			BufferBuilder var4 = BufferBuilder.INSTANCE;
+			int var5 = ClientData.minecraft.f_9413506.load("/dirt.png");
+			int var8 = ClientData.minecraft.f_0545414 * 240 / ClientData.minecraft.f_5990000;
+			int var3 = ClientData.minecraft.f_5990000 * 240 / ClientData.minecraft.f_5990000;
+			GL11.glBindTexture(3553, var5);
+			var4.start();
+			var4.color(4210752);
+			var4.vertex(0.0F, (float)var3, 0.0F, 0.0F, (float)var3 / 32.0F);
+			var4.vertex((float)var8, (float)var3, 0.0F, (float)var8 / 32.0F, (float)var3 / 32.0F);
+			var4.vertex((float)var8, 0.0F, 0.0F, (float)var8 / 32.0F, 0.0F);
+			var4.vertex(0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+			var4.end();
+		}
 		credits.forEach(credit -> textRenderer.drawWithShadow((String) credit.getFirst(), (this.width / 2) - (textRenderer.getWidth((String) credit.getFirst()) / 2), (this.height + (credits.indexOf(credit) * 10)) - time, (Integer) credit.getSecond()));
-		super.render(i, j);
+		super.render(i, j, f);
 	}
 	public void keyPressed(char chr, int key) {
 		if (key == 1) {

@@ -63,7 +63,7 @@ public final class InfoScreen extends Screen {
 	public InfoScreen(String title, String status, Type type, boolean canBeClosed) {
 		this(title, status, type, canBeClosed ? "Press ESC to return to the game" : "", "");
 	}
-	public void render(int i, int j) {
+	public void render(int i, int j, float f) {
 		if (this.type == Type.DIRT) {
 			BufferBuilder var4 = BufferBuilder.INSTANCE;
 			int var5 = ClientData.minecraft.f_9413506.load("/dirt.png");
@@ -93,7 +93,7 @@ public final class InfoScreen extends Screen {
 			textRenderer.drawWithShadow(Data.version.getName() + " " + Data.version.getFriendlyString() + " (" + Data.mcVersion + ")", 2, this.height - (Data.version.isDevelopmentBuild() ? 23 : 12), 16777215);
 			if (Data.version.isDevelopmentBuild()) textRenderer.drawWithShadow("Development Build", 2, this.height - 12, 0xFFAA00);
 		}
-		super.render(i, j);
+		super.render(i, j,f );
 	}
 	public void keyPressed(char chr, int key) {
 		if (this.canBeClosedMessage != null && !this.canBeClosedMessage.equals("")) {

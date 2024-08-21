@@ -11,23 +11,9 @@ import com.mclegoman.mclm_save.config.SaveConfig;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AprilFools {
-	public static List<String> playerNames = new ArrayList<>();
-	public static int nameChance;
-	public static int name;
-	public static int attack;
-	public static int defence;
-	public static int speed;
 	public static void init() {
-		playerNames.add("Phantazap");
-		playerNames.add("MCLegoMan");
-	}
-	public static String getPlayerName() {
-		if (nameChance == 1200) return "Herobrine";
-		else return playerNames.get(name);
 	}
 	public static boolean isAprilFools() {
 		LocalDate date = LocalDate.now();

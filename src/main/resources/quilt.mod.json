@@ -28,9 +28,10 @@
       },
       {
         "id": "minecraft",
-        "versions": "0.31"
+        "versions": "*"
       }
     ]
   },
-  "mixin": "mclm_save.mixins.json"
+  "mixin": "mclm_save.mixins.json",
+  "access_widener" : "mclm_save.accesswidener"
 }

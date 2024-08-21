@@ -22,6 +22,7 @@ loom {
 			sourceSet("main")
 		}
 	}
+	accessWidenerPath = file("src/main/resources/mclm_save.accesswidener")
 }
 
 ploceus {
@@ -50,9 +51,6 @@ dependencies {
 		mappings "net.ornithemc:calamus-intermediary:${project.minecraft_version}${project.mappings_type}"
 	}
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
-
-	// Survival Mode (Comment this line out if you want creative)
-	modImplementation "com.mclegoman:mclm_survival:1.0.0+in-20091223"
 
 	// Save/Load Dialog Themes
 	include(implementation "com.formdev:flatlaf:3.4.1")
@@ -148,3 +146,5 @@ tasks.register("cleanBuild") {
 	description = 'Clean build dir, and build a new version.'
 	dependsOn(tasks.clean).finalizedBy(tasks.build)
 }
+
+runClient.args += '-Djava.util.Arrays.useLegacyMergeSort=true'
