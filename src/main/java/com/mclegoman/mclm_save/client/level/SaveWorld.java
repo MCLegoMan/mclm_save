@@ -1,13 +1,16 @@
 package com.mclegoman.mclm_save.client.level;
 
 import com.mclegoman.mclm_save.client.data.ClientData;
-import com.mclegoman.mclm_save.client.nbt.NbtCompound;
+import com.mclegoman.mclm_save.client.nbt.NbtDouble;
+import com.mclegoman.mclm_save.client.nbt.NbtList;
+import com.mclegoman.mclm_save.common.data.Data;
+import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.world.World;
 
 import java.io.File;
-import java.nio.file.Files;
 
 public class SaveWorld {
+	private SaveWorldThread saveThread;
 	private final File savesDir;
 	private final String id;
 	private SaveWorld(File savesDir, String id) {
@@ -42,32 +45,24 @@ public class SaveWorld {
 	public File getDir() {
 		return new File(getSavesDir(), getId());
 	}
-	public void save() {
-		getDir().mkdirs();
-		File var2 = new File(getDir(), "level.dat");
-		NbtCompound var3;
-		var3 = new NbtCompound();//.putLong("RandomSeed", getWorld().seed);
-		var3.putInt("SpawnX", (int) getWorld().spawnpointX);
-		var3.putInt("SpawnY", (int) getWorld().spawnpointY);
-		var3.putInt("SpawnZ", (int) getWorld().spawnpointZ);
-		//var3.putLong("Time", getWorld().ticks);
-		//var3.putLong("SizeOnDisk", getWorld().sizeOnDisk);
-		var3.putLong("LastPlayed", System.currentTimeMillis());
-		NbtCompound var4;
-		if (getWorld().f_6053391 != null) {
-			var4 = new NbtCompound();
-			((SaveEntity)getWorld().f_6053391).mclm_save$writeEntityNbt(var4);
-			var3.putCompound("Player", var4);
+	public boolean getSaving() {
+		return this.saveThread != null && this.saveThread.isAlive();
+	}
+	public void save() throws InterruptedException {
+		if (!getSaving()) {
+			this.saveThread = new SaveWorldThread();
+			this.saveThread.start();
+			new Thread(() -> {
+				try {
+					this.saveThread.join();
+					Data.version.sendToLog(Helper.LogType.INFO, "World has been saved!");
+				} catch (InterruptedException e) {
+					Data.version.sendToLog(Helper.LogType.WARN, "Saving was interrupted!");
+					Thread.currentThread().interrupt();
+				}
+			}).start();
+		} else {
+			Data.version.sendToLog(Helper.LogType.WARN, "World is already getting saved!");
 		}
-
-		(var4 = new NbtCompound()).put("Data", var3);
-
-		try {
-			SaveC_0877775.outputNbt(var4, Files.newOutputStream(var2.toPath()));
-		} catch (Exception var5) {
-			var5.printStackTrace();
-		}
-
-		((SaveChunkSource)getWorld().chunkSource).mclm_save$save(true);
 	}
 }

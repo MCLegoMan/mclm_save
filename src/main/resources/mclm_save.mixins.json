@@ -4,30 +4,23 @@
 	"package": "com.mclegoman.mclm_save.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"client": [
+		"client.ChunkCacheMixin",
 		"client.GameGuiMixin",
 		"client.GameMenuScreenMixin",
+		"client.GameRendererMixin",
+		"client.LoadScreenMixin",
 		"client.MinecraftClientMixin",
 		"client.OptionsScreenMixin",
 		"client.ResourcesMixin",
 		"client.accessors.EntityAccessor",
 		"client.accessors.PlayerEntityAccessor",
 		"client.accessors.ScreenAccessor",
-		"fixes.exit.MinecraftAppletMixin",
-		"fixes.resize.MinecraftClientMixin",
-		"fixes.world_render.RenderChunkMixin",
-		"fixes.world_render.WorldMixin"
+		"fixes.MinecraftAppletMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
 	},
 	"mixins": [
-		"client.ChunkCacheMixin",
-		"client.EntityMixin",
-		"client.InputPlayerEntityMixin",
-		"client.LivingEntityMixin",
-		"client.LoadScreenMixin",
-		"client.PlayerEntityMixin",
-		"fixes.world_render.GameRendererMixin",
-		"fixes.world_render.WorldRendererMixin"
+		"fixes.WorldRendererMixin"
 	]
 }

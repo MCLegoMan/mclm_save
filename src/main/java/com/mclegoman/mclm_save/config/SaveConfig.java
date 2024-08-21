@@ -70,4 +70,6 @@ public class SaveConfig extends ReflectiveConfig {
 	public final TrackedValue<Boolean> blockPosFix = this.value(false);
 	@Comment("Enables development debug.")
 	public final TrackedValue<Boolean> debug = this.value(false);
+	@Comment("Enables error catching logs.")
+	public final TrackedValue<Boolean> logErrorCatching = this.value(false);
 }

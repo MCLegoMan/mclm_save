@@ -11,3 +11,8 @@ accessible field net/minecraft/world/chunk/WorldChunk skyLight Lnet/minecraft/wo
 accessible field net/minecraft/world/chunk/WorldChunk blockLight Lnet/minecraft/world/chunk/ChunkNibbleStorage;
 accessible field net/minecraft/world/chunk/WorldChunk heightMap [B
 accessible field net/minecraft/world/chunk/WorldChunk blockEntities Ljava/util/Map;
+accessible field net/minecraft/entity/Entity fallDistance F
+accessible field net/minecraft/block/entity/ChestBlockEntity inventory [Lnet/minecraft/item/ItemStack;
+accessible field net/minecraft/block/entity/FurnaceBlockEntity fuelTime I
+accessible field net/minecraft/block/entity/FurnaceBlockEntity cookTime I
+accessible field net/minecraft/block/entity/FurnaceBlockEntity inventory [Lnet/minecraft/item/ItemStack;

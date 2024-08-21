@@ -57,7 +57,7 @@ public final class NbtCompound extends NbtElement {
 		this.elements.put(string, (new NbtLong(l)).m_4457344(string));
 	}
 
-	public final void m_2391638(String string, float f) {
+	public final void putFloat(String string, float f) {
 		this.elements.put(string, (new NbtFloat(f)).m_4457344(string));
 	}
 

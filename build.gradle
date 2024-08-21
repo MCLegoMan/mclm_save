@@ -146,5 +146,3 @@ tasks.register("cleanBuild") {
 	description = 'Clean build dir, and build a new version.'
 	dependsOn(tasks.clean).finalizedBy(tasks.build)
 }
-
-runClient.args += '-Djava.util.Arrays.useLegacyMergeSort=true'

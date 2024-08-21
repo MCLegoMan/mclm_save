@@ -10,9 +10,7 @@ package com.mclegoman.mclm_save.client;
 import com.mclegoman.mclm_save.client.april_fools.AprilFools;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.gui.InfoScreen;
-//import com.mclegoman.mclm_save.client.level.LevelFile;
 import com.mclegoman.mclm_save.client.level.SaveMinecraft;
-import com.mclegoman.mclm_save.common.util.Couple;
 import net.minecraft.client.gui.screen.DeathScreen;
 import org.lwjgl.input.Keyboard;
 import org.quiltmc.loader.api.ModContainer;
@@ -24,7 +22,9 @@ public class Save {
 		SaveMinecraft.loadWorld("rawr");
 	}
 	public static void onTick(ModContainer mod) {
-		if (Keyboard.isKeyDown(50)) SaveMinecraft.currentWorld.save();
+		try {
+			if (Keyboard.isKeyDown(50)) SaveMinecraft.currentWorld.save();
+		} catch (Exception error) {}
 //		if (LevelFile.shouldProcess) {
 //			LevelFile.shouldProcess = false;
 //			LevelFile.dialog.interrupt();

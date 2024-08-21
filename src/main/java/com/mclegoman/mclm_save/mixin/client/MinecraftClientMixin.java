@@ -25,10 +25,8 @@ import java.util.Optional;
 
 @Mixin(C_5664496.class)
 public abstract class MinecraftClientMixin {
-	@Shadow private Canvas f_0769488;
-
+	@Shadow public Canvas f_0769488;
 	@Shadow public abstract void m_9890357(World world);
-
 	@Inject(method = "m_8832598", at = @At(value = "TAIL"))
 	private void save$tick(CallbackInfo ci) {
 		// Updates Canvas Accessor and checks if the world needs to load.
