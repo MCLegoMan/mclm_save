@@ -21,7 +21,7 @@ public class SaveMinecraft {
 	public static long ticks;
 	public static void tick(ModContainer mod) {
 		try {
-			if (currentWorld.getWorld() != null) {
+			if (currentWorld.getWorld() != null && !ClientData.minecraft.f_1118421) {
 				++ticks;
 				if (ticks % SaveConfig.instance.autoSaveTicks.value() == 0L) currentWorld.save();
 			}

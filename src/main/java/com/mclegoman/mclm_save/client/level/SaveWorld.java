@@ -51,6 +51,7 @@ public class SaveWorld {
 	public void save() throws InterruptedException {
 		if (getWorld() != null) {
 			if (!getSaving()) {
+				SaveMinecraft.ticks = 0L;
 				this.saveThread = new SaveWorldThread();
 				this.saveThread.start();
 				new Thread(() -> {
