@@ -17,7 +17,11 @@ public class Version implements Comparable<Version> {
 	private final int patch;
 	private final Helper.ReleaseType type;
 	private final int build;
+	private final boolean dirty;
 	public Version(String name, String id, int major, int minor, int patch, Helper.ReleaseType type, int build) {
+		this(name, id, major, minor, patch, type, build, false);
+	}
+	public Version(String name, String id, int major, int minor, int patch, Helper.ReleaseType type, int build, boolean dirty) {
 		this.name = name;
 		this.id = id;
 		this.major = major;
@@ -25,6 +29,7 @@ public class Version implements Comparable<Version> {
 		this.patch = patch;
 		this.type = type;
 		this.build = build;
+		this.dirty = dirty;
 	}
 	public String getName() {
 		return name;
@@ -52,6 +57,9 @@ public class Version implements Comparable<Version> {
 	}
 	public boolean isDevelopmentBuild() {
 		return !type.equals(Helper.ReleaseType.RELEASE);
+	}
+	public boolean isDeveloperBuild() {
+		return this.dirty;
 	}
 	public String getLoggerPrefix() {
 		return String.format("[%s %s] ", getName(), getFriendlyString());

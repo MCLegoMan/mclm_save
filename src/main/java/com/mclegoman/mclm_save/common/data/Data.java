@@ -16,7 +16,7 @@ import org.lwjgl.openal.AL;
 
 public class Data {
 	public static String mcVersion = "inf-20100325-2";
-	public static Version version = new Version("Save", "mclm_save", 1, 0, 2, Helper.ReleaseType.RELEASE, 1);
+	public static Version version = new Version("Save", "mclm_save", 1, 0, 2, Helper.ReleaseType.ALPHA, 1, true);
 	public static void exit(int status) {
 		version.sendToLog(Helper.LogType.INFO, "Halting with status code: " + status + "!");
 		if (SaveConfig.instance.saveWorldOnExit.value()) {
