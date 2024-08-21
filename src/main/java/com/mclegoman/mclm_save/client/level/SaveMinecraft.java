@@ -10,12 +10,24 @@ import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.chunk.WorldChunk;
+import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
 
 import java.io.File;
 
 public class SaveMinecraft {
 	public static SaveWorld currentWorld;
+	public static long ticks;
+	public static void tick(ModContainer mod) {
+		try {
+			if (currentWorld.getWorld() != null) {
+				++ticks;
+				if (ticks % 1200L == 0L) currentWorld.save();
+			}
+		} catch (Exception error) {
+			Data.version.sendToLog(Helper.LogType.WARN, "An error occurred whilst trying to autosave: " + error.getLocalizedMessage());
+		}
+	}
 	public static File getMinecraftDir() {
 		return QuiltLoader.getGameDir().toFile();
 	}

@@ -49,20 +49,22 @@ public class SaveWorld {
 		return this.saveThread != null && this.saveThread.isAlive();
 	}
 	public void save() throws InterruptedException {
-		if (!getSaving()) {
-			this.saveThread = new SaveWorldThread();
-			this.saveThread.start();
-			new Thread(() -> {
-				try {
-					this.saveThread.join();
-					Data.version.sendToLog(Helper.LogType.INFO, "World has been saved!");
-				} catch (InterruptedException e) {
-					Data.version.sendToLog(Helper.LogType.WARN, "Saving was interrupted!");
-					Thread.currentThread().interrupt();
-				}
-			}).start();
-		} else {
-			Data.version.sendToLog(Helper.LogType.WARN, "World is already getting saved!");
+		if (getWorld() != null) {
+			if (!getSaving()) {
+				this.saveThread = new SaveWorldThread();
+				this.saveThread.start();
+				new Thread(() -> {
+					try {
+						this.saveThread.join();
+						Data.version.sendToLog(Helper.LogType.INFO, "World has been saved!");
+					} catch (InterruptedException e) {
+						Data.version.sendToLog(Helper.LogType.WARN, "Saving was interrupted!");
+						Thread.currentThread().interrupt();
+					}
+				}).start();
+			} else {
+				Data.version.sendToLog(Helper.LogType.WARN, "World is already getting saved!");
+			}
 		}
 	}
 }

@@ -35,6 +35,7 @@ public class Save {
 		SaveMinecraft.currentWorld = new SaveWorld.Builder("mclm_save-test_world").build();
 	}
 	public static void onTick(ModContainer mod) {
+		SaveMinecraft.tick(mod);
 		try {
 			if (Keyboard.isKeyDown(50)) SaveMinecraft.currentWorld.save();
 		} catch (Exception error) {}
