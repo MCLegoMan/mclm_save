@@ -11,15 +11,25 @@ import com.mclegoman.mclm_save.client.april_fools.AprilFools;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.gui.InfoScreen;
 import com.mclegoman.mclm_save.client.level.SaveMinecraft;
+import com.mclegoman.mclm_save.client.level.SaveWorld;
 import net.minecraft.client.gui.screen.DeathScreen;
 import org.lwjgl.input.Keyboard;
 import org.quiltmc.loader.api.ModContainer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Save {
 	public static void onInitialize(ModContainer mod) {
 		AprilFools.init();
-		ClientData.minecraft.m_6408915(new InfoScreen("Save", "This is a developer build of Save. Expect Bugs!", InfoScreen.Type.DIRT, true));
-		SaveMinecraft.loadWorld("rawr");
+		List<String> bootMessage = new ArrayList<>();
+		bootMessage.add("This is a developer build of Save. Expect Bugs!");
+		bootMessage.add("");
+		String useLegacyMergeSort = System.getProperty("java.util.Arrays.useLegacyMergeSort");
+		if (useLegacyMergeSort == null || useLegacyMergeSort.equalsIgnoreCase("false")) bootMessage.add("Please enable \"java.util.Arrays.useLegacyMergeSort\" for stability.");
+		ClientData.minecraft.m_6408915(new InfoScreen("Save", bootMessage, InfoScreen.Type.DIRT, true));
+		//SaveMinecraft.loadWorld("mclm_save-test_world");
+		SaveMinecraft.currentWorld = new SaveWorld.Builder("mclm_save-test_world").build();
 	}
 	public static void onTick(ModContainer mod) {
 		try {
