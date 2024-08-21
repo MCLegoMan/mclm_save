@@ -24,9 +24,11 @@ public class Save {
 		AprilFools.init();
 		List<String> bootMessage = new ArrayList<>();
 		bootMessage.add("This is a developer build of Save. Expect Bugs!");
-		bootMessage.add("");
 		String useLegacyMergeSort = System.getProperty("java.util.Arrays.useLegacyMergeSort");
-		if (useLegacyMergeSort == null || useLegacyMergeSort.equalsIgnoreCase("false")) bootMessage.add("Please enable \"java.util.Arrays.useLegacyMergeSort\" for stability.");
+		if (useLegacyMergeSort == null || useLegacyMergeSort.equalsIgnoreCase("false")) {
+			bootMessage.add("");
+			bootMessage.add("Please enable \"java.util.Arrays.useLegacyMergeSort\" for stability.");
+		}
 		ClientData.minecraft.m_6408915(new InfoScreen("Save", bootMessage, InfoScreen.Type.DIRT, true));
 		//SaveMinecraft.loadWorld("mclm_save-test_world");
 		SaveMinecraft.currentWorld = new SaveWorld.Builder("mclm_save-test_world").build();
