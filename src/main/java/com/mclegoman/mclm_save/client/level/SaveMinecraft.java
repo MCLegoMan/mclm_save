@@ -1,11 +1,11 @@
 package com.mclegoman.mclm_save.client.level;
 
+import com.mclegoman.luminance.common.util.LogType;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.nbt.NbtCompound;
 import com.mclegoman.mclm_save.client.nbt.NbtList;
 import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.config.SaveConfig;
-import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
@@ -26,7 +26,7 @@ public class SaveMinecraft {
 				if (ticks % SaveConfig.instance.autoSaveTicks.value() == 0L) currentWorld.save();
 			}
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, "An error occurred whilst trying to autosave: " + error.getLocalizedMessage());
+			Data.version.sendToLog(LogType.WARN, "An error occurred whilst trying to autosave: " + error.getLocalizedMessage());
 		}
 	}
 	public static File getMinecraftDir() {
@@ -63,7 +63,7 @@ public class SaveMinecraft {
 				blockEntityData.putShort("BurnTime", (short)((FurnaceBlockEntity) blockEntity).fuelTime);
 				blockEntityData.putShort("CookTime", (short)((FurnaceBlockEntity) blockEntity).cookTime);
 				blockEntityData.put("Items", getInventoryData(((FurnaceBlockEntity) blockEntity).inventory));
-			} else Data.version.sendToLog(Helper.LogType.WARN, "Could not save Tile Entity at x:" + blockEntity.x + "y:" + blockEntity.y + "z:" + blockEntity.z + ": Unknown Tile Entity Type.");
+			} else Data.version.sendToLog(LogType.WARN, "Could not save Tile Entity at x:" + blockEntity.x + "y:" + blockEntity.y + "z:" + blockEntity.z + ": Unknown Tile Entity Type.");
 			tileEntities.add(blockEntityData);
 		}
 

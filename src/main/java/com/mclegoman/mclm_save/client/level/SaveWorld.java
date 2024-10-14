@@ -1,8 +1,8 @@
 package com.mclegoman.mclm_save.client.level;
 
+import com.mclegoman.luminance.common.util.LogType;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.common.data.Data;
-import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.world.World;
 
 import java.io.File;
@@ -57,14 +57,14 @@ public class SaveWorld {
 				new Thread(() -> {
 					try {
 						this.saveThread.join();
-						Data.version.sendToLog(Helper.LogType.INFO, "World has been saved!");
+						Data.version.sendToLog(LogType.INFO, "World has been saved!");
 					} catch (InterruptedException e) {
-						Data.version.sendToLog(Helper.LogType.WARN, "Saving was interrupted!");
+						Data.version.sendToLog(LogType.WARN, "Saving was interrupted!");
 						Thread.currentThread().interrupt();
 					}
 				}).start();
 			} else {
-				Data.version.sendToLog(Helper.LogType.WARN, "World is already getting saved!");
+				Data.version.sendToLog(LogType.WARN, "World is already getting saved!");
 			}
 		}
 	}

@@ -7,10 +7,10 @@
 
 package com.mclegoman.mclm_save.mixin.client;
 
+import com.mclegoman.luminance.common.util.LogType;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.level.SaveMinecraft;
 import com.mclegoman.mclm_save.common.data.Data;
-import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Window;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,7 +30,7 @@ public abstract class GameRendererMixin {
 				}
 			}
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, "An error occurred whilst rendering overlay: " + error.getLocalizedMessage());
+			Data.version.sendToLog(LogType.WARN, "An error occurred whilst rendering overlay: " + error.getLocalizedMessage());
 		}
 	}
 }

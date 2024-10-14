@@ -9,6 +9,7 @@ package com.mclegoman.mclm_save.client.gui;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.mclegoman.luminance.common.util.LogType;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.client.util.Accessors;
 import com.mclegoman.mclm_save.client.util.FileNameFilter;
@@ -16,7 +17,6 @@ import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.config.Filter;
 import com.mclegoman.mclm_save.config.SaveConfig;
 import com.mclegoman.mclm_save.config.Theme;
-import com.mclegoman.releasetypeutils.common.version.Helper;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -49,7 +49,7 @@ public class SaveLoadScreen extends Thread {
 				}
 				fileChooser.updateUI();
 			} catch (Exception error) {
-				Data.version.sendToLog(Helper.LogType.WARN, "Error setting Save/Load dialog theme: " + error.getLocalizedMessage());
+				Data.version.sendToLog(LogType.WARN, "Error setting Save/Load dialog theme: " + error.getLocalizedMessage());
 			}
 			FileFilter[] filters = new FileFilter[4];
 			if (isLoad) {

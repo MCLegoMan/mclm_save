@@ -7,9 +7,9 @@
 
 package com.mclegoman.mclm_save.mixin.fixes;
 
+import com.mclegoman.luminance.common.util.LogType;
 import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.config.SaveConfig;
-import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.client.C_5664496;
 import net.minecraft.client.render.CompiledChunkComparator;
 import net.minecraft.client.render.world.PendingChunkComparator;
@@ -30,7 +30,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.nio.IntBuffer;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Mixin(WorldRenderer.class)
@@ -155,7 +154,7 @@ public abstract class WorldRendererMixin {
 			this.updateRenderBoundaries(MathHelper.floor(var6.x), MathHelper.floor(var6.y), MathHelper.floor(var6.z));
 			Arrays.sort(this.compiledChunks, new CompiledChunkComparator(var6));
 		} catch (Exception error) {
-			if (SaveConfig.instance.logErrorCatching.value()) Data.version.sendToLog(Helper.LogType.WARN, "An error occourred whilst executing WorldRenderer/m_6748042: " + error.getLocalizedMessage());
+			if (SaveConfig.instance.logErrorCatching.value()) Data.version.sendToLog(LogType.WARN, "An error occourred whilst executing WorldRenderer/m_6748042: " + error.getLocalizedMessage());
 		}
 		ci.cancel();
 	}
@@ -265,7 +264,7 @@ public abstract class WorldRendererMixin {
 
 			cir.setReturnValue(var21);
 		} catch (Exception error) {
-			if (SaveConfig.instance.logErrorCatching.value()) Data.version.sendToLog(Helper.LogType.WARN, "An error occourred whilst executing WorldRenderer/render: " + error.getLocalizedMessage());
+			if (SaveConfig.instance.logErrorCatching.value()) Data.version.sendToLog(LogType.WARN, "An error occourred whilst executing WorldRenderer/render: " + error.getLocalizedMessage());
 		}
 		cir.cancel();
 	}
@@ -287,7 +286,7 @@ public abstract class WorldRendererMixin {
 				var5.dirty = false;
 			}
 		} catch (Exception error) {
-			if (SaveConfig.instance.logErrorCatching.value()) Data.version.sendToLog(Helper.LogType.WARN, "An error occourred whilst executing WorldRenderer/m_8580944: " + error.getLocalizedMessage());
+			if (SaveConfig.instance.logErrorCatching.value()) Data.version.sendToLog(LogType.WARN, "An error occourred whilst executing WorldRenderer/m_8580944: " + error.getLocalizedMessage());
 		}
 		ci.cancel();
 	}

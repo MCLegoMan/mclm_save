@@ -7,10 +7,10 @@
 
 package com.mclegoman.mclm_save.client.gui;
 
+import com.mclegoman.luminance.common.util.LogType;
 import com.mclegoman.mclm_save.client.data.ClientData;
 import com.mclegoman.mclm_save.common.data.Data;
 import com.mclegoman.mclm_save.config.SaveConfig;
-import com.mclegoman.releasetypeutils.common.version.Helper;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.opengl.GL11;
@@ -30,7 +30,7 @@ public final class InfoScreen extends Screen {
 		this.type = type;
 		this.canBeClosedMessage = canBeClosedMessage;
 		this.extraInfoMessage = extraInfoMessage;
-		for (String message : status) Data.version.sendToLog(this.type.equals(Type.ERROR) ? Helper.LogType.WARN : Helper.LogType.INFO, message);
+		for (String message : status) Data.version.sendToLog(this.type.equals(Type.ERROR) ? LogType.WARN : LogType.INFO, message);
 	}
 	public InfoScreen(String title, String status, Type type, String canBeClosedMessage, String extraInfoMessage) {
 		this.title = title;
@@ -49,7 +49,7 @@ public final class InfoScreen extends Screen {
 		this.type = type;
 		this.canBeClosedMessage = canBeClosedMessage;
 		this.extraInfoMessage = extraInfoMessage;
-		Data.version.sendToLog(this.type.equals(Type.ERROR) ? Helper.LogType.WARN : Helper.LogType.INFO, status);
+		Data.version.sendToLog(this.type.equals(Type.ERROR) ? LogType.WARN : LogType.INFO, status);
 	}
 	public InfoScreen(String title, List<String> status, Type type, boolean canBeClosed, String extraInfoMessage) {
 		this(title, status, type, canBeClosed ? "Press ESC to return to the game" : "", extraInfoMessage);

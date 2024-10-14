@@ -1,9 +1,9 @@
 package com.mclegoman.mclm_save.client.level;
 
+import com.mclegoman.luminance.common.util.LogType;
 import com.mclegoman.mclm_save.client.nbt.NbtCompound;
 import com.mclegoman.mclm_save.client.nbt.NbtList;
 import com.mclegoman.mclm_save.common.data.Data;
-import com.mclegoman.releasetypeutils.common.version.Helper;
 import net.minecraft.client.entity.living.player.InputPlayerEntity;
 import net.minecraft.world.World;
 
@@ -57,7 +57,7 @@ public class SaveWorldThread extends Thread {
 		try {
 			SaveC_0877775.outputNbt(level, Files.newOutputStream(var2.toPath()));
 		} catch (Exception error) {
-			Data.version.sendToLog(Helper.LogType.WARN, "An error occurred whilst trying to save world: " + error.getLocalizedMessage());
+			Data.version.sendToLog(LogType.WARN, "An error occurred whilst trying to save world: " + error.getLocalizedMessage());
 		}
 		((SaveChunkCache)world.chunkSource).save(false);
 	}

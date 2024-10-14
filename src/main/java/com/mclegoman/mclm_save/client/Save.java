@@ -24,7 +24,7 @@ public class Save {
 	public static void onInitialize(ModContainer mod) {
 		AprilFools.init();
 		List<String> bootMessage = new ArrayList<>();
-		if (Data.version.isDeveloperBuild()) bootMessage.add("This is a developer build of Save. Expect Bugs!");
+		if (Data.version.isDevelopmentBuild()) bootMessage.add("This is a developer build of Save. Expect Bugs!");
 		String useLegacyMergeSort = System.getProperty("java.util.Arrays.useLegacyMergeSort");
 		if (useLegacyMergeSort == null || useLegacyMergeSort.equalsIgnoreCase("false")) {
 			if (!bootMessage.isEmpty()) bootMessage.add("");
