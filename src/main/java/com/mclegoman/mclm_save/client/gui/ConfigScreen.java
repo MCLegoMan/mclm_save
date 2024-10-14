@@ -117,7 +117,6 @@ public class ConfigScreen extends Screen {
 				SaveConfig.instance.convertClassicDefaultWidth.setValue(SaveConfig.instance.convertClassicDefaultWidth.getDefaultValue());
 				SaveConfig.instance.saveWorldOnExit.setValue(SaveConfig.instance.saveWorldOnExit.getDefaultValue());
 				SaveConfig.instance.blockPosFix.setValue(SaveConfig.instance.blockPosFix.getDefaultValue());
-				SaveConfig.instance.debug.setValue(SaveConfig.instance.debug.getDefaultValue());
 				buttons.clear();
 				init();
 			}

@@ -7,6 +7,7 @@
 
 package com.mclegoman.luminance.common.util;
 
+import com.mclegoman.mclm_save.config.SaveConfig;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.ModMetadata;
 import org.quiltmc.loader.api.QuiltLoader;
@@ -119,6 +120,7 @@ public class Version implements Comparable<Version> {
 		if (logType.equals(LogType.INFO)) System.out.println("[INFO] " + getLoggerPrefix() + logMessage);
 		else if (logType.equals(LogType.WARN)) System.out.println("[WARN] " + getLoggerPrefix() + logMessage);
 		else if (logType.equals(LogType.ERROR)) System.out.println("[ERROR] " + getLoggerPrefix() + logMessage);
-		else if (logType.equals(LogType.DEBUG)) System.out.println("[DEBUG] " + getLoggerPrefix() + logMessage);
+		// added a check for mclm_save's debug config option.
+		else if (logType.equals(LogType.DEBUG) && SaveConfig.instance.debug.value()) System.out.println("[DEBUG] " + getLoggerPrefix() + logMessage);
 	}
 }
